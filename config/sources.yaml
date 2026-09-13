@@ -1,0 +1,79 @@
+# Registry of regulatory sources to track.
+#
+# Each entry is consumed by the scraper whose `key` matches `scraper`.
+# Set `enabled: false` to skip a source without deleting its config.
+# Add a new source by adding a block here and a matching scraper module in
+# src/saudi_law_tracker/scrapers/.
+
+defaults:
+  request_delay: 2.0          # seconds between requests to this host
+  timeout: 30
+  max_retries: 4
+  language: ar
+
+sources:
+  - key: bureau_of_experts
+    name: Bureau of Experts at the Council of Ministers — Laws & Regulations
+    name_ar: هيئة الخبراء بمجلس الوزراء — الأنظمة واللوائح
+    scraper: bureau_of_experts
+    enabled: true
+    base_url: https://laws.boe.gov.sa
+    # Search endpoint, sorted newest-first; the scraper appends &PageNumber=N.
+    start_paths:
+      - /BoeLaws/Laws/Search
+    max_pages: 3
+    categories: [law, regulation, royal_decree]
+
+  - key: sama_circulars
+    name: Saudi Central Bank (SAMA) — Rules & Circulars
+    name_ar: البنك المركزي السعودي — التعاميم والأنظمة
+    scraper: sama
+    enabled: true
+    base_url: https://www.sama.gov.sa
+    start_paths:
+      - /en-US/Laws/Pages/default.aspx
+      - /ar-sa/Laws/Pages/default.aspx
+    categories: [circular, rule, regulation]
+
+  - key: zatca_updates
+    name: Zakat, Tax and Customs Authority (ZATCA) — Regulatory Updates
+    name_ar: هيئة الزكاة والضريبة والجمارك — التحديثات النظامية
+    scraper: zatca
+    enabled: true
+    base_url: https://zatca.gov.sa
+    start_paths:
+      - /en/RulesRegulations/Pages/default.aspx
+      - /ar/RulesRegulations/Pages/default.aspx
+    categories: [tax_ruling, regulation, guideline, public_consultation]
+
+  - key: citc
+    name: Communications, Space & Technology Commission (CST/CITC) — Regulations
+    name_ar: هيئة الاتصالات والفضاء والتقنية — الأنظمة واللوائح
+    scraper: citc
+    enabled: true
+    base_url: https://www.cst.gov.sa
+    start_paths:
+      - /en/regulations
+      - /ar/regulations
+    categories: [regulation, framework, public_consultation]
+
+  - key: mhrsd_labor
+    name: Ministry of Human Resources & Social Development — Labor System
+    name_ar: وزارة الموارد البشرية والتنمية الاجتماعية — نظام العمل
+    scraper: mhrsd
+    enabled: true
+    base_url: https://www.hrsd.gov.sa
+    start_paths:
+      - /ar/policies
+      - /ar/media-center/ministry-news
+    categories: [ministerial_decision, regulation, labor_law_amendment]
+
+  - key: umm_al_qura
+    name: Umm Al-Qura — Official Gazette
+    name_ar: جريدة أم القرى — الجريدة الرسمية
+    scraper: umm_al_qura
+    enabled: true
+    base_url: https://www.uqn.gov.sa
+    start_paths:
+      - /
+    categories: [gazette_issue]

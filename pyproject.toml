@@ -1,0 +1,73 @@
+[project]
+name = "saudi-law-tracker"
+version = "0.1.0"
+description = "Scrape and track regulatory publications from Saudi government sources."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "httpx>=0.27",
+    "selectolax>=0.3.21",
+    "beautifulsoup4>=4.12",
+    "lxml>=5.2",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "pyyaml>=6.0",
+    "tenacity>=8.4",
+    "structlog>=24.1",
+    "python-dateutil>=2.9",
+    "hijridate>=2.3",
+    "typer>=0.12",
+    "platformdirs>=4.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2",
+    "pytest-asyncio>=0.23",
+    "pytest-httpx>=0.30",
+    "ruff>=0.5",
+    "mypy>=1.10",
+    "types-pyyaml",
+    "types-python-dateutil",
+]
+
+[project.scripts]
+saudi-law-tracker = "saudi_law_tracker.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/saudi_law_tracker"]
+artifacts = ["src/saudi_law_tracker/certs/*.pem"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "ASYNC"]
+
+[tool.ruff.lint.flake8-bugbear]
+# Typer's documented idiom is a Typer(...)/Option(...)/Argument(...) call as the
+# parameter default; these return immutable info objects, not shared state.
+extend-immutable-calls = ["typer.Option", "typer.Argument", "typer.Typer"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
+files = ["src", "tests"]
+
+[[tool.mypy.overrides]]
+# Tests favour readability over full annotation; still type-checked against the
+# (strictly-typed) package, just not required to annotate every fixture/case.
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
