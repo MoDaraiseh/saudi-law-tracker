@@ -41,9 +41,13 @@ sources:
     scraper: zatca
     enabled: true
     base_url: https://zatca.gov.sa
-    start_paths:
-      - /en/RulesRegulations/Pages/default.aspx
-      - /ar/RulesRegulations/Pages/default.aspx
+    # No start_paths: the real listing endpoint (a JSON API under
+    # /en/_LAYOUTS/15/GAZTInternet/PortalHandler.ashx) and its category list
+    # are hardcoded in zatca.py — see that module's docstring. max_items
+    # bounds how many items per category get their date-bearing leaf page
+    # fetched each run (each item needs its own request; there's no
+    # listing-level date to skip unchanged ones by).
+    max_items: 30
     categories: [tax_ruling, regulation, guideline, public_consultation]
 
   - key: citc
@@ -75,5 +79,5 @@ sources:
     enabled: true
     base_url: https://www.uqn.gov.sa
     start_paths:
-      - /
+      - /Pages/Issues.aspx
     categories: [gazette_issue]

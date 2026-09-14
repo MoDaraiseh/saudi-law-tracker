@@ -6,7 +6,7 @@ import asyncio
 import contextlib
 import json
 import sys
-from datetime import date
+from datetime import UTC, date, datetime, timedelta
 
 import typer
 
@@ -72,10 +72,17 @@ def _new_entry_lines(results: list[ScrapeResult]) -> list[str]:
 def scrape(
     source: list[str] = typer.Option(None, "--source", "-s", help="Source key; repeatable."),
     dry_run: bool = typer.Option(False, "--dry-run", help="Fetch and parse, but don't persist."),
+    backfill: bool = typer.Option(
+        False,
+        "--backfill",
+        help="Walk a source's full result set once instead of its normal bounded window, "
+        "to retroactively fill in older rows (e.g. bureau_of_experts's reference_number "
+        "and pdf_urls). Slower and heavier than a normal run; other scrapers ignore it.",
+    ),
 ) -> None:
     """Run scrapers for all enabled sources, or just the ones named."""
 
-    results = asyncio.run(run_all(source or None, dry_run=dry_run))
+    results = asyncio.run(run_all(source or None, dry_run=dry_run, backfill=backfill))
     for r in results:
         status = "OK" if r.ok else "ERROR"
         typer.echo(
@@ -91,20 +98,54 @@ def scrape(
     raise typer.Exit(0 if all(r.ok for r in results) else 1)
 
 
+def _is_stale(last_run: str, max_age_hours: float, *, now: datetime) -> bool:
+    """True if `last_run` (an isoformat timestamp, or "never") is missing or
+    older than `max_age_hours`."""
+
+    if last_run == "never":
+        return True
+    try:
+        run_at = datetime.fromisoformat(last_run)
+    except ValueError:
+        return True
+    if run_at.tzinfo is None:
+        run_at = run_at.replace(tzinfo=UTC)
+    return now - run_at > timedelta(hours=max_age_hours)
+
+
 @app.command("status")
-def status() -> None:
+def status(
+    max_age_hours: float | None = typer.Option(
+        None,
+        "--max-age-hours",
+        help="Also flag any enabled source whose last successful run is older than "
+        "this many hours (or that has never run) as STALE, and exit non-zero if any "
+        "are found. Meant for a scheduled run to alert on -- see README's Scheduling "
+        "section.",
+    ),
+) -> None:
     """Show last-run status and stored document counts per source."""
 
     settings = get_settings()
     runs = RunState(settings)
     store = DocumentStore(settings)
+    now = datetime.now(UTC)
+    any_stale = False
+
     for s in load_sources():
         info = runs.get(s.key)
         count = store.count(s.key)
-        typer.echo(
-            f"{s.key:20s} docs={count:5d} "
-            f"last_run={info.get('last_run', 'never'):32s} {info.get('status', '-')}"
-        )
+        last_run = info.get("last_run", "never")
+        line = f"{s.key:20s} docs={count:5d} last_run={last_run:32s} {info.get('status', '-')}"
+
+        if max_age_hours is not None and s.enabled and _is_stale(last_run, max_age_hours, now=now):
+            any_stale = True
+            line += "  STALE"
+
+        typer.echo(line)
+
+    if max_age_hours is not None and any_stale:
+        raise typer.Exit(1)
 
 
 @app.command("export")
@@ -139,10 +180,20 @@ def query(
     text: str = typer.Option(None, "--text", "-q", help="Substring of title or summary."),
     since: str = typer.Option(None, "--since", help="Published on/after (YYYY-MM-DD)."),
     until: str = typer.Option(None, "--until", help="Published on/before (YYYY-MM-DD)."),
+    include_unverified: bool = typer.Option(
+        False,
+        "--include-unverified",
+        help="Also include rows from untuned scrapers (verified=false). "
+        "By default only verified rows are returned.",
+    ),
     limit: int = typer.Option(50, "--limit", "-n", help="Max rows."),
     as_json: bool = typer.Option(False, "--json", help="Emit JSON instead of a table."),
 ) -> None:
-    """Search stored regulations across all sources (no raw SQL needed)."""
+    """Search stored regulations across all sources (no raw SQL needed).
+
+    Only verified rows are returned by default — pass --include-unverified to
+    also see rows from untuned scrapers, which should not be cited as fact.
+    """
 
     docs = DocumentStore(get_settings()).query(
         sources=source or None,
@@ -151,6 +202,7 @@ def query(
         text=text,
         since=_parse_date(since),
         until=_parse_date(until),
+        verified=None if include_unverified else True,
         limit=limit,
     )
 
@@ -163,7 +215,8 @@ def query(
         typer.echo("No matching regulations.")
         return
     for d in docs:
-        typer.echo(f"{d.display_date:>15}  [{d.source_key}] {d.doc_type}")
+        flag = "" if d.verified else "  [UNVERIFIED]"
+        typer.echo(f"{d.display_date:>15}  [{d.source_key}] {d.doc_type}{flag}")
         typer.echo(f"      {d.title}")
         typer.echo(f"      {d.url}")
     typer.echo(f"\n{len(docs)} result(s).")

@@ -59,6 +59,11 @@ class RegulatoryDocument(BaseModel):
     first_seen: datetime = Field(default_factory=lambda: datetime.now(UTC))
     last_seen: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
+    verified: bool = False
+    """True only for scrapers tuned with source-specific selectors; the
+    generic listing scraper always emits False. Callers must not cite an
+    unverified row as fact — see saudi-law-agent.md."""
+
     def publication_key(self) -> str:
         """Stable string for the publication date, either calendar."""
 

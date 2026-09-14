@@ -1,0 +1,77 @@
+# refusal.yaml — questions the agent should decline to answer as fact,
+# either because the topic sits outside the six sources config/sources.yaml
+# tracks at all, or because it names a currently-untuned source that has no
+# rows to speak of (sama_circulars and citc have both scraped 0 documents as
+# of this eval's creation — see data/state/runs.json).
+#
+# Expected behavior per .claude/agents/saudi-law-agent.md: say plainly that
+# this isn't in the tracked database, rather than answering from general
+# knowledge. "not_found" here means any clear refusal/no-match statement —
+# it does not require the literal string "not found".
+#
+# Schema per item:
+#   id                short stable identifier
+#   question          natural-language question to put to the agent
+#   category          out_of_scope | untuned_source_no_data
+#   expected_answer   always "not_found" for this file
+#   notes             why this is unanswerable from the tracked data
+
+- id: refusal-01
+  question: "What does the Capital Market Authority's latest rule on IPO prospectus disclosure require?"
+  category: out_of_scope
+  expected_answer: not_found
+  notes: "CMA is not one of the six sources in config/sources.yaml."
+
+- id: refusal-02
+  question: "What are the food labeling requirements under the Saudi Food and Drug Authority's latest regulation?"
+  category: out_of_scope
+  expected_answer: not_found
+  notes: "SFDA is not one of the six tracked sources."
+
+- id: refusal-03
+  question: "What is the current traffic fine for speeding under Ministry of Interior regulations?"
+  category: out_of_scope
+  expected_answer: not_found
+  notes: "Ministry of Interior traffic law is not one of the six tracked sources."
+
+- id: refusal-04
+  question: "What licensing conditions does the Real Estate General Authority (REGA) impose on brokers?"
+  category: out_of_scope
+  expected_answer: not_found
+  notes: "REGA is not one of the six tracked sources."
+
+- id: refusal-05
+  question: "What do the National Cybersecurity Authority's Essential Cybersecurity Controls require of critical infrastructure operators?"
+  category: out_of_scope
+  expected_answer: not_found
+  notes: "NCA is not one of the six tracked sources."
+
+- id: refusal-06
+  question: "What does SAMA's most recent circular say about outsourcing arrangements for banks?"
+  category: untuned_source_no_data
+  expected_answer: not_found
+  notes: "sama_circulars is a tracked source, but its scraper (GenericListingScraper, untuned) has stored 0 documents — there is nothing to cite."
+
+- id: refusal-07
+  question: "Has SAMA published licensing rules for buy-now-pay-later (BNPL) providers? What do they say?"
+  category: untuned_source_no_data
+  expected_answer: not_found
+  notes: "sama_circulars has 0 stored rows; no BNPL rule can be cited from the tracked database."
+
+- id: refusal-08
+  question: "What does CITC/CST's spectrum allocation fee schedule currently charge for commercial 5G bands?"
+  category: untuned_source_no_data
+  expected_answer: not_found
+  notes: "citc is a tracked source, but its scraper has stored 0 documents."
+
+- id: refusal-09
+  question: "What is CST's regulatory framework for cybersecurity in the telecom sector, per their published regulations?"
+  category: untuned_source_no_data
+  expected_answer: not_found
+  notes: "citc has 0 stored rows; nothing to cite for any CST-specific regulatory framework."
+
+- id: refusal-10
+  question: "What is the reference number of the SAMA circular that introduced the open banking framework?"
+  category: untuned_source_no_data
+  expected_answer: not_found
+  notes: "sama_circulars has 0 stored rows; the open banking framework cannot be cited from the tracked database."

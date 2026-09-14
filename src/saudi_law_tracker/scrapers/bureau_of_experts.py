@@ -13,25 +13,49 @@ Each result row is ``div.search_result_item``::
     span "تاريخ الإصدار: <hijri> هـ"   issue date  -> published_hijri/-_gregorian
     span "تاريخ النشر:  <hijri> هـ"    gazette publication date -> effective_date
 
-Dates are Hijri in year/month/day order. The royal-decree / ministerial
--resolution reference number only appears on the detail page.
+Dates are Hijri in year/month/day order.
 
-TODO(selectors): follow LawDetails to pick up the reference number and the
-full-text / PDF links.
+The royal-decree / ministerial-resolution reference number and the full-text
+PDF only appear on each law's own LawDetails page (``span`` next to it isn't
+enough), which is assumed to render as::
+
+    table.table-details tr    two <td> cells per row; a row whose first cell
+                               contains "رقم" holds the reference number in
+                               its second cell
+    a[href$=".pdf"]            one or more links to the full text / gazette
+                               attachment, anywhere on the page
+
+TODO(selectors): unverified against a live fetch (the site's leaf-only cert
+also breaks plain WebFetch, same issue `http.py`'s custom SSL context exists
+to work around) — adjust `_parse_details` if the real markup differs.
+
+A LawDetails fetch is only worth its own request when the row is actually
+new or has changed since the last run, so `discover()` compares each row
+against what's already stored (by title/summary/type/dates — the parts a
+change to the listing itself would touch) before deciding to fetch. That
+comparison intentionally excludes reference_number/pdf_urls themselves, so an
+already-enriched row doesn't look "changed" just because a fresh listing-only
+parse hasn't populated those fields yet. Normal runs cap at
+``max_pages`` (3) and only ever touch new/changed rows; `--backfill` walks
+every page once and additionally re-fetches any already-stored row still
+missing its reference number or PDF link, to catch older rows a normal run
+would never reach.
 """
 
 from __future__ import annotations
 
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Sequence
 
+from pydantic import HttpUrl
 from selectolax.parser import HTMLParser, Node
 
 from ..models import DocumentType, RegulatoryDocument
 from ..utils.dates import parse_hijri_date
-from ..utils.text import clean
+from ..utils.text import clean, content_hash
 from .base import BaseScraper, register
 
 _DEFAULT_MAX_PAGES = 3
+_BACKFILL_SAFETY_CAP = 500  # hard stop if the endpoint ever fails to return an empty page
 _SEARCH_QUERY = "PageNumber={page}&SortDirection=DES"
 
 
@@ -43,12 +67,40 @@ def _doc_type(title: str) -> DocumentType:
     return DocumentType.OTHER
 
 
+def _listing_signature(doc: RegulatoryDocument) -> str:
+    """Hash of the fields a fresh listing-only parse can actually see.
+
+    Deliberately excludes reference_number/pdf_urls (only ever set from the
+    LawDetails page) so comparing a freshly-parsed row against a previously
+    *enriched* stored row doesn't look like a change just because the new
+    parse hasn't fetched those fields yet.
+    """
+
+    return content_hash(
+        doc.title,
+        doc.title_en,
+        str(doc.doc_type),
+        doc.summary,
+        doc.effective_date.isoformat() if doc.effective_date else None,
+        ",".join(sorted(doc.categories)),
+    )
+
+
 @register("bureau_of_experts")
 class BureauOfExpertsScraper(BaseScraper):
     async def discover(self) -> AsyncIterator[RegulatoryDocument]:
         max_pages = int(self.source.extra.get("max_pages", _DEFAULT_MAX_PAGES))
+        known = self.store.load(self.source.key)
+
         for base in self.source.start_paths:
-            for page in range(1, max_pages + 1):
+            page = 1
+            while True:
+                if not self.backfill and page > max_pages:
+                    break
+                if self.backfill and page > _BACKFILL_SAFETY_CAP:
+                    self.log.warning("backfill.safety_cap_hit", source=self.source.key, page=page)
+                    break
+
                 sep = "&" if "?" in base else "?"
                 url = self.abs_url(f"{base}{sep}{_SEARCH_QUERY.format(page=page)}")
                 resp = await self.http.get(url)
@@ -57,10 +109,94 @@ class BureauOfExpertsScraper(BaseScraper):
                 rows = HTMLParser(resp.text).css("div.search_result_item")
                 if not rows:
                     break
+
                 for row in rows:
-                    doc = self._parse_row(row)
-                    if doc is not None:
-                        yield doc
+                    draft = self._parse_row(row)
+                    if draft is None:
+                        continue
+
+                    existing = known.get(draft.uid)
+                    if self._needs_detail_fetch(draft, existing):
+                        reference_number, pdf_urls = await self._fetch_details(str(draft.url))
+                        yield self._enrich(draft, reference_number, pdf_urls)
+                    elif existing is not None:
+                        yield self._enrich(draft, existing.reference_number, existing.pdf_urls)
+                    else:
+                        yield draft
+
+                page += 1
+
+    def _needs_detail_fetch(
+        self, draft: RegulatoryDocument, existing: RegulatoryDocument | None
+    ) -> bool:
+        if existing is None:
+            return True  # brand new row
+        if self.backfill:
+            # Retroactively catch older rows a normal run never re-visits.
+            return not existing.reference_number or not existing.pdf_urls
+        return _listing_signature(existing) != _listing_signature(draft)
+
+    async def _fetch_details(self, url: str) -> tuple[str | None, list[str]]:
+        resp = await self.http.get(url)  # same host/client -> same throttle as the listing pages
+        slug = url.rstrip("/").split("/")[-2] if "/" in url else "detail"
+        self.store.write_raw(self.source.key, f"detail_{slug}", resp.text)
+        return self._parse_details(resp.text)
+
+    def _parse_details(self, html: str) -> tuple[str | None, list[str]]:
+        tree = HTMLParser(html)
+
+        reference_number = None
+        for row in tree.css("table.table-details tr"):
+            cells = row.css("td")
+            if len(cells) < 2:
+                continue
+            if "رقم" in clean(cells[0].text()):
+                reference_number = clean(cells[1].text()) or None
+                break
+
+        pdf_urls: list[str] = []
+        seen: set[str] = set()
+        for link in tree.css("a[href]"):
+            href = link.attributes.get("href") or ""
+            if not href.lower().endswith(".pdf"):
+                continue
+            abs_href = self.abs_url(href)
+            if abs_href not in seen:
+                seen.add(abs_href)
+                pdf_urls.append(abs_href)
+
+        return reference_number, pdf_urls
+
+    def _enrich(
+        self,
+        draft: RegulatoryDocument,
+        reference_number: str | None,
+        pdf_urls: Sequence[str | HttpUrl],
+    ) -> RegulatoryDocument:
+        """Rebuild `draft` with reference_number/pdf_urls filled in.
+
+        A fresh construction (rather than `draft.model_copy(update=...)`) so
+        `model_post_init` recomputes `content_hash` over the enriched fields
+        too -- otherwise the stale hash from the listing-only parse would
+        make `upsert_many` think an enriched row keeps "changing" forever.
+        """
+
+        return RegulatoryDocument(
+            uid=draft.uid,
+            source_key=draft.source_key,
+            title=draft.title,
+            title_en=draft.title_en,
+            doc_type=draft.doc_type,
+            url=draft.url,
+            pdf_urls=pdf_urls or draft.pdf_urls,
+            reference_number=reference_number or draft.reference_number,
+            summary=draft.summary,
+            published_gregorian=draft.published_gregorian,
+            published_hijri=draft.published_hijri,
+            effective_date=draft.effective_date,
+            categories=draft.categories,
+            verified=True,
+        )
 
     def _parse_row(self, row: Node) -> RegulatoryDocument | None:
         link = row.css_first("a.result-keyword-title")
@@ -93,4 +229,5 @@ class BureauOfExpertsScraper(BaseScraper):
             published_gregorian=issue_greg,
             effective_date=pub_greg,
             categories=self.source.categories,
+            verified=True,
         )

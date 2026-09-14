@@ -33,6 +33,7 @@ _COLUMNS: tuple[str, ...] = (
     "content_hash",
     "first_seen",
     "last_seen",
+    "verified",
 )
 _JSON_COLUMNS = ("pdf_urls", "categories")
 
@@ -54,7 +55,8 @@ CREATE TABLE IF NOT EXISTS regulations (
     raw_html_path       TEXT,
     content_hash        TEXT,
     first_seen          TEXT NOT NULL,
-    last_seen           TEXT NOT NULL
+    last_seen           TEXT NOT NULL,
+    verified            INTEGER NOT NULL DEFAULT 0
 );
 CREATE INDEX IF NOT EXISTS ix_regulations_source ON regulations (source_key);
 CREATE INDEX IF NOT EXISTS ix_regulations_published
@@ -77,6 +79,17 @@ class DocumentStore:
         self.path = settings.db_path
         with self._connect() as conn:
             conn.executescript(_SCHEMA)
+            self._migrate(conn)
+
+    @staticmethod
+    def _migrate(conn: sqlite3.Connection) -> None:
+        """Add columns introduced after a database's initial creation."""
+
+        existing = {row["name"] for row in conn.execute("PRAGMA table_info(regulations)")}
+        if "verified" not in existing:
+            conn.execute(
+                "ALTER TABLE regulations ADD COLUMN verified INTEGER NOT NULL DEFAULT 0"
+            )
 
     @contextmanager
     def _connect(self) -> Iterator[sqlite3.Connection]:
@@ -129,6 +142,7 @@ class DocumentStore:
         text: str | None = None,
         since: date | None = None,
         until: date | None = None,
+        verified: bool | None = None,
         limit: int | None = None,
     ) -> list[RegulatoryDocument]:
         """Filtered read across every source, newest publication first.
@@ -137,7 +151,8 @@ class DocumentStore:
         categories, so ``"labor"`` finds the ``mhrsd_labor`` source and the
         ``labor_law_amendment`` category. ``text`` matches title or summary.
         Date bounds compare against ``published_gregorian`` and exclude rows
-        with no Gregorian date.
+        with no Gregorian date. ``verified`` filters on the ``verified``
+        column; leave it ``None`` to return both verified and unverified rows.
         """
 
         where: list[str] = []
@@ -160,6 +175,9 @@ class DocumentStore:
         if until is not None:
             where.append("published_gregorian <= ?")
             params.append(until.isoformat())
+        if verified is not None:
+            where.append("verified = ?")
+            params.append(int(verified))
 
         sql = "SELECT * FROM regulations"
         if where:

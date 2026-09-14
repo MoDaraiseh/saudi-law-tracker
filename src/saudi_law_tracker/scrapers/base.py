@@ -3,6 +3,11 @@
 Each source gets a subclass of `BaseScraper` decorated with `@register("key")`,
 where `key` matches the `scraper:` field of a block in config/sources.yaml.
 Implement `discover()` as an async generator of `RegulatoryDocument`s.
+
+`backfill` is a generic hint threaded down from the CLI's `--backfill` flag:
+most scrapers can ignore it, but one that paginates a bounded window on
+normal runs (see bureau_of_experts.py) can check `self.backfill` to walk its
+full result set once instead, e.g. to retroactively enrich older rows.
 """
 
 from __future__ import annotations
@@ -48,10 +53,18 @@ def registered_keys() -> list[str]:
 class BaseScraper(abc.ABC):
     key: ClassVar[str] = ""
 
-    def __init__(self, source: SourceConfig, http: HttpClient, store: DocumentStore) -> None:
+    def __init__(
+        self,
+        source: SourceConfig,
+        http: HttpClient,
+        store: DocumentStore,
+        *,
+        backfill: bool = False,
+    ) -> None:
         self.source = source
         self.http = http
         self.store = store
+        self.backfill = backfill
         self.log = get_logger(f"scraper.{source.key}")
 
     def abs_url(self, path: str) -> str:

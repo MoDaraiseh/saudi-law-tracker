@@ -16,7 +16,9 @@ from .storage import DocumentStore, RunState
 log = get_logger(__name__)
 
 
-async def run_source(source: SourceConfig, *, dry_run: bool = False) -> ScrapeResult:
+async def run_source(
+    source: SourceConfig, *, dry_run: bool = False, backfill: bool = False
+) -> ScrapeResult:
     settings = get_settings()
     store = DocumentStore(settings)
     started = datetime.now(UTC)
@@ -29,7 +31,7 @@ async def run_source(source: SourceConfig, *, dry_run: bool = False) -> ScrapeRe
         max_retries=source.max_retries,
         request_delay=source.request_delay,
     ) as http:
-        scraper = get_scraper(source.scraper)(source, http, store)
+        scraper = get_scraper(source.scraper)(source, http, store, backfill=backfill)
         try:
             async for doc in scraper.discover():
                 documents.append(doc)
@@ -72,7 +74,7 @@ async def run_source(source: SourceConfig, *, dry_run: bool = False) -> ScrapeRe
 
 
 async def run_all(
-    keys: list[str] | None = None, *, dry_run: bool = False
+    keys: list[str] | None = None, *, dry_run: bool = False, backfill: bool = False
 ) -> list[ScrapeResult]:
     load_all_scrapers()
     settings = get_settings()
@@ -85,6 +87,6 @@ async def run_all(
 
     async def _guarded(src: SourceConfig) -> ScrapeResult:
         async with sem:
-            return await run_source(src, dry_run=dry_run)
+            return await run_source(src, dry_run=dry_run, backfill=backfill)
 
     return await asyncio.gather(*(_guarded(s) for s in sources))

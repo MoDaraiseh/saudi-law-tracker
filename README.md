@@ -72,10 +72,63 @@ saudi-law-tracker query -q "القيمة المضافة" --json  # machine-reada
 `--sector` (substring of source key or category), `--text` (title/summary),
 `--since` / `--until` (Gregorian publication date), `--limit`, `--json`.
 
-Run on a schedule with cron / Task Scheduler:
+`status --max-age-hours N` additionally flags (prints `STALE` next to, and
+exits non-zero if any exist) an *enabled* source whose last successful run
+is older than `N` hours, or that has never run at all — meant for a
+scheduled job to alert on, so a source silently failing for days doesn't go
+unnoticed:
+
+```bash
+saudi-law-tracker status --max-age-hours 36   # exit 0 if every enabled source ran in the last 36h
+```
+
+## Scheduling
+
+The daily job is: run `scrape`, then run `status --max-age-hours 36` so a
+source that's stopped scraping successfully gets flagged rather than just
+silently going quiet. `scrape.cmd` at the repo root already does both, in
+order, appending output to `logs\cron.log` and exiting non-zero if the
+scrape failed *or* the status check found a stale source (so Task
+Scheduler's "Last Run Result" reflects either failure).
+
+### Windows Task Scheduler
+
+1. Confirm `scrape.cmd` runs cleanly by hand first: `.\scrape.cmd` from the
+   repo root, then check `logs\cron.log` for `STALE` / errors.
+2. Open Task Scheduler → **Create Task…** (not *Basic Task*, so you get the
+   full options below).
+3. **General** tab: name it (e.g. `saudi-law-tracker daily scrape`); select
+   **Run whether user is logged on or not**; check **Run with highest
+   privileges** only if your `.venv`/network setup actually needs it (it
+   usually doesn't).
+4. **Triggers** tab → **New…** → Daily, pick a time (e.g. 06:00), **Enabled**.
+5. **Actions** tab → **New…** → Action: *Start a program*; **Program/script**:
+   the full path to `scrape.cmd` (e.g.
+   `C:\Users\<you>\saudi-law-tracker\scrape.cmd`); **Start in**: the repo root
+   (e.g. `C:\Users\<you>\saudi-law-tracker`) — `scrape.cmd` also `cd /d`s
+   there itself, but setting it here too avoids surprises if the task is ever
+   invoked with a different working directory.
+6. **Conditions**/**Settings** tabs: on a laptop, uncheck "Start the task only
+   if the computer is on AC power" unless that's genuinely what you want.
+7. Save. To verify: right-click the task → **Run**, then check
+   `logs\cron.log` and the task's **Last Run Result** column (`0x0` =
+   success; anything else = the scrape failed or a source is stale).
+
+Equivalent one-liner via `schtasks` (run as the user who should own the
+task, from an elevated prompt only if you also chose "highest privileges"
+above):
+
+```powershell
+schtasks /Create /TN "saudi-law-tracker daily scrape" /TR "C:\Users\<you>\saudi-law-tracker\scrape.cmd" /SC DAILY /ST 06:00 /RL LIMITED
+```
+
+### cron (Linux/macOS)
+
+`status` should run even if `scrape` itself failed, and the redirect needs to
+wrap the whole compound command (not just the last part) to capture both:
 
 ```
-0 6 * * *  cd /path/to/saudi-law-tracker && .venv/bin/saudi-law-tracker scrape
+0 6 * * *  { cd /path/to/saudi-law-tracker && .venv/bin/saudi-law-tracker scrape ; .venv/bin/saudi-law-tracker status --max-age-hours 36 ; } >> logs/cron.log 2>&1
 ```
 
 ## Adding a scraper
@@ -107,5 +160,10 @@ class MySourceScraper(BaseScraper):
   *changed*; the same URL re-published under a new date is a *new* entry.
 - `utils/text.py` normalizes Arabic (alef/ya/ta-marbuta, diacritics, tatweel)
   for dedupe — display text is kept as-is.
-- Be a good citizen: `SLT_REQUEST_DELAY` throttles per host, and the client sends
-  a descriptive User-Agent. Check each site's terms and `robots.txt`.
+- Be a good citizen: `SLT_REQUEST_DELAY` throttles per host, the client sends a
+  descriptive User-Agent, and `HttpClient` fetches and caches each host's
+  `robots.txt` (once per run) and skips any disallowed path, logging a
+  `robots.disallowed` warning instead of fetching it. A `robots.txt` that
+  itself fails to load is treated as "disallow everything" for that host
+  rather than assumed permissive. This doesn't replace actually reading each
+  site's terms of use, which `robots.txt` alone doesn't cover.

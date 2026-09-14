@@ -1,0 +1,158 @@
+# cited_qa.yaml — questions answerable from real, verified rows in the local
+# database (source_key: bureau_of_experts — the only tuned/verified scraper
+# as of this eval's creation).
+#
+# Every expected_title / expected_url below was read directly out of
+# data/regulations.db (see evals/agent/README.md for how it was generated,
+# and re-generate before relying on this file if the database has since
+# changed). The agent is expected to answer with a real citation matching
+# these fields; the runner checks that the cited URL is present, resolves,
+# and that the cited title matches the stored one.
+#
+# Schema per item:
+#   id               short stable identifier
+#   question         natural-language question to put to the agent
+#   expected_title   exact `title` value stored in the regulations table
+#   expected_url     exact `url` value stored in the regulations table
+#   source_key       which tracked source the row comes from
+#   published_gregorian  the stored Gregorian publication date, for reference
+
+- id: cited-01
+  question: "What is the tracked title and source URL for Saudi Arabia's Labor Law (نظام العمل)?"
+  expected_title: "نظام العمل"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/08381293-6388-48e2-8ad2-a9a700f2aa94/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2005-09-27"
+
+- id: cited-02
+  question: "Find the Bureau of Experts entry for the Companies Law (نظام الشركات) and give me its title and URL."
+  expected_title: "نظام الشركات"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/a8376aea-1bc3-49d4-9027-aed900b555af/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2022-06-30"
+
+- id: cited-03
+  question: "What is the tracked source URL for the VAT Law (نظام ضريبة القيمة المضافة)?"
+  expected_title: "نظام ضريبة القيمة المضافة"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f98f4238-0289-4891-8a22-a9a700f1f538/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2017-07-25"
+
+- id: cited-04
+  question: "Is the Basic Law of Governance (النظام الأساسي للحكم) in the tracked database? If so, give its title and URL."
+  expected_title: "النظام الأساسي للحكم"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/16b97fcb-4833-4f66-8531-a9a700f161b6/1"
+  source_key: bureau_of_experts
+  published_gregorian: "1992-03-01"
+
+- id: cited-05
+  question: "What is the source URL the tracker has on file for the Anti-Cyber Crime Law (نظام مكافحة جرائم المعلوماتية)?"
+  expected_title: "نظام مكافحة جرائم المعلوماتية"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/25df73d6-0f49-4dc5-b010-a9a700f2ec1d/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2007-03-27"
+
+- id: cited-06
+  question: "Give me the exact tracked title and URL for the Saudi Arbitration Law (نظام التحكيم)."
+  expected_title: "نظام التحكيم"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/5535039e-13da-43f6-8f53-a9a700f26485/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2012-04-16"
+
+- id: cited-07
+  question: "What entry does the database have for the Anti-Narcotics and Psychotropic Substances Law (نظام مكافحة المخدرات والمؤثرات العقلية)? Give the title and URL."
+  expected_title: "نظام مكافحة المخدرات والمؤثرات العقلية"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/221b3286-a3c6-4ea4-97c7-a9a700f18273/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2005-08-13"
+
+- id: cited-08
+  question: "What is the tracked source URL for the Personal Status Law (نظام الأحوال الشخصية)?"
+  expected_title: "نظام الأحوال الشخصية"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/4d72d829-947b-45d5-b9b5-ae5800d6bac2/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2022-03-09"
+
+- id: cited-09
+  question: "Find the E-Commerce Law (نظام التجارة الإلكترونية) in the tracked database and give its title and URL."
+  expected_title: "نظام التجارة الإلكترونية"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/360de590-0286-4fa5-a243-aa9100c31979/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2019-07-10"
+
+- id: cited-10
+  question: "What is the source URL on file for the Income Tax Law (نظام ضريبة الدخل)?"
+  expected_title: "نظام ضريبة الدخل"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/23576008-1ce4-4685-ac3e-a9a700f2cb02/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2004-03-06"
+
+- id: cited-11
+  question: "Does the tracker have an entry for the Environment Law (نظام البيئة)? Give the title and URL."
+  expected_title: "نظام البيئة"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/63831ff6-63d9-4212-8b54-abf800e146bd/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2020-07-10"
+
+- id: cited-12
+  question: "What is the tracked title and URL for the Electricity Law (نظام الكهرباء)?"
+  expected_title: "نظام الكهرباء"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/b3060214-c11a-4709-b191-aca700cbcc58/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2020-12-31"
+
+- id: cited-13
+  question: "Find the Anti-Harassment Law (نظام مكافحة جريمة التحرش) and give me its exact stored title and URL."
+  expected_title: "نظام مكافحة جريمة التحرش"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f9de1b7f-7526-4c44-b9f3-a9f8015cf5b6/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2018-05-31"
+
+- id: cited-14
+  question: "What is the most recent version of the Enforcement Law (نظام التنفيذ) tracked in the database, and what is its source URL?"
+  expected_title: "نظام التنفيذ"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/67dd54bc-c33a-48c8-8356-b44700a9ab55/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2026-04-20"
+
+- id: cited-15
+  question: "What is the tracked source URL for the Postal Law (نظام البريد)?"
+  expected_title: "نظام البريد"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/8ca91427-5be7-4807-80ae-adc700a97f0d/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2021-10-14"
+
+- id: cited-16
+  question: "Find the Accounting and Auditing Profession Law (نظام مهنة المحاسبة والمراجعة) and give its title and URL."
+  expected_title: "نظام مهنة المحاسبة والمراجعة"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/6435e205-a7ae-4a8c-9580-ad0000b6bef2/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2021-03-11"
+
+- id: cited-17
+  question: "What is the source URL the database has for the Notarization Law (نظام التوثيق)?"
+  expected_title: "نظام التوثيق"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/40754577-f250-47f6-8a5a-abf600af7d72/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2020-07-10"
+
+- id: cited-18
+  question: "Is the law on non-Saudi real estate ownership (نظام تملك غير السعوديين للعقار) in the tracked database? Give its title and URL."
+  expected_title: "نظام تملك غير السعوديين للعقار"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/a1bdadb5-c518-48bb-a1d0-b33000e66fd1/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2025-07-14"
+
+- id: cited-19
+  question: "What is the tracked title and URL for the Banking Control Law (نظام مراقبة البنوك)?"
+  expected_title: "نظام مراقبة البنوك"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/8f70dc63-dd9a-4734-9216-a9a700f2c78c/1"
+  source_key: bureau_of_experts
+  published_gregorian: "1966-04-21"
+
+- id: cited-20
+  question: "Find the Geographical Indications Protection Law (نظام حماية المؤشرات الجغرافية) in the database and give its title and URL."
+  expected_title: "نظام حماية المؤشرات الجغرافية"
+  expected_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/b6c66cda-7f2c-408d-94b7-b3d300dbffe8/1"
+  source_key: bureau_of_experts
+  published_gregorian: "2025-11-17"

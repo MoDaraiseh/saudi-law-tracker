@@ -7,6 +7,7 @@ import ssl
 import time
 from functools import lru_cache
 from pathlib import Path
+from urllib.robotparser import RobotFileParser
 
 import certifi
 import httpx
@@ -43,7 +44,8 @@ def default_ssl_context() -> ssl.SSLContext:
 
 
 class HttpClient:
-    """Async client that rate-limits per host and retries transient failures."""
+    """Async client that rate-limits per host, respects robots.txt, and
+    retries transient failures."""
 
     def __init__(
         self,
@@ -55,8 +57,11 @@ class HttpClient:
     ) -> None:
         self._delay = request_delay
         self._max_retries = max_retries
+        self._user_agent = user_agent
         self._last_request_at: dict[str, float] = {}
         self._locks: dict[str, asyncio.Lock] = {}
+        self._robots: dict[str, RobotFileParser] = {}
+        self._robots_locks: dict[str, asyncio.Lock] = {}
         self._client = httpx.AsyncClient(
             timeout=timeout,
             follow_redirects=True,
@@ -82,8 +87,60 @@ class HttpClient:
                 await asyncio.sleep(wait)
             self._last_request_at[host] = time.monotonic()
 
+    async def _robots_for(self, origin: str) -> RobotFileParser:
+        """Fetch and cache one host's robots.txt rules (once per client lifetime).
+
+        Mirrors `RobotFileParser.read()`'s own status-code handling (RFC 9309
+        §2.3.1), just fetched through our own client instead of `urlopen` so
+        it gets our SSL context, User-Agent and timeout. Expressed entirely
+        through `parse()` (which also marks the parser as checked) rather
+        than the `allow_all`/`disallow_all` attributes `read()` itself uses,
+        since those aren't part of the module's typed public surface.
+        A robots.txt we can't reach at all (network error) fails closed --
+        same as a 5xx -- rather than silently scraping a host whose policy
+        we couldn't check.
+        """
+
+        if origin in self._robots:
+            return self._robots[origin]
+
+        lock = self._robots_locks.setdefault(origin, asyncio.Lock())
+        async with lock:
+            if origin in self._robots:  # populated while we waited for the lock
+                return self._robots[origin]
+
+            parser = RobotFileParser()
+            robots_url = f"{origin}/robots.txt"
+            disallow_all = ["User-agent: *", "Disallow: /"]
+            try:
+                resp = await self._client.get(robots_url, headers={"User-Agent": self._user_agent})
+            except httpx.HTTPError as exc:
+                log.warning("robots.fetch_failed", url=robots_url, error=str(exc))
+                parser.parse(disallow_all)
+            else:
+                if resp.status_code in (401, 403) or resp.status_code >= 500:
+                    if resp.status_code >= 500:
+                        log.warning("robots.fetch_failed", url=robots_url, status=resp.status_code)
+                    parser.parse(disallow_all)
+                elif 400 <= resp.status_code < 500:
+                    parser.parse([])  # no robots.txt -> nothing disallowed
+                else:
+                    parser.parse(resp.text.splitlines())
+
+            self._robots[origin] = parser
+            return parser
+
     async def get(self, url: str, **kwargs: object) -> httpx.Response:
-        host = httpx.URL(url).host or ""
+        parsed = httpx.URL(url)
+        host = parsed.host or ""
+
+        robots = await self._robots_for(f"{parsed.scheme}://{host}")
+        if not robots.can_fetch(self._user_agent, url):
+            log.warning("robots.disallowed", url=url, user_agent=self._user_agent)
+            return httpx.Response(
+                403, text="<!-- robots.txt: disallowed -->", request=httpx.Request("GET", url)
+            )
+
         await self._throttle(host)
 
         @retry(

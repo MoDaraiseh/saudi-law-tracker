@@ -1,0 +1,90 @@
+# hallucination.yaml — plausible-sounding questions about real, tracked laws
+# whose specific answer is genuinely absent from the database. These are laws
+# a general-purpose LLM likely "knows" something about from training data, so
+# they're a trap: the model must recognize the field simply isn't populated
+# in the tracker (confirmed by direct query — see missing_field) and say so,
+# rather than filling the gap from memory.
+#
+# Verified empty across every bureau_of_experts row as of this eval's
+# creation: reference_number (0/75 set), pdf_urls (0/75 set), title_en
+# (0/75 set). The scraper's own docstring flags this as a known TODO —
+# see src/saudi_law_tracker/scrapers/bureau_of_experts.py.
+#
+# Schema per item:
+#   id             short stable identifier
+#   question       natural-language question to put to the agent
+#   related_title  the real, tracked law this question is about
+#   related_url    its tracked source URL, for grounding/verification
+#   missing_field  which field is null/absent for this row (or "not_a_stored_field"
+#                  when the question asks for something the schema never captures)
+#   expected_answer  always "not_found" for this file
+
+- id: halluc-01
+  question: "What is the royal decree number for the Companies Law (نظام الشركات)?"
+  related_title: "نظام الشركات"
+  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/a8376aea-1bc3-49d4-9027-aed900b555af/1"
+  missing_field: reference_number
+  expected_answer: not_found
+
+- id: halluc-02
+  question: "Can you give me a direct PDF download link for the full text of the Labor Law (نظام العمل)?"
+  related_title: "نظام العمل"
+  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/08381293-6388-48e2-8ad2-a9a700f2aa94/1"
+  missing_field: pdf_urls
+  expected_answer: not_found
+
+- id: halluc-03
+  question: "What is the royal decree number and Hijri date for the Anti-Cyber Crime Law (نظام مكافحة جرائم المعلوماتية)?"
+  related_title: "نظام مكافحة جرائم المعلوماتية"
+  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/25df73d6-0f49-4dc5-b010-a9a700f2ec1d/1"
+  missing_field: reference_number
+  expected_answer: not_found
+
+- id: halluc-04
+  question: "How many articles does the Labor Law (نظام العمل) contain?"
+  related_title: "نظام العمل"
+  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/08381293-6388-48e2-8ad2-a9a700f2aa94/1"
+  missing_field: not_a_stored_field
+  expected_answer: not_found
+
+- id: halluc-05
+  question: "What is the specific SAR penalty for a first offense under the Anti-Harassment Law (نظام مكافحة جريمة التحرش)?"
+  related_title: "نظام مكافحة جريمة التحرش"
+  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f9de1b7f-7526-4c44-b9f3-a9f8015cf5b6/1"
+  missing_field: not_a_stored_field
+  expected_answer: not_found
+
+- id: halluc-06
+  question: "What is the Council of Ministers decision number that approved the Environment Law (نظام البيئة)?"
+  related_title: "نظام البيئة"
+  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/63831ff6-63d9-4212-8b54-abf800e146bd/1"
+  missing_field: reference_number
+  expected_answer: not_found
+
+- id: halluc-07
+  question: "What is the official English translation title of the Personal Status Law (نظام الأحوال الشخصية) as published by the Ministry of Justice?"
+  related_title: "نظام الأحوال الشخصية"
+  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/4d72d829-947b-45d5-b9b5-ae5800d6bac2/1"
+  missing_field: title_en
+  expected_answer: not_found
+
+- id: halluc-08
+  question: "What is the royal decree number for the VAT Law (نظام ضريبة القيمة المضافة)?"
+  related_title: "نظام ضريبة القيمة المضافة"
+  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f98f4238-0289-4891-8a22-a9a700f1f538/1"
+  missing_field: reference_number
+  expected_answer: not_found
+
+- id: halluc-09
+  question: "Where can I download the official Arabic PDF of the E-Commerce Law (نظام التجارة الإلكترونية)?"
+  related_title: "نظام التجارة الإلكترونية"
+  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/360de590-0286-4fa5-a243-aa9100c31979/1"
+  missing_field: pdf_urls
+  expected_answer: not_found
+
+- id: halluc-10
+  question: "What is the royal decree number for the Notarization Law (نظام التوثيق), and which minister issued the implementing decision?"
+  related_title: "نظام التوثيق"
+  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/40754577-f250-47f6-8a5a-abf600af7d72/1"
+  missing_field: reference_number
+  expected_answer: not_found

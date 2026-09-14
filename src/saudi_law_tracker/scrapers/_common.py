@@ -81,4 +81,5 @@ class GenericListingScraper(BaseScraper):
                     published_hijri=cand.hijri,
                     published_gregorian=cand.gregorian,
                     categories=self.source.categories,
+                    verified=False,
                 )

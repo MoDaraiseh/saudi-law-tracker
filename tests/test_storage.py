@@ -200,3 +200,30 @@ def test_query_orders_newest_first_then_undated(settings):
 
     dates = [d.published_gregorian for d in store.query()]
     assert dates == [date(2024, 6, 1), date(2023, 1, 15), None]
+
+
+def test_query_filters_by_verified(settings):
+    store = DocumentStore(settings)
+    store.upsert_many(
+        "demo",
+        [
+            RegulatoryDocument(
+                source_key="demo",
+                title="Verified doc",
+                doc_type=DocumentType.LAW,
+                url="https://example.gov.sa/verified",
+                verified=True,
+            ),
+            RegulatoryDocument(
+                source_key="demo",
+                title="Unverified doc",
+                doc_type=DocumentType.OTHER,
+                url="https://example.gov.sa/unverified",
+                verified=False,
+            ),
+        ],
+    )
+
+    assert [d.title for d in store.query(verified=True)] == ["Verified doc"]
+    assert [d.title for d in store.query(verified=False)] == ["Unverified doc"]
+    assert len(store.query()) == 2
