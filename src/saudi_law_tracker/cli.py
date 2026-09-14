@@ -14,7 +14,7 @@ from .config import get_settings, load_sources
 from .logging import configure_logging
 from .models import ScrapeResult
 from .pipeline import run_all
-from .scrapers import load_all_scrapers, registered_keys
+from .scrapers import get_scraper, load_all_scrapers, registered_keys
 from .storage import DocumentStore, RunState
 
 app = typer.Typer(add_completion=False, help="Track Saudi regulatory publications.")
@@ -38,13 +38,18 @@ def _main() -> None:
 
 @app.command("sources")
 def list_sources() -> None:
-    """List configured sources and whether a scraper is registered for each."""
+    """List configured sources, whether a scraper is registered for each, and
+    whether that scraper is tuned (emits verified=True rows) or still on the
+    generic listing harvester."""
 
     load_all_scrapers()
     known = set(registered_keys())
     for s in load_sources():
         flag = "on " if s.enabled else "off"
-        wired = "ok" if s.scraper in known else "MISSING scraper"
+        if s.scraper not in known:
+            wired = "MISSING scraper"
+        else:
+            wired = "tuned  " if get_scraper(s.scraper).tuned else "untuned"
         typer.echo(f"[{flag}] {s.key:20s} {wired:16s} {s.name}")
 
 

@@ -26,11 +26,15 @@ The only place a date actually appears is server-rendered on each item's own
 leaf page, in a "Last Update: <date> Saudi Arabia Time" footer
 (`#ctl00_ucLastModifiedDate_lastUpdateDiv`) — confirmed present and
 consistently formatted across every leaf page checked. This is a
-last-modified timestamp, not necessarily the original issuance date (some
-leaf pages also embed the real Hijri issuance date + decree number in free
-text inside their `<meta name="description">`, e.g. "...dated 7-7-1440H",
-but the phrasing isn't consistent enough across pages to parse reliably
-yet). Since the date only exists behind that per-item fetch, there's no
+last-modified timestamp, not necessarily the original issuance date, so it
+goes into `last_modified`, never `published_gregorian`/`published_hijri` —
+a page can be re-saved (typo fix, reformatting) long after the ruling it
+describes actually took effect, and reporting that as the issuance date
+would silently overstate how current the content is. (Some leaf pages also
+embed the real Hijri issuance date + decree number in free text inside
+their `<meta name="description">`, e.g. "...dated 7-7-1440H", but the
+phrasing isn't consistent enough across pages to parse reliably yet — see
+TODO.) Since the date only exists behind that per-item fetch, there's no
 cheaper "unchanged, skip it" signal available the way bureau_of_experts
 has; `extra.max_items` in config/sources.yaml bounds how many of each
 category's items get dated per run.
@@ -79,7 +83,7 @@ def _leaf_path(category: str, link_filename: str) -> str:
     return f"/{_LANG}/RulesRegulations/{category}/Pages/{link_filename}"
 
 
-def _parse_last_update(html: str) -> date | None:
+def _parse_last_modified(html: str) -> date | None:
     node = HTMLParser(html).css_first("#ctl00_ucLastModifiedDate_lastUpdateDiv")
     if node is None:
         return None
@@ -94,6 +98,8 @@ def _parse_last_update(html: str) -> date | None:
 
 @register("zatca")
 class ZatcaScraper(BaseScraper):
+    tuned = True
+
     async def discover(self) -> AsyncIterator[RegulatoryDocument]:
         max_items = int(self.source.extra.get("max_items", _DEFAULT_MAX_ITEMS))
 
@@ -135,16 +141,16 @@ class ZatcaScraper(BaseScraper):
             self.source.key, f"leaf_{category.lower()}_{link_filename}", resp.text
         )
 
-        published = _parse_last_update(resp.text)
-        if published is None:
-            return None  # no date -> doesn't meet the "dated row" bar
+        last_modified = _parse_last_modified(resp.text)
+        if last_modified is None:
+            return None  # no date signal at all -> doesn't meet the "dated row" bar
 
         return RegulatoryDocument(
             source_key=self.source.key,
             title=title,
             doc_type=_CATEGORY_DOC_TYPE.get(category, DocumentType.TAX_RULING),
             url=leaf_url,
-            published_gregorian=published,
+            last_modified=last_modified,
             categories=self.source.categories,
             verified=True,
         )

@@ -117,6 +117,7 @@ def test_document_round_trips_through_sqlite(settings):
         published_gregorian=date(2024, 5, 1),
         published_hijri="1445-10-22",
         effective_date=date(2024, 8, 1),
+        last_modified=date(2024, 9, 1),
         categories=["law", "labor"],
     )
     store.upsert_many("demo", [doc])
@@ -128,6 +129,7 @@ def test_document_round_trips_through_sqlite(settings):
     assert loaded.pdf_urls == doc.pdf_urls
     assert loaded.categories == ["law", "labor"]
     assert loaded.published_gregorian == date(2024, 5, 1)
+    assert loaded.last_modified == date(2024, 9, 1)
     assert store.count("demo") == 1
 
 

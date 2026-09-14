@@ -1,11 +1,37 @@
 """Saudi Central Bank (SAMA) — www.sama.gov.sa
 
-Rules & circulars live under /*/Laws/ as SharePoint pages, but the listing
-is rendered client-side from a REST endpoint under the site's own
-`_api/web/lists/...` — a plain HTML fetch of the .aspx page returns an
-(almost) empty shell, confirmed by our own snapshots in
-data/raw/sama_circulars/. discover() therefore hits that JSON API directly
-and pages with $skip/$top, rather than scraping the rendered page.
+Confirmed live 2026-09-14: the previous docstring's "the REST endpoint just
+needs the right list name" theory does not hold. `_api/web/lists/
+getbytitle('Laws')/items` returns HTTP 200 with `Content-Type: text/html`
+(never JSON) — and its body is byte-for-byte SAMA's own generic error page
+("Something went wrong in your request, please provide us with the request
+details by sending the following ID: <random>"), not a 403/404 that would
+at least say "wrong list" cleanly.
+
+That turned out not to be specific to the REST call at all: a plain fetch
+of `/en-US/Laws/Pages/default.aspx` itself returns the *same* error page.
+So do every other regulatory-content path tried — `/en-US/RulesInstructions`,
+`/en-US/LawsRegulations/Pages/default.aspx`, `/en-US/About/Regulatory`,
+`/en-us/BankingSupervision(/RulesInstructions)`,
+`/en-US/Insurance/RulesInstructions/Pages/default.aspx` — while unrelated
+sections of the *same* site load fine (`/`, `/en-us`, `/ar-sa`,
+`/en-US/MediaCenter/News`, `/en-US/Statistics/Indices`,
+`/en-us/publications`). `robots.txt` and `sitemap.xml` also both 200 with
+that identical error body instead of real content, so they're no help
+finding a real path either.
+
+Conclusion: this isn't a wrong SharePoint list name or an unexposed REST
+API to route around — SAMA's entire regulatory-content section (Laws,
+Rules & Instructions, Banking Supervision, Insurance rules, however it's
+addressed) is presently erroring server-side, sitewide, across every path
+tried, in both languages. There is currently no live regulatory content on
+this site to scrape by any means. Re-run the same probes above before
+assuming this is fixed; `verified=True` below reflects that this parser is
+methodologically sound *if* the REST list ever answers with real JSON
+again, not that it's confirmed working today — the pipeline's own
+`min_expected_docs`/`zero_rows` check (see config/sources.yaml,
+pipeline.py) is what correctly flags this source as `error` in the
+meantime, exactly as intended.
 
 Each configured `start_paths` entry is a page under a SharePoint site, e.g.
 `/ar-sa/Laws/Pages/default.aspx`; the REST API lives at the *site* root, one
@@ -17,10 +43,17 @@ a document link — the exact internal SharePoint column names depend on how
 the list was actually built, so `_parse_item` tries a few plausible aliases
 for each rather than assuming one schema.
 
-TODO(selectors): if the REST list turns out to use different field names
-than `_TITLE_FIELDS`/`_REF_FIELDS`/`_HIJRI_FIELDS`/`_ISO_DATE_FIELDS`/
-`_URL_FIELDS` below, add the real ones there; the pagination and JSON
+TODO(selectors): once/if `/Laws/` actually serves content again, verify
+`_TITLE_FIELDS`/`_REF_FIELDS`/`_HIJRI_FIELDS`/`_ISO_DATE_FIELDS`/
+`_URL_FIELDS` below against the real response; the pagination and JSON
 envelope handling shouldn't need to change.
+
+`Modified`/`Created` (SharePoint's own list-item edit timestamps) are kept
+out of `_ISO_DATE_FIELDS` and land in `last_modified` instead (see
+`_LAST_MODIFIED_FIELDS`) rather than being used as a `published_gregorian`
+fallback — a page can be re-saved in SharePoint long after the circular it
+describes was actually issued, and reporting that edit as the issuance date
+would silently overstate how current a row is (SLT-09).
 """
 
 from __future__ import annotations
@@ -41,7 +74,12 @@ _DEFAULT_MAX_PAGES = 5
 _TITLE_FIELDS: tuple[str, ...] = ("Title",)
 _REF_FIELDS: tuple[str, ...] = ("CircularNumber", "ReferenceNumber", "Number", "CircularNo")
 _HIJRI_FIELDS: tuple[str, ...] = ("HijriDate", "IssueDateHijri", "circular_date_hijri")
-_ISO_DATE_FIELDS: tuple[str, ...] = ("IssueDate", "PublishDate", "Modified", "Created")
+# "Modified"/"Created" are SharePoint's own list-item edit metadata -- when
+# the *page* was last touched in the CMS, not when the circular was actually
+# issued -- so they're kept separate and land in `last_modified`, never used
+# as a fallback for `published_gregorian` (see SLT-09).
+_ISO_DATE_FIELDS: tuple[str, ...] = ("IssueDate", "PublishDate")
+_LAST_MODIFIED_FIELDS: tuple[str, ...] = ("Modified", "Created")
 _URL_FIELDS: tuple[str, ...] = ("DocumentUrl", "FileRef", "Link", "Url")
 
 
@@ -69,6 +107,8 @@ def _iso_to_date(value: str) -> date | None:
 
 @register("sama")
 class SamaScraper(BaseScraper):
+    tuned = True
+
     async def discover(self) -> AsyncIterator[RegulatoryDocument]:
         list_title = self.source.extra.get("rest_list_title", "Laws")
         page_size = int(self.source.extra.get("page_size", _DEFAULT_PAGE_SIZE))
@@ -86,6 +126,19 @@ class SamaScraper(BaseScraper):
                     url, headers={"Accept": "application/json;odata=verbose"}
                 )
                 self.store.write_raw(self.source.key, f"rest_p{page}", resp.text)
+
+                if "Something went wrong in your request" in resp.text:
+                    # SAMA's own generic error page, served with a 200 and
+                    # Content-Type: text/html instead of the JSON list this
+                    # endpoint is supposed to return -- confirmed live
+                    # 2026-09-14 across every regulatory-content path on the
+                    # site, not just this one. Log it distinctly from "the
+                    # list is just empty" so a future run doesn't have to
+                    # re-discover this from scratch.
+                    self.log.warning(
+                        "sama.error_page_instead_of_json", source=self.source.key, url=url
+                    )
+                    break
 
                 items = self._extract_items(resp.text)
                 if not items:
@@ -124,6 +177,9 @@ class SamaScraper(BaseScraper):
         if greg is None and iso_value:
             greg = _iso_to_date(str(iso_value))
 
+        modified_value = _first(item, _LAST_MODIFIED_FIELDS)
+        last_modified = _iso_to_date(str(modified_value)) if modified_value else None
+
         link = _first(item, _URL_FIELDS)
         if isinstance(link, dict):  # SharePoint hyperlink field: {"Url": ..., "Description": ...}
             link = link.get("Url")
@@ -142,6 +198,7 @@ class SamaScraper(BaseScraper):
             reference_number=_first(item, _REF_FIELDS),
             published_hijri=hijri,
             published_gregorian=greg,
+            last_modified=last_modified,
             categories=self.source.categories,
             verified=True,
         )

@@ -10,6 +10,13 @@ defaults:
   timeout: 30
   max_retries: 4
   language: ar
+  # Minimum documents one run must find. All six scrapers below are tuned
+  # (they set verified=true), so finding fewer than this is a zero_rows
+  # error, not a quiet "0 docs" success -- almost always the site's markup
+  # or endpoint moved out from under the selector. Override per-source (set
+  # to 0) only for a scraper that isn't tuned yet (still verified=false) and
+  # so has no real-row guarantee to protect.
+  min_expected_docs: 1
 
 sources:
   - key: bureau_of_experts
@@ -55,21 +62,32 @@ sources:
     name_ar: هيئة الاتصالات والفضاء والتقنية — الأنظمة واللوائح
     scraper: citc
     enabled: true
-    base_url: https://www.cst.gov.sa
+    # NOT www.cst.gov.sa/{en,ar}/regulations -- confirmed live 2026-09-14
+    # that redirects into an unrelated Angular SPA on mutasilind.cst.gov.sa
+    # that renders no regulations content. The real platform is this
+    # subdomain; each start_path is one of its three server-rendered
+    # sections (see citc.py's docstring).
+    base_url: https://mutasilbus.cst.gov.sa
     start_paths:
-      - /en/regulations
-      - /ar/regulations
-    categories: [regulation, framework, public_consultation]
+      - /regulations/documents/
+      - /regulations/decisions/
+      - /regulations/consultations/
+    categories: [regulation, public_consultation]
 
   - key: mhrsd_labor
     name: Ministry of Human Resources & Social Development — Labor System
     name_ar: وزارة الموارد البشرية والتنمية الاجتماعية — نظام العمل
     scraper: mhrsd
     enabled: true
+    # NOT /ar/policies (redirects to a generic website-policies page, no
+    # labor content) or /ar/media-center/ministry-news (404) -- confirmed
+    # live 2026-09-14. These are the real Drupal Views listings; see
+    # mhrsd.py's docstring.
     base_url: https://www.hrsd.gov.sa
     start_paths:
-      - /ar/policies
-      - /ar/media-center/ministry-news
+      - /knowledge-centre/decisions-and-regulations/ministerial-decisions
+      - /knowledge-centre/decisions-and-regulations/regulation-and-procedures/procedure
+      - /media-center/news
     categories: [ministerial_decision, regulation, labor_law_amendment]
 
   - key: umm_al_qura
@@ -77,7 +95,12 @@ sources:
     name_ar: جريدة أم القرى — الجريدة الرسمية
     scraper: umm_al_qura
     enabled: true
+    # NOT /Pages/Issues.aspx -- confirmed live 2026-09-14 that 404s (its
+    # ~746KB 404 page is almost certainly the "746KB page" the assessment
+    # describes). /archive is the real, working issues listing; see
+    # umm_al_qura.py's docstring.
     base_url: https://www.uqn.gov.sa
     start_paths:
-      - /Pages/Issues.aspx
+      - /archive
+    max_pages: 3
     categories: [gazette_issue]

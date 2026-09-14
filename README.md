@@ -84,12 +84,15 @@ saudi-law-tracker status --max-age-hours 36   # exit 0 if every enabled source r
 
 ## Scheduling
 
-The daily job is: run `scrape`, then run `status --max-age-hours 36` so a
-source that's stopped scraping successfully gets flagged rather than just
-silently going quiet. `scrape.cmd` at the repo root already does both, in
-order, appending output to `logs\cron.log` and exiting non-zero if the
-scrape failed *or* the status check found a stale source (so Task
-Scheduler's "Last Run Result" reflects either failure).
+The daily job is: run `scrape`, run `status --max-age-hours 36` so a source
+that's stopped scraping successfully gets flagged rather than just silently
+going quiet, then run the live smoke test (`pytest -m live
+tests/test_live_smoke.py`) as a second, independent check that every enabled
+source still returns at least one verified, dated row against the *live*
+site — not just a fixture. `scrape.cmd` at the repo root already does all
+three, in order, appending output to `logs\cron.log` and exiting non-zero if
+any of them failed (so Task Scheduler's "Last Run Result" reflects any of
+the three).
 
 ### Windows Task Scheduler
 
@@ -124,11 +127,12 @@ schtasks /Create /TN "saudi-law-tracker daily scrape" /TR "C:\Users\<you>\saudi-
 
 ### cron (Linux/macOS)
 
-`status` should run even if `scrape` itself failed, and the redirect needs to
-wrap the whole compound command (not just the last part) to capture both:
+`status` and the smoke test should run even if `scrape` itself failed, and
+the redirect needs to wrap the whole compound command (not just the last
+part) to capture all three:
 
 ```
-0 6 * * *  { cd /path/to/saudi-law-tracker && .venv/bin/saudi-law-tracker scrape ; .venv/bin/saudi-law-tracker status --max-age-hours 36 ; } >> logs/cron.log 2>&1
+0 6 * * *  { cd /path/to/saudi-law-tracker && .venv/bin/saudi-law-tracker scrape ; .venv/bin/saudi-law-tracker status --max-age-hours 36 ; .venv/bin/pytest -m live tests/test_live_smoke.py ; } >> logs/cron.log 2>&1
 ```
 
 ## Adding a scraper

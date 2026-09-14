@@ -62,6 +62,14 @@ class SourceConfig(BaseModel):
     timeout: float = 30.0
     max_retries: int = 4
     language: str = "ar"
+    min_expected_docs: int = 1
+    """Floor on how many documents one run must find. A tuned (verified=true)
+    scraper returning fewer than this trips a `zero_rows` error, since that
+    almost always means its selector or endpoint stopped matching the live
+    site rather than the source having genuinely gone quiet. Set to 0 in a
+    source's own block to opt out — appropriate for a source whose scraper
+    isn't tuned yet (still emits verified=false) and so has no real-row
+    guarantee to protect in the first place."""
     extra: dict[str, Any] = Field(default_factory=dict)
 
 

@@ -39,6 +39,14 @@ async def run_source(
             errors.append(f"{type(exc).__name__}: {exc}")
             log.exception("source.failed", source=source.key)
 
+    if len(documents) < source.min_expected_docs:
+        # A tuned scraper silently finding nothing almost always means the
+        # site's markup/endpoint moved out from under its selector, not that
+        # the source genuinely published zero updates -- surface it as a
+        # real failure (ScrapeResult.ok False, status ERROR) rather than a
+        # quiet, misleadingly-successful "0 docs" run.
+        errors.append("zero_rows: selector or endpoint no longer matches")
+
     new_uids: list[str] = []
     updated_uids: list[str] = []
     if documents and not dry_run:

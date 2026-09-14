@@ -28,6 +28,7 @@ _COLUMNS: tuple[str, ...] = (
     "published_gregorian",
     "published_hijri",
     "effective_date",
+    "last_modified",
     "categories",
     "raw_html_path",
     "content_hash",
@@ -51,6 +52,7 @@ CREATE TABLE IF NOT EXISTS regulations (
     published_gregorian TEXT,
     published_hijri     TEXT,
     effective_date      TEXT,
+    last_modified       TEXT,
     categories          TEXT NOT NULL DEFAULT '[]',
     raw_html_path       TEXT,
     content_hash        TEXT,
@@ -90,6 +92,8 @@ class DocumentStore:
             conn.execute(
                 "ALTER TABLE regulations ADD COLUMN verified INTEGER NOT NULL DEFAULT 0"
             )
+        if "last_modified" not in existing:
+            conn.execute("ALTER TABLE regulations ADD COLUMN last_modified TEXT")
 
     @contextmanager
     def _connect(self) -> Iterator[sqlite3.Connection]:

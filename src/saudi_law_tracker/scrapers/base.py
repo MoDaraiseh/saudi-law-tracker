@@ -52,6 +52,13 @@ def registered_keys() -> list[str]:
 
 class BaseScraper(abc.ABC):
     key: ClassVar[str] = ""
+    tuned: ClassVar[bool] = False
+    """True for a scraper written with source-specific selectors that emits
+    `verified=True` rows; False (the default, and what `GenericListingScraper`
+    leaves it at) for one still on the generic harvester. `saudi-law-tracker
+    sources` reads this directly off the class -- keep it in sync with
+    whatever a scraper's `discover()` actually sets on `RegulatoryDocument`,
+    since nothing enforces the two matching."""
 
     def __init__(
         self,

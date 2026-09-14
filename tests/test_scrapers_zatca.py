@@ -5,7 +5,7 @@ from datetime import date
 
 from saudi_law_tracker.config import SourceConfig
 from saudi_law_tracker.models import DocumentType, RegulatoryDocument
-from saudi_law_tracker.scrapers.zatca import ZatcaScraper, _parse_last_update
+from saudi_law_tracker.scrapers.zatca import ZatcaScraper, _parse_last_modified
 
 # Saved (hand-reduced) real shapes fetched live from zatca.gov.sa on 2026-09-14 --
 # see zatca.py's docstring for how these were found.
@@ -83,12 +83,12 @@ def test_extract_items_handles_bad_json():
     assert ZatcaScraper._extract_items("not json") == []
 
 
-def test_parse_last_update_extracts_real_date():
-    assert _parse_last_update(_LEAF_PAGE_WITH_DATE) == date(2026, 8, 26)
+def test_parse_last_modified_extracts_real_date():
+    assert _parse_last_modified(_LEAF_PAGE_WITH_DATE) == date(2026, 8, 26)
 
 
-def test_parse_last_update_returns_none_when_missing():
-    assert _parse_last_update(_LEAF_PAGE_WITHOUT_DATE) is None
+def test_parse_last_modified_returns_none_when_missing():
+    assert _parse_last_modified(_LEAF_PAGE_WITHOUT_DATE) is None
 
 
 class _FakeResponse:
@@ -132,7 +132,9 @@ def test_build_doc_end_to_end():
     assert doc.title == "The Implementing Regulation for Zakat Collection"
     assert doc.doc_type == DocumentType.TAX_RULING
     assert str(doc.url) == "https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/ZakatRegulations.aspx"
-    assert doc.published_gregorian == date(2026, 8, 26)
+    assert doc.last_modified == date(2026, 8, 26)
+    assert doc.published_gregorian is None  # a page-edit timestamp is not an issuance date
+    assert doc.published_hijri is None
     assert doc.verified is True
 
 

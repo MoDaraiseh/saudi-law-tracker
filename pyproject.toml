@@ -59,6 +59,13 @@ extend-immutable-calls = ["typer.Option", "typer.Argument", "typer.Typer"]
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+# `live` tests hit real external sites (see test_live_smoke.py) and are
+# excluded by default; scrape.cmd (the scheduled job) runs them explicitly
+# with `pytest -m live`, which overrides this addopts default.
+markers = [
+    "live: hits real external sites; run explicitly with `pytest -m live`",
+]
+addopts = "-m 'not live'"
 
 [tool.mypy]
 python_version = "3.11"

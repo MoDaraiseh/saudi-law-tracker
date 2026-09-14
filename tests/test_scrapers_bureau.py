@@ -68,33 +68,85 @@ def test_parse_row_without_link_is_skipped():
 # LawDetails enrichment: reference_number / pdf_urls
 # --------------------------------------------------------------------------
 
+#: Trimmed real excerpt -- confirmed live 2026-09-14 against a real
+#: LawDetails page. `table.table-details` occurs zero times anywhere on the
+#: site, and no link anywhere ends in `.pdf`; the real reference number is a
+#: free-text sentence in `h4.center`, and the real (direct, confirmed
+#: `application/pdf`) download link matches `a[href*="/Files/Download/"]`
+#: -- not the `/BoeLaws/Laws/Viewer/` link, which looks like "the" original
+#: document but actually resolves to an HTML viewer page.
 _DETAIL_PAGE = """
 <html><body>
-  <table class="table-details">
-    <tr><td>رقم المرسوم</td><td>م/132</td></tr>
-    <tr><td>تاريخ الإصدار</td><td>1443/12/01 هـ</td></tr>
-  </table>
-  <a class="btn-download" href="/Attachments/Laws/1443/companies-law-full.pdf">تحميل</a>
-  <a href="/Attachments/Laws/1443/companies-law-ar.pdf">نسخة عربية</a>
+  <h3 class="center">نظام التنفيذ</h3>
+  <h3 class="center">1447 هـ</h3>
+  <h4 class="center">مرسوم ملكي رقم (م/237) وتاريخ 1447/11/3هـ</h4>
+  <p>نص النظام...</p>
+  <a href="/BoeLaws/Laws/Viewer/212d6cb4-2186-4f67-aa7a-b44700a9ac8a?lawId=x"
+     target="_blank">اصل الوثيقة</a>
+  <a href="/Files/Download/?attId=fd994824-0c2c-4423-b86d-b49d00d779eb"
+     target="_blank">Translated document</a>
   <a href="/some/other/page">رابط عادي</a>
 </body></html>
 """
 
+#: Real second form, confirmed live on a different law: no parens, "ب"
+#: instead of "و" before "تاريخ", and spaces inside the reference itself.
+_DETAIL_PAGE_NO_PARENS = """
+<html><body>
+  <h4 class="center">مرسوم ملكي رقم م / 113 بتاريخ 2 / 11 / 1438</h4>
+  <a href="/Files/Download/?attId=7db4e0d9-d979-4ae0-810f-adbb0111144f"
+     target="_blank">Translated document</a>
+</body></html>
+"""
 
-def test_parse_details_extracts_reference_number_and_pdf_links():
+#: Real case where a decree heading is followed by the Council of Ministers
+#: resolution it approves -- the first heading is this document's own.
+_DETAIL_PAGE_TWO_HEADINGS = """
+<html><body>
+  <h4 class="center">مرسوم ملكي رقم (م/237) وتاريخ 1447/11/3هـ</h4>
+  <h4 class="center">قرار مجلس الوزراء رقم (746) وتاريخ 1447/10/26هـ</h4>
+</body></html>
+"""
+
+
+def test_parse_details_extracts_reference_number_and_pdf_link():
     reference_number, pdf_urls = _scraper()._parse_details(_DETAIL_PAGE)
 
-    assert reference_number == "م/132"
+    assert reference_number == "م/237"
     assert pdf_urls == [
-        "https://laws.boe.gov.sa/Attachments/Laws/1443/companies-law-full.pdf",
-        "https://laws.boe.gov.sa/Attachments/Laws/1443/companies-law-ar.pdf",
+        "https://laws.boe.gov.sa/Files/Download/?attId=fd994824-0c2c-4423-b86d-b49d00d779eb",
     ]
 
 
-def test_parse_details_handles_missing_table_and_pdf():
+def test_parse_details_handles_missing_heading_and_download_link():
     reference_number, pdf_urls = _scraper()._parse_details("<html><body>nothing here</body></html>")
 
     assert reference_number is None
+    assert pdf_urls == []
+
+
+def test_parse_details_handles_reference_without_parens():
+    reference_number, _ = _scraper()._parse_details(_DETAIL_PAGE_NO_PARENS)
+    assert reference_number == "م / 113"
+
+
+def test_parse_details_uses_first_heading_when_more_than_one():
+    reference_number, _ = _scraper()._parse_details(_DETAIL_PAGE_TWO_HEADINGS)
+    assert reference_number == "م/237"  # this document's own decree, not the resolution it approves
+
+
+def test_parse_details_ignores_viewer_links_as_pdf_urls():
+    """`/BoeLaws/Laws/Viewer/...` looks like "the" original document link but
+    resolves to an HTML viewer page, not a PDF -- confirmed live -- so it
+    must never end up in pdf_urls even when it's the only link on the page."""
+
+    html = """
+    <html><body>
+      <h4 class="center">مرسوم ملكي رقم (م/1) وتاريخ 1440/1/1هـ</h4>
+      <a href="/BoeLaws/Laws/Viewer/aaa?lawId=bbb">اصل الوثيقة</a>
+    </body></html>
+    """
+    _, pdf_urls = _scraper()._parse_details(html)
     assert pdf_urls == []
 
 
@@ -250,8 +302,9 @@ def _run_discover(scraper: BureauOfExpertsScraper) -> list[RegulatoryDocument]:
 
 
 def _detail_html_for(guid: str) -> str:
-    table = f'<table class="table-details"><tr><td>رقم</td><td>REF-{guid}</td></tr></table>'
-    return table + f'<a href="/{guid}.pdf">pdf</a>'
+    heading = f'<h4 class="center">مرسوم ملكي رقم REF-{guid} وتاريخ 1447/1/1هـ</h4>'
+    link = f'<a href="/Files/Download/?attId={guid}">تحميل</a>'
+    return heading + link
 
 
 def test_discover_normal_run_caps_pages_and_only_enriches_new_or_changed_rows():

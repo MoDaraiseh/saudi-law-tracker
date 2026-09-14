@@ -17,17 +17,41 @@ Dates are Hijri in year/month/day order.
 
 The royal-decree / ministerial-resolution reference number and the full-text
 PDF only appear on each law's own LawDetails page (``span`` next to it isn't
-enough), which is assumed to render as::
+enough). Confirmed live 2026-09-14 against real LawDetails pages:
+`table.table-details` occurs zero times anywhere on the site, and no link
+anywhere ends in `.pdf` (the site has no literal `.pdf` URLs at all — file
+delivery is entirely through app routes, not static file paths). The real
+markup is::
 
-    table.table-details tr    two <td> cells per row; a row whose first cell
-                               contains "رقم" holds the reference number in
-                               its second cell
-    a[href$=".pdf"]            one or more links to the full text / gazette
-                               attachment, anywhere on the page
+    h4.center             one Arabic sentence giving the promulgating
+                           instrument, e.g. "مرسوم ملكي رقم (م/237) وتاريخ
+                           1447/11/3هـ" or, just as often, without parens
+                           and with "ب" instead of "و": "مرسوم ملكي رقم
+                           م/51 بتاريخ 23 / 8 / 1426" -- `_REFERENCE_RE`
+                           extracts the number from whichever the first
+                           matching heading's *text* actually says, not
+                           from a fixed table cell. A page can have more
+                           than one (e.g. a Royal Decree heading followed
+                           by the Council of Ministers resolution it
+                           approves); the first one is this document's own.
 
-TODO(selectors): unverified against a live fetch (the site's leaf-only cert
-also breaks plain WebFetch, same issue `http.py`'s custom SSL context exists
-to work around) — adjust `_parse_details` if the real markup differs.
+    a[href*="/Files/Download/"]   the real, direct PDF link (confirmed live:
+                           200, Content-Type: application/pdf) -- labeled
+                           "Translated document" in the UI, but it's the
+                           only literally-downloadable file on the page.
+                           `a[href*="/BoeLaws/Laws/Viewer/"]` links (labeled
+                           "اصل الوثيقة") look like the "real" original-text
+                           link but actually resolve to an HTML viewer page,
+                           not a PDF -- confirmed live, so deliberately not
+                           used here.
+
+Neither element is guaranteed present: a handful of LawDetails pages 404
+into the site's own generic error page (confirmed live on ~2/6 sampled
+rows, for no discernible reason tied to document type) and simply have no
+`h4.center` at all, and roughly a third of *working* pages have no
+Translated-document attachment. `_parse_details` returns `(None, [])` for
+whatever it can't find rather than raising, so this is a real, expected
+"majority but not all" fill rate, not a bug to chase to 100%.
 
 A LawDetails fetch is only worth its own request when the row is actually
 new or has changed since the last run, so `discover()` compares each row
@@ -44,6 +68,7 @@ would never reach.
 
 from __future__ import annotations
 
+import re
 from collections.abc import AsyncIterator, Sequence
 
 from pydantic import HttpUrl
@@ -57,6 +82,11 @@ from .base import BaseScraper, register
 _DEFAULT_MAX_PAGES = 3
 _BACKFILL_SAFETY_CAP = 500  # hard stop if the endpoint ever fails to return an empty page
 _SEARCH_QUERY = "PageNumber={page}&SortDirection=DES"
+
+# "رقم (م/237) وتاريخ 1447/11/3هـ" or "رقم م/51 بتاريخ 23 / 8 / 1426" -- with
+# or without parens, and with either "و" or "ب" before "تاريخ" -- both
+# confirmed live across real h4.center headings.
+_REFERENCE_RE = re.compile(r"رقم\s*\(?\s*([^()\s][^()]{0,20}?)\s*\)?\s*(?:و|ب)?تاريخ")
 
 
 def _doc_type(title: str) -> DocumentType:
@@ -88,6 +118,8 @@ def _listing_signature(doc: RegulatoryDocument) -> str:
 
 @register("bureau_of_experts")
 class BureauOfExpertsScraper(BaseScraper):
+    tuned = True
+
     async def discover(self) -> AsyncIterator[RegulatoryDocument]:
         max_pages = int(self.source.extra.get("max_pages", _DEFAULT_MAX_PAGES))
         known = self.store.load(self.source.key)
@@ -146,19 +178,17 @@ class BureauOfExpertsScraper(BaseScraper):
         tree = HTMLParser(html)
 
         reference_number = None
-        for row in tree.css("table.table-details tr"):
-            cells = row.css("td")
-            if len(cells) < 2:
-                continue
-            if "رقم" in clean(cells[0].text()):
-                reference_number = clean(cells[1].text()) or None
+        for heading in tree.css("h4.center"):
+            match = _REFERENCE_RE.search(clean(heading.text()))
+            if match:
+                reference_number = match.group(1).strip()
                 break
 
         pdf_urls: list[str] = []
         seen: set[str] = set()
-        for link in tree.css("a[href]"):
+        for link in tree.css('a[href*="/Files/Download/"]'):
             href = link.attributes.get("href") or ""
-            if not href.lower().endswith(".pdf"):
+            if not href:
                 continue
             abs_href = self.abs_url(href)
             if abs_href not in seen:

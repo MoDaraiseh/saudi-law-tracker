@@ -51,6 +51,15 @@ class RegulatoryDocument(BaseModel):
     published_gregorian: date | None = None
     published_hijri: str | None = None
     effective_date: date | None = None
+    last_modified: date | None = None
+    """When the source's own page/list entry was last edited, per whatever
+    CMS metadata the scraper had available (a SharePoint "Modified" column,
+    a "Last Update" footer, etc.) -- NOT the regulation's actual issuance
+    date, and must never be used as a stand-in for `published_gregorian`/
+    `published_hijri` even when those are unknown. A page can be edited
+    (typo fix, re-formatting, an attachment swapped) long after the thing it
+    describes was actually issued; conflating the two silently overstates
+    how current a document's *content* is by however old the edit is."""
 
     categories: list[str] = Field(default_factory=list)
     raw_html_path: str | None = None
@@ -73,12 +82,18 @@ class RegulatoryDocument(BaseModel):
 
     @property
     def display_date(self) -> str:
-        """Human-readable publication date for summaries and notifications."""
+        """Human-readable publication date for summaries and notifications.
+
+        Falls back to `last_modified` only when no real publication date is
+        known at all, and always says so explicitly -- this must never read
+        as a publication date to a caller skimming output."""
 
         if self.published_hijri:
             return f"{self.published_hijri} AH"
         if self.published_gregorian is not None:
             return self.published_gregorian.isoformat()
+        if self.last_modified is not None:
+            return f"last modified {self.last_modified.isoformat()}, issuance date unknown"
         return "date n/a"
 
     def compute_uid(self) -> str:
@@ -93,6 +108,7 @@ class RegulatoryDocument(BaseModel):
             self.summary,
             self.reference_number,
             self.effective_date.isoformat() if self.effective_date else None,
+            self.last_modified.isoformat() if self.last_modified else None,
             ",".join(sorted(str(u) for u in self.pdf_urls)),
             ",".join(sorted(self.categories)),
         )
