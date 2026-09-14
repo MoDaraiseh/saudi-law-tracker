@@ -79,6 +79,21 @@ def test_republished_at_new_date_is_flagged_new(settings):
     assert len(store.load("demo")) == 2
 
 
+def test_delete_removes_only_the_named_uid(settings):
+    store = DocumentStore(settings)
+    v1 = _scraped("https://example.gov.sa/x", "Circular X", published=date(2024, 1, 1))
+    v2 = _scraped("https://example.gov.sa/y", "Circular Y", published=date(2024, 2, 1))
+    store.upsert_many("demo", [v1, v2])
+    assert store.count("demo") == 2
+
+    store.delete(v1.uid)
+
+    remaining = store.load("demo")
+    assert store.count("demo") == 1
+    assert v1.uid not in remaining
+    assert v2.uid in remaining
+
+
 def test_content_change_at_same_date_is_flagged_updated(settings):
     store = DocumentStore(settings)
     base = _scraped("https://e.gov.sa/x", "Title", published=date(2024, 1, 1), summary="draft")

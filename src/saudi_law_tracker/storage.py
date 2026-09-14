@@ -244,6 +244,19 @@ class DocumentStore:
 
         return new_uids, updated_uids
 
+    def delete(self, uid: str) -> None:
+        """Remove one stored row by uid.
+
+        Mainly for cleaning up rows made stale by a uid-affecting model
+        change (uid is derived in part from ``publication_key()`` — see
+        `models.py` — so a fix that changes which field a scraper populates
+        for a date, e.g. SLT-09, changes the uid of every row it touches,
+        leaving the old uid's row orphaned rather than updated in place).
+        """
+
+        with self._connect() as conn:
+            conn.execute("DELETE FROM regulations WHERE uid = ?", (uid,))
+
     def write_raw(self, source_key: str, slug: str, content: bytes | str) -> Path:
         stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
         target = self.settings.raw_dir / source_key / f"{stamp}__{slug}.html"
