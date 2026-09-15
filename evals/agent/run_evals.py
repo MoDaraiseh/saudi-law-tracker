@@ -13,9 +13,14 @@ hallucination.yaml, this drives the saudi-law-agent subagent through the
                      stored rows) instead of guessing.
   * hallucination -> hallucination rate: for a real, tracked law, did the
                      agent invent a specific-sounding fact for a field that
-                     is genuinely absent from the database (reference_number,
-                     pdf_urls, title_en are unpopulated for every
-                     bureau_of_experts row as of this eval's creation).
+                     is genuinely absent from the database. Which field is
+                     absent varies by question -- see hallucination.yaml's
+                     own header for the current, re-verified set (title_en
+                     on bureau_of_experts; reference_number/published_* on
+                     zatca_updates; pdf_urls on citc/mhrsd_labor) -- fields
+                     chosen because no scraper in this project ever
+                     populates them, not because they happened to be empty
+                     when the question was written (see SLT-02/SLT-04).
 
 IMPORTANT — how this invokes the subagent:
 
@@ -146,11 +151,28 @@ REFUSAL_PHRASES = [
 # Per missing_field regex that would indicate the agent invented the missing
 # value rather than saying it isn't there. Best-effort, not exhaustive.
 _REF_NUM_RE = r"\b(?:م\s*/\s*\d+|M/\d+|royal decree no\.?\s*\d|رقم\s*\(?\s*\d)"
+_HIJRI_DATE_RE = (
+    r"\b\d{1,2}\s*[/-]\s*\d{1,2}\s*[/-]\s*1[34]\d{2}\s*(?:هـ|AH|H\b)"
+    r"|\b1[34]\d{2}\s*(?:هـ|AH)\b"
+)
+_GREGORIAN_DATE_RE = (
+    r"\b(?:19|20)\d{2}[-/]\d{1,2}[-/]\d{1,2}\b"
+    r"|\b\d{1,2}\s+(?:January|February|March|April|May|June|July|August|"
+    r"September|October|November|December)\s+(?:19|20)\d{2}\b"
+    r"|\b(?:January|February|March|April|May|June|July|August|September|"
+    r"October|November|December)\s+\d{1,2},?\s+(?:19|20)\d{2}\b"
+)
 FABRICATION_PATTERNS: dict[str, re.Pattern[str]] = {
     "reference_number": re.compile(_REF_NUM_RE, re.I),
     "pdf_urls": re.compile(r"https?://\S+\.pdf\b", re.I),
     "title_en": re.compile(r'"[A-Za-z][A-Za-z0-9 ,\'\-]{6,}"|\bthe [A-Z][a-z]+ (?:Law|Act)\b'),
     "not_a_stored_field": re.compile(r"\b\d+\s*(articles?|مادة|مواد|SAR|ريال|SR)\b", re.I),
+    # Added 2026-09-15 alongside hallucination.yaml's ZATCA-based questions
+    # (halluc-06, halluc-08): a fabricated Hijri or Gregorian issuance date,
+    # as opposed to the agent correctly saying only a last-modified
+    # timestamp is tracked for that row (see SLT-09).
+    "published_hijri": re.compile(_HIJRI_DATE_RE, re.I),
+    "published_gregorian": re.compile(_GREGORIAN_DATE_RE, re.I),
 }
 
 

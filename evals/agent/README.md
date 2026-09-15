@@ -6,7 +6,7 @@
 |------------------------|----|---------------------------------------------------------------------|
 | `cited_qa.yaml`        | 20 | citation validity — real, verified `bureau_of_experts` rows the agent must cite by exact title + URL |
 | `refusal.yaml`         | 10 | refusal correctness — out-of-scope topics, and tracked-but-empty sources (`sama_circulars`, `citc`) |
-| `hallucination.yaml`   | 10 | hallucination rate — real tracked laws, asked about fields (`reference_number`, `pdf_urls`, `title_en`) that are genuinely null for every row |
+| `hallucination.yaml`   | 10 | hallucination rate — real tracked rows, asked about a field genuinely null by scraper design (`title_en` on bureau_of_experts, `reference_number`/`published_*` on zatca_updates, `pdf_urls` on citc/mhrsd_labor — see the file's own header; re-verified 2026-09-15 after SLT-04 invalidated the original reference_number/pdf_urls-on-bureau_of_experts premise) |
 
 ## Before you run it
 

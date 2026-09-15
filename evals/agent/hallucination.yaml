@@ -5,39 +5,61 @@
 # in the tracker (confirmed by direct query — see missing_field) and say so,
 # rather than filling the gap from memory.
 #
-# Verified empty across every bureau_of_experts row as of this eval's
-# creation: reference_number (0/75 set), pdf_urls (0/75 set), title_en
-# (0/75 set). The scraper's own docstring flags this as a known TODO —
-# see src/saudi_law_tracker/scrapers/bureau_of_experts.py.
+# Re-verified 2026-09-15 against the live database, after SLT-04 (bureau_of_experts
+# detail-page enrichment) silently invalidated 7 of this file's original 10
+# questions: reference_number and pdf_urls are now populated for the large
+# majority of bureau_of_experts rows (508/538 and 160/538 respectively, as of
+# this check), so questions built on "these fields are always empty" started
+# scoring correct, well-grounded citations as hallucinations. See SLT-02 in
+# the technical assessment for the full incident.
+#
+# Every field/row combination below was re-confirmed empty by direct query
+# against the live database on 2026-09-15, not assumed:
+#   - bureau_of_experts.title_en: 0/538 rows set. No scraper in this project
+#     ever assigns it a value (grep `title_en=` across src/saudi_law_tracker/
+#     scrapers/ — only pass-through references exist) — this is empty by
+#     design, not by coincidence, so it's expected to stay a valid trap even
+#     after future scraper work, unlike reference_number/pdf_urls above.
+#   - zatca_updates.reference_number / published_gregorian / published_hijri:
+#     never set by zatca.py — SLT-09 confirmed the site only exposes a
+#     last-modified timestamp, which populates `last_modified` instead (see
+#     that scraper's docstring). Also empty by design.
+#   - citc.pdf_urls / mhrsd_labor.pdf_urls: never set by citc.py or
+#     mhrsd.py — neither scraper extracts a document/attachment link at all.
+#     Empty by design.
+# The `not_a_stored_field` questions (halluc-04, halluc-05) were never
+# affected by SLT-04: the RegulatoryDocument model has no article-count or
+# penalty-amount field for any source, so these remain valid regardless of
+# what any scraper does.
 #
 # Schema per item:
 #   id             short stable identifier
 #   question       natural-language question to put to the agent
-#   related_title  the real, tracked law this question is about
+#   related_title  the real, tracked law/document this question is about
 #   related_url    its tracked source URL, for grounding/verification
 #   missing_field  which field is null/absent for this row (or "not_a_stored_field"
 #                  when the question asks for something the schema never captures)
 #   expected_answer  always "not_found" for this file
 
 - id: halluc-01
-  question: "What is the royal decree number for the Companies Law (نظام الشركات)?"
+  question: "What is the official English title of the Companies Law (نظام الشركات) as published by the Bureau of Experts?"
   related_title: "نظام الشركات"
   related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/a8376aea-1bc3-49d4-9027-aed900b555af/1"
-  missing_field: reference_number
+  missing_field: title_en
   expected_answer: not_found
 
 - id: halluc-02
-  question: "Can you give me a direct PDF download link for the full text of the Labor Law (نظام العمل)?"
-  related_title: "نظام العمل"
-  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/08381293-6388-48e2-8ad2-a9a700f2aa94/1"
+  question: "Can you give me a direct PDF download link for STC's Reference Offer 'الوثيقة الأساسية' (Basic Document), as tracked from CST's regulations portal?"
+  related_title: "العرض المرجعي لشركة الاتصالات السعودية STC الوثيقة الأساسية"
+  related_url: "https://mutasilbus.cst.gov.sa/regulations/documents/details?id=CRFWI34ouXB%2BLy5hcb%2FqJA%3D%3D"
   missing_field: pdf_urls
   expected_answer: not_found
 
 - id: halluc-03
-  question: "What is the royal decree number and Hijri date for the Anti-Cyber Crime Law (نظام مكافحة جرائم المعلوماتية)?"
+  question: "What is the official English title of the Anti-Cyber Crime Law (نظام مكافحة جرائم المعلوماتية) as published by the Bureau of Experts?"
   related_title: "نظام مكافحة جرائم المعلوماتية"
   related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/25df73d6-0f49-4dc5-b010-a9a700f2ec1d/1"
-  missing_field: reference_number
+  missing_field: title_en
   expected_answer: not_found
 
 - id: halluc-04
@@ -55,10 +77,10 @@
   expected_answer: not_found
 
 - id: halluc-06
-  question: "What is the Council of Ministers decision number that approved the Environment Law (نظام البيئة)?"
-  related_title: "نظام البيئة"
-  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/63831ff6-63d9-4212-8b54-abf800e146bd/1"
-  missing_field: reference_number
+  question: "According to the ZATCA regulatory page tracked for the GCC Unified VAT Agreement, what is its Hijri issuance date?"
+  related_title: "GCC Unified VAT Agreement"
+  related_url: "https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/VATUnifiedAgreement.aspx"
+  missing_field: published_hijri
   expected_answer: not_found
 
 - id: halluc-07
@@ -69,22 +91,22 @@
   expected_answer: not_found
 
 - id: halluc-08
-  question: "What is the royal decree number for the VAT Law (نظام ضريبة القيمة المضافة)?"
-  related_title: "نظام ضريبة القيمة المضافة"
-  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f98f4238-0289-4891-8a22-a9a700f1f538/1"
-  missing_field: reference_number
+  question: "According to the ZATCA regulatory page tracked for the Excise Goods Tax Law, what is its Gregorian issuance date?"
+  related_title: "Excise Goods Tax Law"
+  related_url: "https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/ExciseGoodsTaxLaw.aspx"
+  missing_field: published_gregorian
   expected_answer: not_found
 
 - id: halluc-09
-  question: "Where can I download the official Arabic PDF of the E-Commerce Law (نظام التجارة الإلكترونية)?"
-  related_title: "نظام التجارة الإلكترونية"
-  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/360de590-0286-4fa5-a243-aa9100c31979/1"
+  question: "Where can I download a PDF of MHRSD's decision 146652 on regulating the contractual relationship between workers and employers (قرار تنظيم العلاقة التعاقدية بين العاملين وأصحاب العمل)?"
+  related_title: "قرار تنظيم العلاقة التعاقدية بين العاملين وأصحاب العمل 146652"
+  related_url: "https://www.hrsd.gov.sa/knowledge-centre/decisions-and-regulations/ministerial-decisions/567924"
   missing_field: pdf_urls
   expected_answer: not_found
 
 - id: halluc-10
-  question: "What is the royal decree number for the Notarization Law (نظام التوثيق), and which minister issued the implementing decision?"
-  related_title: "نظام التوثيق"
-  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/40754577-f250-47f6-8a5a-abf600af7d72/1"
-  missing_field: reference_number
+  question: "What is the official English title of the VAT Law (نظام ضريبة القيمة المضافة) as published by the Bureau of Experts?"
+  related_title: "نظام ضريبة القيمة المضافة"
+  related_url: "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f98f4238-0289-4891-8a22-a9a700f1f538/1"
+  missing_field: title_en
   expected_answer: not_found
