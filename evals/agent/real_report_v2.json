@@ -1,0 +1,656 @@
+{
+  "summary": {
+    "cited_qa": {
+      "n": 20,
+      "citation_valid": 19,
+      "citation_valid_rate": 0.95,
+      "title_match_rate": 1.0,
+      "url_present_rate": 0.95,
+      "url_resolves_rate": 1.0
+    },
+    "refusal": {
+      "n": 10,
+      "correct_refusals": 8,
+      "refusal_correctness_rate": 0.8
+    },
+    "hallucination": {
+      "n": 10,
+      "likely_hallucinations": 5,
+      "hallucination_rate": 0.5,
+      "ambiguous_needs_review": 2,
+      "correct_refusals": 3
+    }
+  },
+  "results": [
+    {
+      "suite": "cited_qa",
+      "id": "cited-01",
+      "question": "What is the tracked title and source URL for Saudi Arabia's Labor Law (نظام العمل)?",
+      "answer": "Found it — this row is `verified = true`, so it can be cited as fact.\n\n## Labor Law (نظام العمل)\n\n- **Title:** نظام العمل (Labor Law / Labor System)\n- **Doc type:** Law (royal decree)\n- **Reference number:** م/51\n- **Issuing authority:** Royal Decree (as tracked via the Bureau of Experts at the Council of Ministers legislative database)\n- **Published:** 1426-08-23 AH / 2005-09-27 (Gregorian)\n- **Effective date:** 2005-10-28\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/08381293-6388-48e2-8ad2-a9a700f2aa94/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=704cf56e-eb7a-4ddb-8c28-adbb01244dc6\n\nSummary (Arabic, from source): covers definitions and general provisions, employment/recruitment regulation, employment of non‑Saudis, training and qualification, labor relations, work conditions, part‑time work, occupational health/safety, and related chapters.\n\nNote: this is the original Labor Law text as tracked. The database also has a separate, verified MHRSD item — \"دليل استفسارات تعديلات نظام العمل السعودي 2025\" (an FAQ guide on 2025 amendments to the Labor Law, published 1447-11-12 AH / 2026-04-29, at hrsd.gov.sa) — which discusses amendments but is not the law text itself. I did not find a separately tracked, standalone \"consolidated amended\" version of نظام العمل in the database; if you need the current amended text, verify directly against the Bureau of Experts page above, which should reflect the law's current in-force version.\n\n## Sources used\n- **نظام العمل** — Royal Decree م/51, tracked via Bureau of Experts at the Council of Ministers (bureau_of_experts), published 1426-08-23 AH (2005-09-27), effective 2005-10-28. URL: https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/08381293-6388-48e2-8ad2-a9a700f2aa94/1\n- **دليل استفسارات تعديلات نظام العمل السعودي 2025** — Ministry of Human Resources & Social Development (mhrsd_labor), published 1447-11-12 AH (2026-04-29). URL: https://www.hrsd.gov.sa/knowledge-centre/decisions-and-regulations/regulation-and-procedures/دليل-استفسارات-تـعـديلات-نـظـام-العمل\n\n**Data freshness:** ERROR: sama_circulars (zero_rows — 0 docs returned on last run, per `status` and consistent with logs). This does not affect the Labor Law sources above, but is disclosed per standing policy. All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) ran successfully within the last 36 hours.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 55.0
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-02",
+      "question": "Find the Bureau of Experts entry for the Companies Law (نظام الشركات) and give me its title and URL.",
+      "answer": "Found it — an exact match, verified.\n\n**Companies Law (نظام الشركات)**\n- **Title:** نظام الشركات (Companies Law)\n- **Reference number:** م/132\n- **Issuing authority:** Royal Decree (via Bureau of Experts law database)\n- **Published (Gregorian):** 2022-06-30 | **Published (Hijri):** 1443-12-01\n- **Effective date:** 2022-07-22\n- **URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/a8376aea-1bc3-49d4-9027-aed900b555af/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=64f8ea4b-0a7a-4491-8149-b42700884551\n\nPer its stored summary (Arabic, primary text — no translation applied here), this law superseded the earlier Companies Law issued by Royal Decree م/3 (28/1/1437H) and the Professional Companies Law م/17 (26/1/1441H).\n\nThis row comes from `bureau_of_experts`, a tuned/verified source, so the title, dates, and reference number above can be cited as fact.\n\n**Data freshness note:** ERROR: sama_circulars (zero_rows — status shows `error` with 0 docs on last run; unrelated to this question but flagged per policy). All other tracked sources, including bureau_of_experts (the source used here), are current with a successful run within the last 36 hours.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 33.44
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-03",
+      "question": "What is the tracked source URL for the VAT Law (نظام ضريبة القيمة المضافة)?",
+      "answer": "Found it. Here's what the tracked database has for the VAT Law:\n\n## Answer\n\nThe source URL tracked for the **Value Added Tax (VAT) Law** (نظام ضريبة القيمة المضافة) is:\n\n**https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/VATLaw.aspx**\n\nThis is a **verified** entry (`verified = true`), so the URL and title can be cited as fact. However, the stored record does not include a publication/effective date, Hijri date, or reference number (those fields are empty in the tracked row), so I cannot state a specific issuance date or article number from this data alone — only the title and URL are populated.\n\nRelated tracked entries from the same source you may also want:\n- **GCC Unified VAT Agreement** — https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/VATUnifiedAgreement.aspx\n- **VAT Implementing Regulation** — https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/VATImplementingRegulations.aspx\n\n### Sources\n- **Value Added Tax (VAT) Law** — Zakat, Tax and Customs Authority (ZATCA), publication/effective date not recorded in the database, https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/VATLaw.aspx (verified: true)\n\n### Data freshness note\nSTALE/ERROR check per `status --max-age-hours 36`: **ERROR: sama_circulars** (0 docs returned on its last run — likely a `zero_rows` scraper failure; this is unrelated to VAT/ZATCA but is disclosed per policy). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) ran successfully within the last 36 hours, including **zatca_updates**, which is the source for this VAT Law entry — so this specific citation is current as of the last successful run.\n\n**Note:** For an authoritative citation with exact issuance/effective dates and Royal Decree/reference number, you should pull the primary Arabic text directly from the ZATCA page above rather than relying on this database record, and consult a qualified lawyer before treating this as a basis for any compliance decision.",
+      "score": {
+        "title_match": true,
+        "url_present": false,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": false
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 51.74
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-04",
+      "question": "Is the Basic Law of Governance (النظام الأساسي للحكم) in the tracked database? If so, give its title and URL.",
+      "answer": "Found it — same results with and without `--include-unverified`, meaning this came from the tuned (verified) `bureau_of_experts` scraper.\n\n## Answer\n\nYes. The **Basic Law of Governance** (النظام الأساسي للحكم) is in the tracked database, sourced from the Bureau of Experts at the Council of Ministers' Laws & Regulations portal. This is a **verified** row (from the tuned `bureau_of_experts` scraper), so the title and date can be cited as fact.\n\n- **Title (Arabic):** النظام الأساسي للحكم (Basic Law of Governance)\n- **Issuing authority:** Bureau of Experts at the Council of Ministers (as tracked entry; the Basic Law was originally issued by Royal Order)\n- **Date recorded in database:** 1412-08-27 AH (Hijri, as stored)\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/16b97fcb-4833-4f66-8531-a9a700f161b6/1\n\nNote: the record's title is in Arabic — I have not applied an unofficial English translation of the text itself, only translated the label for clarity.\n\n---\n\n**Sources used:**\n- النظام الأساسي للحكم (Basic Law of Governance) — Bureau of Experts at the Council of Ministers, dated 1412-08-27 AH — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/16b97fcb-4833-4f66-8531-a9a700f161b6/1\n\n**Data freshness note:** ERROR: sama_circulars (status=error, docs=0, likely `zero_rows` — its selector/endpoint may no longer match the live site). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) ran successfully within the last 36 hours. This question does not touch SAMA's domain, but flagging per policy regardless.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 53.52
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-05",
+      "question": "What is the source URL the tracker has on file for the Anti-Cyber Crime Law (نظام مكافحة جرائم المعلوماتية)?",
+      "answer": "Found it. The record is a **verified** row from the `bureau_of_experts` source, so its fields can be cited as fact.\n\n**Anti-Cyber Crime Law (نظام مكافحة جرائم المعلوماتية)**\n- Reference number: م/17\n- Published (Gregorian): 2007-03-27 (Hijri: 1428-03-08)\n- Doc type: Law / Royal Decree\n- **Source URL on file:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/25df73d6-0f49-4dc5-b010-a9a700f2ec1d/1\n- Associated PDF: https://laws.boe.gov.sa/Files/Download/?attId=5386bb81-a4a9-44d5-865d-ad3c00bd0dff\n\n**Source used:**\n- Title: نظام مكافحة جرائم المعلوماتية (Anti-Cyber Crime Law)\n- Issuing authority: Bureau of Experts at the Council of Ministers (هيئة الخبراء بمجلس الوزراء) — tracked via the `bureau_of_experts` source\n- Publication/effective date: 2007-03-27 (1428-03-08 H)\n- Source URL: https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/25df73d6-0f49-4dc5-b010-a9a700f2ec1d/1\n\nNote: title and content are in Arabic (primary official text); no translation was used here.\n\n---\n**Data freshness:** ERROR: sama_circulars (status shows `error`, 0 docs returned — likely a `zero_rows` scraper failure; this does not affect the record above, which comes from `bureau_of_experts`). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) ran successfully within the last 36 hours.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 41.1
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-06",
+      "question": "Give me the exact tracked title and URL for the Saudi Arbitration Law (نظام التحكيم).",
+      "answer": "Found it. The tracked database has the exact match under `bureau_of_experts` (verified = true).\n\n## Saudi Arbitration Law (نظام التحكيم)\n\n**Title (exact, as tracked):** نظام التحكيم (System of Arbitration / Arbitration Law)\n**Issuing authority:** Royal Decree — tracked via Bureau of Experts at the Council of Ministers (هيئة الخبراء بمجلس الوزراء)\n**Reference number:** م / 34\n**Published (Gregorian):** 2012-04-16 (1433-05-24 Hijri)\n**Effective date:** 2012-06-08\n**Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/5535039e-13da-43f6-8f53-a9a700f26485/1\n**PDF:** https://laws.boe.gov.sa/Files/Download/?attId=67301cd6-bad9-4e1e-bedf-adbb011be2c9\n\nNote: the title and content are in Arabic (the primary/official text); no English translation is stored in the tracker, so I'm not asserting an English rendering as authoritative.\n\nTwo related instruments also appear in the tracked (verified) data, in case they're useful:\n- **اللائحة التنفيذية لنظام التحكيم** (Executive Regulations of the Arbitration Law), ref. 541, published 2017-05-22, effective 2018-11-29 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/12752a60-2a4a-4cab-a05d-a9a700f274a5/1\n- **تنظيم المركز السعودي للتحكيم التجاري** (Regulation of the Saudi Center for Commercial Arbitration), ref. 448, published 2019-04-30, effective 2019-05-10 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/54ff827d-8488-49aa-b593-aa4400c961fd/1\n\n**Data freshness note:** STALE: none. ERROR: sama_circulars (zero_rows) — this does not affect arbitration law data (tracked via bureau_of_experts, status ok), but is disclosed per standing policy.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 39.61
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-07",
+      "question": "What entry does the database have for the Anti-Narcotics and Psychotropic Substances Law (نظام مكافحة المخدرات والمؤثرات العقلية)? Give the title and URL.",
+      "answer": "Found it. The exact match for \"نظام مكافحة المخدرات والمؤثرات العقلية\" (Anti-Narcotics and Psychotropic Substances Law) is a verified entry from the Bureau of Experts (BOE) laws database.\n\n## Entry found\n\n- **Title:** نظام مكافحة المخدرات والمؤثرات العقلية (Anti-Narcotics and Psychotropic Substances Law)\n- **Issuing authority:** Bureau of Experts at the Council of Ministers (via Royal Decree — tracked under `law`/`royal_decree` category)\n- **Reference number:** م/39\n- **Published (Gregorian):** 2005-08-13\n- **Published (Hijri):** 1426-07-08\n- **Effective date:** 2005-09-16\n- **URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/221b3286-a3c6-4ea4-97c7-a9a700f18273/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=531ac3b9-62d7-4fcb-9a8e-b44d00bef83d\n- **Verified:** true (this record comes from the tuned `bureau_of_experts` scraper, so the title, dates, and reference number above can be cited as fact)\n\nRelated but distinct verified entries also found in the same search, in case any is what you actually need:\n- **اللائحة التنفيذية لنظام مكافحة المخدرات والمؤثرات العقلية** (Implementing Regulations for the law) — ref. 201, published 2010-05-24 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/be479758-9a84-4e94-b1d3-a9a700f19454/1\n- **تنظيم اللجنة الوطنية لمكافحة المخدرات** (National Anti-Narcotics Committee regulation) — ref. 119, published 2009-04-13 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/b2c545f0-d65f-4c13-b712-a9a700f193b6/1\n\nNote: an `--include-unverified` search also turned up a related gazette listing from `umm_al_qura` (\"أحكام عامة على الجداول المرافقة لنظام مكافحة المخدرات والمؤثرات العقلية\") at https://www.uqn.gov.sa/decisions-and-regulations/4001776 — but that row is unverified (`verified=false`), so its title/date cannot be treated as confirmed fact; it only indicates this source is being tracked.\n\nThe Arabic titles above are the primary text as stored; no third-party translation is being presented as authoritative.\n\n**Data freshness:** ERROR: sama_circulars (0 docs returned on last run, i.e. zero_rows — unrelated to this narcotics-law question, but disclosed per policy). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) completed successfully within the last 36 hours.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 39.98
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-08",
+      "question": "What is the tracked source URL for the Personal Status Law (نظام الأحوال الشخصية)?",
+      "answer": "The tracked source URL for the **Personal Status Law (نظام الأحوال الشخصية)** is:\n\n**https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/4d72d829-947b-45d5-b9b5-ae5800d6bac2/1**\n\n(PDF: https://laws.boe.gov.sa/Files/Download/?attId=e1b4e2e3-46b5-4659-a8f1-b11600da934a)\n\n**Details (verified = true, safe to cite):**\n- **Title:** نظام الأحوال الشخصية (Personal Status Law)\n- **Reference number:** م/73\n- **Issuing authority:** Bureau of Experts at the Council of Ministers (Board of Experts law database — laws.boe.gov.sa)\n- **Published:** 1443-08-06 AH / 2022-03-09 CE\n- **Effective date:** 2022-03-18\n- **Doc type:** Law / Royal Decree\n\n## Source\n- **نظام الأحوال الشخصية (Personal Status Law)**, Bureau of Experts at the Council of Ministers, published 2022-03-09 (1443-08-06 AH), effective 2022-03-18 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/4d72d829-947b-45d5-b9b5-ae5800d6bac2/1\n\n## Data freshness\nSTALE/ERROR check: **ERROR: sama_circulars** (last run status = `error`, docs=0 — likely a `zero_rows` trip indicating its scraper's selector/endpoint stopped matching the live site). This is unrelated to the Personal Status Law question. All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) completed successfully within the last 36 hours.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 41.11
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-09",
+      "question": "Find the E-Commerce Law (نظام التجارة الإلكترونية) in the tracked database and give its title and URL.",
+      "answer": "Found it in the tracked database.\n\n## E-Commerce Law (نظام التجارة الإلكترونية)\n\n- **Title:** نظام التجارة الإلكترونية (E-Commerce Law)\n- **Issuing authority:** Tracked via the Bureau of Experts at the Council of Ministers (source: `bureau_of_experts`)\n- **Publication date:** 1440-11-07 AH (as recorded in the database)\n- **Verified status:** This row is `verified = true` (produced by the tuned Bureau of Experts scraper), so the title and date above can be cited as fact.\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/360de590-0286-4fa5-a243-aa9100c31979/1\n\nNote: the date is stored in Hijri (AH) format as retrieved from the source; I did not convert it, so treat any Gregorian equivalent with caution unless confirmed directly from the source page.\n\n**Freshness note:** Per `saudi-law-tracker status --max-age-hours 36`, all sources ran within the last 36 hours. However, **ERROR: sama_circulars (0 docs returned — likely a `zero_rows` scraper failure)**. This does not affect the e-commerce law data above (from `bureau_of_experts`, which returned `ok` with 538 docs), but is disclosed per policy since it's a currently erroring tracked source. All other sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) are current and `ok`.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 62.07
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-10",
+      "question": "What is the source URL on file for the Income Tax Law (نظام ضريبة الدخل)?",
+      "answer": "I found a verified record for this law.\n\n**Income Tax Law (نظام ضريبة الدخل)**\n- Source URL on file: https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/23576008-1ce4-4685-ac3e-a9a700f2cb02/1\n- Issuing/tracking authority: Bureau of Experts at the Council of Ministers — Laws & Regulations (source key: `bureau_of_experts`)\n- Publication date on file: 1425-01-15 AH (Hijri, as stored)\n- Doc type: `law`\n- This row is `verified = true` (from the tuned `bureau_of_experts` scraper), so the title and URL above can be cited as established fact per the database.\n\nSeparately, ZATCA (Zakat, Tax and Customs Authority) tracks several English-language implementing-regulation/guidance pages related to Income Tax (e.g., https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/income-tax.aspx), but these are secondary guidance pages, not the primary law text — if you need those too, let me know.\n\n**Sources used:**\n- نظام ضريبة الدخل (Income Tax Law), Bureau of Experts at the Council of Ministers, 1425-01-15 AH — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/23576008-1ce4-4685-ac3e-a9a700f2cb02/1\n\n**Data-freshness note:** ERROR: sama_circulars (0 docs on last run — likely a `zero_rows`/selector failure). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) completed successfully within the last 36 hours and are not STALE. Note this doesn't affect the Income Tax Law citation above, which comes from `bureau_of_experts`, currently `ok`.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 35.53
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-11",
+      "question": "Does the tracker have an entry for the Environment Law (نظام البيئة)? Give the title and URL.",
+      "answer": "Yes — the tracker has a verified entry for the Environment Law.\n\n**Title:** نظام البيئة (Environment Law)\n**Issuing authority / source:** Bureau of Experts at the Council of Ministers (`bureau_of_experts`), doc type: law\n**Publication date:** 1441-11-19 AH (as recorded in the tracker; Hijri date)\n**Verified:** true\n**URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/63831ff6-63d9-4212-8b54-abf800e146bd/1\n\nNote: the record is in Arabic (the primary official text); no English translation is stored in this entry, so I'm not presenting an English rendering as authoritative.\n\nFor context, a few related-but-distinct entries also exist in the database (do not confuse these with the current Environment Law):\n- تنظيم صندوق البيئة (Environment Fund Regulation), 1440-07-19 AH — bureau_of_experts, verified\n- نظام الأنشطة المقلقة للراحة أو الخطرة أو المضرة بالصحة أو البيئة (Law on Activities Disturbing Peace or Hazardous/Harmful to Health or Environment), 1423-01-01 AH — bureau_of_experts, verified\n- النظام العام للبيئة (General Environment Law, an earlier/superseded law) — bureau_of_experts, verified, but only surfaced when unverified rows are included in the search, so treat this specific one cautiously and verify independently before relying on it.\n\n**Data freshness note:** STALE: none found; ERROR: sama_circulars (status shows `error`, 0 docs on last run — likely a `zero_rows` scraper failure). This does not affect the Environment Law result above, which comes from `bureau_of_experts` (status `ok`), but is disclosed per policy since it was flagged in this run's status check.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 43.01
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-12",
+      "question": "What is the tracked title and URL for the Electricity Law (نظام الكهرباء)?",
+      "answer": "Found it in the tracked database — one entry matches exactly (نظام الكهرباء, current law), plus an older superseded one and two related regulations.\n\n## Electricity Law (نظام الكهرباء)\n\n**Tracked title:** نظام الكهرباء (Electricity Law)\n**URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/b3060214-c11a-4709-b191-aca700cbcc58/1\n**Issuing authority:** Bureau of Experts at the Council of Ministers (royal decree approval)\n**Reference number:** م/44\n**Published (Gregorian):** 2020-12-31 (1442-05-16 Hijri)\n**Effective date:** 2021-01-08\n**Verified:** yes — this row comes from the tuned `bureau_of_experts` scraper, so the title, dates, and reference number above can be cited as fact.\n\n### Related entries also found (for context, not to be confused with the current law)\n- **نظام الكهرباء1426ه** — an earlier/superseded electricity-related law, published 2005-11-22 (1426-10-20 H), ref. م/56 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/73fd9170-ee6a-4380-8181-a9a700f29b65/1 (verified row)\n- **تنظيم هيئة تنظيم المياه والكهرباء (الهيئة السعودية لتنظيم الكهرباء)** — regulation on the Water and Electricity Regulatory Authority (renamed to Saudi Electricity Regulatory Authority), ref. 263 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/36ccdf4a-396d-48aa-8231-acb0009c3cbd/1 (verified row)\n\nIf you're looking for the currently effective statute, the first entry (م/44, effective 2021-01-08) is the one in force per the tracked database; the 1426H entry appears to be an older/prior version. I'd recommend confirming supersession directly against the primary Arabic text at the BOE link before relying on this for a real decision.\n\n**Data freshness:** ERROR: sama_circulars (status shows `error`, docs=0 as of the last run) — this is unrelated to the Electricity Law question, but worth flagging since it means SAMA circular data may currently be missing or stale. All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) ran successfully within the last 36 hours.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 39.99
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-13",
+      "question": "Find the Anti-Harassment Law (نظام مكافحة جريمة التحرش) and give me its exact stored title and URL.",
+      "answer": "Found it — a verified record from the Bureau of Experts (Bureau of Experts at the Council of Ministers) database.\n\n**Exact stored title:** نظام مكافحة جريمة التحرش (Anti-Harassment Crime Law)\n**URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f9de1b7f-7526-4c44-b9f3-a9f8015cf5b6/1\n**PDF:** https://laws.boe.gov.sa/Files/Download/?attId=20d22961-edd8-48e4-8ad3-adbb010dcadb\n\nAdditional stored details (all `verified = true`):\n- Issuing authority/source: Bureau of Experts at the Council of Ministers — Laws & Regulations (royal decree, law category)\n- Reference number: م/96\n- Published (Gregorian): 2018-05-31 (Hijri: 1439-09-16)\n- Effective date: 2018-06-07\n- Summary (stored, Arabic): \"نظم مكافحة جريمة التحرش\"\n\nNote: The title and summary are in Arabic as stored in the database — no English translation is on record, so I have not paraphrased it into English to avoid presenting an unofficial rendering as authoritative.\n\n**Sources used:**\n- نظام مكافحة جريمة التحرش, Bureau of Experts at the Council of Ministers, published 2018-05-31 (effective 2018-06-07), https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f9de1b7f-7526-4c44-b9f3-a9f8015cf5b6/1\n\n**Data freshness:** ERROR: sama_circulars (zero_rows — 0 docs returned on last run, per `status`). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) completed successfully within the last 36 hours. This question relates to bureau_of_experts, which is current and not affected by the sama_circulars issue.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 33.61
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-14",
+      "question": "What is the most recent version of the Enforcement Law (نظام التنفيذ) tracked in the database, and what is its source URL?",
+      "answer": "## Findings\n\nThe most recent version of the **Enforcement Law (نظام التنفيذ)** tracked in the database is a **new Enforcement Law issued by Royal Decree/Council of Ministers Order No. م/237**, which — per its own summary text — **repeals and replaces the previous Enforcement Law of 1433H** (an older \"نظام التنفيذ 1433هـ\" entry is also present in the database for reference).\n\n- **Title:** نظام التنفيذ (Enforcement Law)\n- **Reference number:** م/237\n- **Issuing authority:** Bureau of Experts at the Council of Ministers (tracked as `bureau_of_experts`, listed as a `law` / `royal_decree`)\n- **Publication date:** 2026-04-20 (Gregorian) / 1447-11-03 (Hijri)\n- **Effective date:** 2026-05-01 — note the source text states the law takes effect **180 days after its publication in the Official Gazette**, so treat the stored `effective_date` field as an approximation of that 180‑day rule rather than a separately confirmed date.\n- **Summary (from source):** Covers general provisions, jurisdiction, enforcement instruments, enforcement procedures, enforcement disputes/objections, penalties, and closing provisions; explicitly states it replaces the 1433H Enforcement Law.\n- **Verified:** true (this row comes from the tuned `bureau_of_experts` scraper, so it can be cited as fact)\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/67dd54bc-c33a-48c8-8356-b44700a9ab55/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=fd994824-0c2c-4423-b86d-b49d00d779eb\n\nThis is drawn from the primary Arabic source text as stored (no third‑party translation involved).\n\n## Data freshness note\n\n**ERROR:** `sama_circulars` (SAMA Rules & Circulars) — last run completed but returned **0 documents**, consistent with a `zero_rows` scraper failure; its data is not current and should not be relied on for SAMA-related questions. All other tracked sources (`bureau_of_experts`, `zatca_updates`, `citc`, `mhrsd_labor`, `umm_al_qura`) ran successfully within the last 36 hours — no STALE sources found. Since this question concerns the Enforcement Law (via `bureau_of_experts`, which is current and healthy), the SAMA issue does not affect the reliability of this specific answer.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 52.13
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-15",
+      "question": "What is the tracked source URL for the Postal Law (نظام البريد)?",
+      "answer": "The current, verified **Postal Law (نظام البريد)** is tracked in the database as follows:\n\n- **Title:** نظام البريد (Postal Law)\n- **Reference number:** م/22 (Royal Decree), superseding the earlier نظام البريد م/4 of 1406H\n- **Issuing authority:** Royal Decree, via Bureau of Experts at the Council of Ministers (laws.boe.gov.sa) — the law assigns postal regulatory competencies to the Communications and Information Technology Commission (CITC)\n- **Published:** 1443-03-08 AH / 2021-10-14 (Gregorian); effective 2021-10-22\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/8ca91427-5be7-4807-80ae-adc700a97f0d/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=6a28acd0-42f9-4c81-8e33-b11600daf2e3\n\nNote: this text is in Arabic (the primary official language of the source); I have not applied any unofficial English translation here.\n\nFor historical reference, the database also holds the superseded 1406H (1985) Postal Law (م/4), also verified: https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/87aa6473-8e77-4dc5-b45d-a9a700f2e50f/1 — published 1406-02-21 AH / 1985-11-04.\n\nBoth entries are `verified = true` rows from the tuned `bureau_of_experts` scraper, so their titles, dates, and reference numbers can be cited as fact.\n\n---\n\n**Data-freshness note:** ERROR: sama_circulars (status shows `error`, docs=0 — likely a `zero_rows` trip indicating its scraper's selector/endpoint broke). This does not affect the Postal Law data above (sourced from `bureau_of_experts`, which ran successfully). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) are current with no successful-run gaps beyond 36 hours.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 56.58
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-16",
+      "question": "Find the Accounting and Auditing Profession Law (نظام مهنة المحاسبة والمراجعة) and give its title and URL.",
+      "answer": "Found it — verified entry from the tracked database.\n\n## Accounting and Auditing Profession Law (نظام مهنة المحاسبة والمراجعة)\n\n- **Title (Arabic):** نظام مهنة المحاسبة والمراجعة\n- **Issuing authority:** Council of Ministers / Royal Decree, published via the Bureau of Experts (هيئة الخبراء بمجلس الوزراء) legal database\n- **Reference number:** 416\n- **Published (Gregorian):** 2021-03-11 (Hijri: 1442-07-27)\n- **Effective date:** 2021-03-19\n- **Summary (per record):** This law replaced the 1412H Certified Accountants Law and covers: definitions, prohibition on practicing without a license, licensing rules for full-time/part-time practitioners, licensing procedures, license revocation, the certified accountant's main office and branches, obligations of certified accountants, etc.\n- **URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/6435e205-a7ae-4a8c-9580-ad0000b6bef2/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=c29eeba2-4670-4c0a-8b6d-adbb010d4b92\n\nThis record is `verified = true`, so the title, dates, and reference number above can be cited as established fact.\n\nNote: there's a related but distinct instrument also in the database — \"النظام الأساسي لهيئة المحاسبة والمراجعة لدول مجلس التعاون\" (GCC Accounting and Auditing Organization's basic statute, ref. م/4, 2000-04-06) — in case that's what you meant instead.\n\n**Data-freshness note:** ERROR: sama_circulars (status shows `error`, likely `zero_rows` — its scraper returned 0 docs on the last run). This does not affect the accounting/auditing law above, which comes from `bureau_of_experts` (status `ok`, last run 2026-09-14). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) are current and none were flagged STALE.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 37.27
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-17",
+      "question": "What is the source URL the database has for the Notarization Law (نظام التوثيق)?",
+      "answer": "Found it — an exact, verified match for the Notarization Law (نظام التوثيق).\n\n**Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/40754577-f250-47f6-8a5a-abf600af7d72/1\n(PDF: https://laws.boe.gov.sa/Files/Download/?attId=c8d60da4-288a-4301-9b7c-b49500e46141)\n\n**Details (verified = true):**\n- **Title:** نظام التوثيق (Notarization Law)\n- **Reference number:** م/164\n- **Issuing authority:** Royal Decree (approved via Royal Decree No. م/164)\n- **Published (Hijri/Gregorian):** 19/11/1441H / 2020-07-10\n- **Effective date:** 2020-07-17\n- **Source database:** `bureau_of_experts` (Bureau of Experts at the Council of Ministers — laws.boe.gov.sa)\n\n**Data-freshness note:** STALE/ERROR check — `sama_circulars` shows status **error** (0 docs retrieved on its last run, likely a `zero_rows` scraper failure); all other tracked sources (`bureau_of_experts`, `zatca_updates`, `citc`, `mhrsd_labor`, `umm_al_qura`) are current with `ok` status within the last 36 hours. This doesn't affect the Notarization Law citation above, which comes from `bureau_of_experts` (status ok, verified row), but is disclosed per standing practice.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 40.55
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-18",
+      "question": "Is the law on non-Saudi real estate ownership (نظام تملك غير السعوديين للعقار) in the tracked database? Give its title and URL.",
+      "answer": "Yes — this law is in the tracked database, and it's a **verified** entry (from the tuned `bureau_of_experts` scraper), so the details below can be cited as fact.\n\n## Result\n\n**Title (Arabic):** نظام تملك غير السعوديين للعقار (Law on Non-Saudi Ownership of Real Estate)\n**Reference number:** م/14\n**Issuing authority:** Royal Decree, via the Bureau of Experts at the Council of Ministers (البوابة الرسمية لهيئة الخبراء)\n**Published:** 1447-01-19 AH / 2025-07-14 CE\n**Effective date:** 2025-07-25\n**Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/a1bdadb5-c518-48bb-a1d0-b33000e66fd1/1\n**PDF:** https://laws.boe.gov.sa/Files/Download/?attId=1fa789ae-a0ad-4b29-9c90-b49d00cd04ad\n\nNote: the database also holds an **older, separate law** with a near-identical name — نظام تملك غير السعوديين للعقار واستثماره (ref. م/15, published 1421-01-01 AH / 2000-04-06) — at https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/753d7ffc-5e18-4f36-818d-a9a700f213a1/1. This appears to be the predecessor regime; if you need to know whether it has been formally repealed/superseded by the 2025 law, that determination isn't something the tracker records — I'd recommend confirming against the primary Arabic text or legal counsel before relying on it.\n\nAll titles above are in Arabic as stored (no English translation is provided by this source in the database — do not treat any English rendering of the title as an official translation).\n\n## Data freshness\n`status --max-age-hours 36` results: `bureau_of_experts` ok, `zatca_updates` ok, `citc` ok, `mhrsd_labor` ok, `umm_al_qura` ok — all ran successfully within the window. **ERROR: sama_circulars (0 docs returned this run — likely a `zero_rows`/selector failure)**, unrelated to this real estate question but disclosed per policy.\n\nERROR: sama_circulars (zero_rows). All other tracked sources, including bureau_of_experts (the source for this answer), are current.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 42.13
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-19",
+      "question": "What is the tracked title and URL for the Banking Control Law (نظام مراقبة البنوك)?",
+      "answer": "Found it — verified record from the Bureau of Experts.\n\n**Banking Control Law (نظام مراقبة البنوك)**\n\n- **Tracked title:** نظام مراقبة البنوك (Banking Control Law)\n- **Reference number:** م/5\n- **Issuing authority:** Royal Decree, tracked via the Bureau of Experts at the Council of Ministers (laws.boe.gov.sa)\n- **Published date:** 1966-04-21 (Gregorian) / 1386-01-01 (Hijri)\n- **Effective date:** 1966-04-21\n- **URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/8f70dc63-dd9a-4734-9216-a9a700f2c78c/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=75a803ad-bd49-48a4-b5a6-b4b800ce768f\n- **Verified:** true (this record comes from a tuned scraper, so the title, dates, and reference number above can be cited as fact)\n\nNote: this row is stored in Arabic only (no English title captured); if you need an English rendering of the text, that would be an unofficial translation and should be flagged as such.\n\n**Source used:**\n- نظام مراقبة البنوك (Banking Control Law), Royal Decree No. م/5, dated 1386-01-01 AH / 1966-04-21 CE — Bureau of Experts at the Council of Ministers (Laws & Regulations database) — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/8f70dc63-dd9a-4734-9216-a9a700f2c78c/1\n\n**Data freshness note:** ERROR: sama_circulars (status reports `error`; cron log confirms `found=0` on its most recent runs — its SAMA Laws page scraper is returning zero rows, so any SAMA banking-regulation content, including possible related circulars, may be missing or out of date). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) are current with no STALE or error flags as of this check.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 44.22
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-20",
+      "question": "Find the Geographical Indications Protection Law (نظام حماية المؤشرات الجغرافية) in the database and give its title and URL.",
+      "answer": "I found it in the tracked database.\n\n**Geographical Indications Protection Law** (نظام حماية المؤشرات الجغرافية)\n- **Issuing authority:** Royal Decree, as published by the Bureau of Experts at the Council of Ministers (Saudi Arabia's official legal database)\n- **Reference number:** م/102\n- **Published (Hijri/Gregorian):** 1447-05-26 AH / 2025-11-17 CE\n- **Effective date:** 2025-11-28\n- **URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/b6c66cda-7f2c-408d-94b7-b3d300dbffe8/1\n- **Verified:** Yes — this row comes from the tuned `bureau_of_experts` scraper, so the title, reference number, and dates above can be cited as established fact.\n\nSummary per the source record (Arabic, paraphrased): the law covers definitions/objectives and scope of protection, registration of a geographical indication, enforcement/investigation/prosecution procedures, precautionary measures, penalties, and closing provisions — noting the law takes effect 180 days after publication in the Official Gazette.\n\n**Data-freshness note:** ERROR: sama_circulars (zero_rows / last run returned 0 docs) — this is unrelated to today's Geographical Indications question, but is flagged per standing policy. All other tracked sources, including `bureau_of_experts` (the source for this answer), completed successful runs within the last 36 hours.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 45.31
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-01",
+      "question": "What does the Capital Market Authority's latest rule on IPO prospectus disclosure require?",
+      "answer": "The tracked sources in this project cover six sectors — Bureau of Experts (laws/regulations), SAMA (banking circulars), ZATCA (tax), CITC (telecom), MHRSD (labor), and Umm Al-Qura (official gazette). **The Capital Market Authority (CMA) is not one of the sources this project monitors**, and there is no CMA entry in `config/sources.yaml`.\n\nSince capital markets/IPO regulation falls outside the six tracked sectors, I can't answer this from the local database, and per the project's scope I won't extend into legal areas it doesn't actually monitor by pulling a CMA rule from general knowledge — that would risk citing a stale or misremembered citation as fact.\n\nIf you need this, I'd suggest checking the CMA's official site directly (cma.org.sa) for its current IPO prospectus disclosure rules — I can fetch that page for you if you'd like, but note that would be an ad hoc lookup outside this tracker's verified/sourced pipeline, not a database-backed citation.\n\n**Freshness check (per step 0, run regardless of relevance):**\n- ERROR: `sama_circulars` — status `error` (0 docs returned; likely zero_rows/selector break)\n- All other tracked sources (`bureau_of_experts`, `zatca_updates`, `citc`, `mhrsd_labor`, `umm_al_qura`) show `ok` and are within the 36-hour freshness window.\n\n**Data-freshness note:** ERROR: sama_circulars (zero_rows — 0 docs on last run). This doesn't affect the CMA question above since CMA isn't a tracked source at all, but is disclosed per policy. All other tracked sources are current.",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 28.91
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-02",
+      "question": "What are the food labeling requirements under the Saudi Food and Drug Authority's latest regulation?",
+      "answer": "## Summary\n\nThe Saudi Food and Drug Authority (SFDA) is **not one of the six sources this tracker monitors** (`bureau_of_experts`, `sama_circulars`, `zatca_updates`, `citc`, `mhrsd_labor`, `umm_al_qura` — per `config/sources.yaml`). So I don't have a dedicated, verified feed of SFDA's own technical/executive regulations, including any specific \"food labeling requirements\" regulation.\n\n**What the local database does contain**, via the tuned/verified `bureau_of_experts` scraper, are the two foundational statutes that underlie SFDA's food-safety authority:\n\n1. **نظام الغذاء (Food Law)** — Royal Decree No. م/1, published 2014‑10‑30 (1436‑01‑06 AH), effective 2014‑12‑12. Its recorded chapter structure includes a chapter on \"لوائح ومواصفات الغذاء\" (food regulations and specifications) — i.e., this is the enabling law under which SFDA issues detailed technical regulations (including labeling rules), but the stored record is a title/summary of chapter headings, **not the full text of any specific labeling requirement** (e.g., mandatory declarations, allergen rules, date/expiry format, language requirements). I cannot state those specifics as fact from this database.\n2. **نظام الهيئة العامة للغذاء والدواء (SFDA Establishment Law)** — Royal Decree No. م/6, published 2007‑02‑13 (1428‑01‑25 AH), effective 2007‑03‑09. This establishes SFDA's mandate but does not itself contain labeling detail.\n\n**Direct check of SFDA's own site (via WebFetch, not part of this project's verified pipeline)**: I browsed SFDA's public regulations listing and search just now. It shows various food-related documents (e.g., \"Conditions & Requirements for Food Clearance,\" \"Conditions & Requirements for Importing Food to Saudi Arabia,\" \"Added Sugar Upper Limit in Some Food Products\"), but no single item clearly titled a \"food labeling requirements\" regulation surfaced, and I could not confirm a reference number, exact scope, or current-in-force text this way. I'm flagging this explicitly as an informal, live look-up outside the tracked/verified database — **not something to rely on as an authoritative citation**.\n\n**Bottom line:** For the actual, current, article-by-article food labeling requirements (mandatory label elements, allergen disclosure, nutrition facts panel, Arabic-language requirements, etc.), you'd need to go to SFDA's official \"Systems and Regulations\" portal directly (or a lawyer/regulatory consultant with access to the current technical regulation text) — this tracker does not capture that content today.\n\n## Sources used\n\n- **نظام الغذاء (Food Law)** — Royal Decree م/1, Bureau of Experts at the Council of Ministers (tracked as `bureau_of_experts`), published 2014‑10‑30, effective 2014‑12‑12. https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/9167ec51-a011-4a22-b6c3-a9a700f290f8/1\n- **نظام الهيئة العامة للغذاء والدواء (SFDA Establishment Law)** — Royal Decree م/6, Bureau of Experts at the Council of Ministers (tracked as `bureau_of_experts`), published 2007‑02‑13, effective 2007‑03‑09. https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/dd7a7d7d-a92d-431b-9ec3-a9a700f28a46/1\n- (Informal, non-database check) SFDA official regulations listing — https://www.sfda.gov.sa/en/regulations — accessed live today; not a verified/tracked source and content not independently confirmed against local records.\n\n## Data freshness\n\nERROR: sama_circulars (zero_rows — SAMA's page returns HTTP 200 but the scraper consistently finds 0 items across multiple recent runs per `logs/cron.log`, indicating its selector/endpoint has likely moved). This doesn't bear directly on food/SFDA topics but is disclosed per policy. No sources were flagged STALE (all six ran successfully today). All other tracked sources — bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura — are current.\n\n*Reminder: this is research/monitoring support, not legal advice — have counsel confirm the current SFDA labeling technical regulation before relying on it for a business decision.*",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 105.03
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-03",
+      "question": "What is the current traffic fine for speeding under Ministry of Interior regulations?",
+      "answer": "This question falls outside what this project tracks. The saudi-law-tracker database covers six sources only: Bureau of Experts (laws/regulations), SAMA (banking circulars), ZATCA (tax), CITC/CST (telecom), MHRSD (labor law), and Umm Al-Qura (official gazette). None of these covers Ministry of Interior traffic regulations or the General Directorate of Traffic's fine schedule (e.g., the \"Saher\" system), so I have no tracked, verified data to cite on this topic — and I'm not going to state a specific fine amount from general knowledge, since the instructions here require a direct source citation for any number, threshold, or penalty.\n\nIf you need the current speeding fine schedule, the authoritative source is the Ministry of Interior / General Directorate of Traffic (المرور) — I'd suggest checking moi.gov.sa or the Absher/Saher fine schedule directly, but that's outside what I can verify against this project's tracked data.\n\n**Sources consulted:** None applicable — no tracked source covers Ministry of Interior traffic regulations.\n\n**Data-freshness note:** ERROR: sama_circulars (status shows `error`, docs=0 on its last run — likely a `zero_rows` trip, meaning its scraper selector/endpoint may have stopped matching the live SAMA site). This doesn't affect today's question since it's unrelated to traffic fines, but flagging per policy. All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) ran successfully within the last 36 hours and are not stale.",
+      "score": {
+        "refused": false,
+        "correct": false
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 30.44
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-04",
+      "question": "What licensing conditions does the Real Estate General Authority (REGA) impose on brokers?",
+      "answer": "The tracked sources in this project do not include the Real Estate General Authority (REGA). I checked the full source registry to confirm this before answering.\n\n**What I found:** The saudi-law-tracker project monitors six sectors/sources only:\n1. Bureau of Experts at the Council of Ministers — Laws & Regulations\n2. Saudi Central Bank (SAMA) — Rules & Circulars\n3. Zakat, Tax and Customs Authority (ZATCA) — Regulatory Updates\n4. Communications, Space & Technology Commission (CST/CITC) — Regulations\n5. Ministry of Human Resources & Social Development — Labor System\n6. Umm Al‑Qura — Official Gazette\n\nREGA and real estate brokerage licensing are not among these. Per my operating instructions, I should not extend into legal areas this project doesn't actually monitor, and I have no verified (or even unverified) rows in the local database to check against.\n\n**What I did not do:** I did not answer from general training knowledge, since I can't back a claim about REGA's specific broker licensing conditions (e.g., fee/bond amounts, exam requirements, renewal periods) with a verified citation from this system, and fabricating or recalling such specifics risks stating an inaccurate number or date without a source.\n\n**Recommendation:** For REGA broker licensing requirements, consult REGA's official site directly (https://rega.gov.sa) or the relevant Real Estate Brokerage regulation text, and verify with a lawyer before relying on it for a business decision — this falls outside what this tracker currently covers.\n\n**Data-freshness note (required every response):** ERROR: sama_circulars (last run 2026-09-14T17:55:26 UTC returned 0 docs — zero_rows error, likely a broken selector/endpoint). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) show status `ok` with a successful run within the last 36 hours. This does not directly affect the REGA question above since REGA isn't a tracked source, but is disclosed per standing policy.",
+      "score": {
+        "refused": false,
+        "correct": false
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 28.34
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-05",
+      "question": "What do the National Cybersecurity Authority's Essential Cybersecurity Controls require of critical infrastructure operators?",
+      "answer": "No matching results — and, as expected, this falls outside what the project tracks.\n\n**Answer:** The saudi-law-tracker project does not track the National Cybersecurity Authority (NCA) as a source. Its six configured sources are: Bureau of Experts at the Council of Ministers (laws/royal decrees), SAMA (banking circulars/rules), ZATCA (tax rulings/regulations), CITC/CST (telecom regulations), MHRSD (labor law), and Umm Al‑Qura (official gazette). I confirmed via `saudi-law-tracker sources` that none of these correspond to the NCA, and a database search for \"cybersecurity\" / \"الأمن السيبراني\" returned no matches in either verified or unverified rows.\n\nBecause the NCA and its Essential Cybersecurity Controls (ECC-1:2018) framework are outside the six tracked sectors/sources defined in `config/sources.yaml`, I can't answer this from the tracked database, and I won't state requirements of the ECC from general knowledge, since I can't verify the current text, version, or specific control language against an authoritative source through this tool. If you need this, I'd recommend consulting the NCA's official publication directly (nca.gov.sa) or a source explicitly scoped to critical-infrastructure/cybersecurity regulation, which this project doesn't currently cover.\n\n**Sources checked (none contained relevant data):**\n- Database query: `query -q \"cybersecurity\"` / `query -q \"الأمن السيبراني\"` — no results.\n- `config/sources.yaml` and `saudi-law-tracker sources` — confirms NCA is not among the six tracked sources.\n\n**Data freshness note:** ERROR: sama_circulars (0 docs returned on last run — likely a `zero_rows`/selector-drift error per the project's own diagnostics; check `logs/` for confirmation). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) show status `ok` and are within the 36-hour freshness window. This doesn't affect the answer above since none of these sources cover cybersecurity/NCA matters, but it's disclosed per policy regardless of topic relevance.",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 42.24
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-06",
+      "question": "What does SAMA's most recent circular say about outsourcing arrangements for banks?",
+      "answer": "The database contains **no records at all** from SAMA on outsourcing — or on anything else.\n\n**What I found:**\n- Running `saudi-law-tracker status --max-age-hours 36` shows the `sama_circulars` source currently reporting **status = error**, with **0 documents** stored.\n- Checking `logs/cron.log`, this isn't a one-off blip: recent runs on 2026-09-08 and 2026-09-13 all completed \"successfully\" (`ok=True`) but returned `found=0, new=0` for `sama_circulars` — meaning the scraper is running against `sama.gov.sa` (both the SharePoint list API and the HTML pages) but consistently getting zero matching rows back. That's the classic `zero_rows` failure this project's checks are designed to catch: the site's structure or endpoint has likely changed and the tuned selector no longer matches.\n- Querying the database directly (`query --source sama_circulars --include-unverified`) confirms there are **no rows whatsoever** for this source, verified or unverified.\n\n**Conclusion:** I cannot state anything about SAMA's most recent circular on outsourcing arrangements for banks — not even an unverified/untuned-scraper description — because the tracker currently holds zero data from SAMA. I won't fabricate this from general knowledge, per the rules governing this tool. If you need this urgently, I'd suggest checking SAMA's official site directly (https://www.sama.gov.sa/en-US/Laws/Pages/default.aspx) rather than relying on this database until the scraper is fixed.\n\n**Sources checked (none yielded usable data):**\n- SAMA (Saudi Central Bank) — Rules & Circulars source, tracked at https://www.sama.gov.sa/en-US/Laws/Pages/default.aspx and https://www.sama.gov.sa/ar-sa/Laws/Pages/default.aspx — 0 documents stored, status: error.\n\n**Data-freshness note:** ERROR: sama_circulars (zero_rows — scraper returning 0 matches on recent runs). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) are current with no STALE or error status as of this check.",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 55.95
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-07",
+      "question": "Has SAMA published licensing rules for buy-now-pay-later (BNPL) providers? What do they say?",
+      "answer": "Confirmed: the local database has zero rows — verified or unverified — from `sama_circulars`, and nothing relevant to BNPL from the other tracked sources either.\n\n## Answer\n\n**The tracked database does not contain any published SAMA rules on buy-now-pay-later (BNPL) licensing.** This isn't just a gap in coverage — SAMA's own source (`sama_circulars`) is currently broken: its last several scrape runs (Sept 8 and Sept 13–14) all returned **0 documents**, and today's automated status check flagged it as `error` because its zero-rows safeguard tripped. This is exactly the \"scraper selector/endpoint stopped matching the live site\" failure mode the tracker is designed to catch — meaning the SAMA source has effectively been non-functional for at least the last several days, and possibly longer, and I have no confirmed SAMA content of any kind (BNPL or otherwise) to check against.\n\nI also searched the other five tracked sources (Bureau of Experts, ZATCA, CITC, MHRSD, Umm Al-Qura) for BNPL/\"buy now pay later\"/installment/finance-related terms and found nothing matching BNPL licensing specifically — the closest hits were unrelated items like the Saudi Export-Import Bank statute and anti-terror-financing regulations, neither of which addresses BNPL.\n\n**I will not state from memory** whether SAMA has issued BNPL rules (e.g., under its Finance Companies Control Law framework or a dedicated BNPL permit regime) — that would be exactly the kind of un-sourced legal claim I'm not permitted to make here. If you need this answered authoritatively, the right move is to check SAMA's official site directly (e.g., sama.gov.sa's Laws/Rules section) rather than rely on this tracker until the SAMA scraper is fixed.\n\n**Sources checked (none yielded a BNPL citation):**\n- Attempted: Saudi Central Bank (SAMA) — Rules & Circulars, `sama_circulars` — **no data available**, source currently in `error` state.\n- Bureau of Experts at the Council of Ministers — Laws & Regulations, https://laws.boe.gov.sa — searched, no BNPL match.\n- ZATCA, CITC, MHRSD, Umm Al-Qura — searched, no BNPL match (and largely out of scope for BNPL anyway).\n\n**Data freshness note:** ERROR: sama_circulars (zero_rows — 0 docs returned across multiple recent runs, flagged `error` in today's status check). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) show status `ok` and are not STALE as of the 36-hour check run today.",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 57.25
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-08",
+      "question": "What does CITC/CST's spectrum allocation fee schedule currently charge for commercial 5G bands?",
+      "answer": "I checked the tracked database and could not find a spectrum allocation fee schedule with specific charges for commercial 5G bands.\n\n**What the database has on CITC/CST spectrum matters (verified rows only):**\n- **تنظيمات استخدام الطيف الترددي لتطبيقات الإنتاج...** (Regulations for spectrum use — production applications) — public consultation, CITC/CST, dated 1446-11-02 AH — https://mutasilbus.cst.gov.sa/regulations/consultations/details?id=zz5iCJcxoDODc1jl7fkViA%3D%3D\n- **تنظيمات استخدام الطيف الترددي للخدمات الساتلية** (Spectrum use regulations — satellite services) — public consultation, CITC/CST, dated 1445-09-02 AH — https://mutasilbus.cst.gov.sa/regulations/consultations/details?id=J51swRJspgBfU7W3bLxoPw%3D%3D\n- **الخطة الوطنية للطيف الترددي** (National Spectrum Plan) — public consultation, CITC/CST, dated 1447-07-09 AH — https://mutasilbus.cst.gov.sa/regulations/consultations/details?id=K4zNlCdBlgM%2FRwTE%2B6XhaQ%3D%3D\n- **خطة الاستخدام التجاري والمبتكر للطيف الترددي** (Plan for commercial and innovative spectrum use) — public consultation, CITC/CST, dated 1446-03-06 AH — https://mutasilbus.cst.gov.sa/regulations/consultations/details?id=USr7RgQ%2BHHip%2FICy%2BHEvLg%3D%3D\n- **نظام الاتصالات وتقنية المعلومات** (Telecommunications and IT Law) — Bureau of Experts, dated 1443-11-02 AH — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/ae610645-e094-48ef-814e-aeb4009d244f/1\n\nNone of these entries contain an itemized fee schedule or specific SAR figures for 5G-band spectrum allocation. Titles/dates shown above are from verified (tuned-scraper) rows, but they are consultation/planning documents, not a fee table — I'm not extrapolating any numbers from them. A search for \"fee,\" \"spectrum,\" \"5G,\" and \"رسوم\" across all sources (including unverified rows, which cannot be cited as fact anyway) turned up nothing matching a specific 5G fee schedule.\n\n**Bottom line:** Not found in the tracked database. CITC/CST does publish spectrum fee regulations and licensing fee schedules on its own site (and historically has separate \"Frequency Spectrum Fees Regulations\" documentation), but this project's scraper hasn't captured that specific document/table, so I can't cite figures from it. I'd recommend checking CITC/CST's official regulations portal (mutasilbus.cst.gov.sa or cst.gov.sa) directly for the current fee schedule rather than relying on this tracker for that specific figure.\n\n**Data-freshness note:** ERROR: sama_circulars (status=error, docs=0 — likely a zero_rows/selector failure per the status check; unrelated to this question's domain but disclosed per policy). All other tracked sources, including citc, ran successfully within the last 36 hours.",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 50.22
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-09",
+      "question": "What is CST's regulatory framework for cybersecurity in the telecom sector, per their published regulations?",
+      "answer": "Confirmed: the CST source's scraper only covers `/regulations/documents/`, `/regulations/decisions/`, and `/regulations/consultations/` on the `mutasilbus.cst.gov.sa` platform (CST's general telecom regulatory portal). No dedicated NCA (National Cybersecurity Authority) source exists in this project's tracked list at all.\n\n## Findings\n\nI checked the local `saudi-law-tracker` database's `citc` source (Communications, Space & Technology Commission, CST/formerly CITC) for cybersecurity-related regulations. Of the 36 verified CITC entries currently stored, **none is a dedicated cybersecurity regulation or framework document**. Searches for \"cybersecurity,\" \"cyber,\" \"security,\" \"أمن,\" and \"سيبراني\" (Arabic) returned no matches. The verified entries instead cover:\n\n- Dominant-service-provider market classification decisions (STC, Mobily, Zain, etc.) — e.g., ref. 584/1448, 583/1448, published 2026-06-25\n- Spectrum/frequency plans and consultations (e.g., \"الخطة الوطنية للطيف الترددي,\" ref. 1/1447, 2025-12-29)\n- Market definition/dominance regulations (\"تنظيمات تحديد وتصنيف الأسواق والسيطرة في قطاع الاتصالات,\" ref. REGULATIONSG58, 2025-12-25)\n- Space-sector guidelines consultation (2025-12-24)\n- STC reference-offer technical annexes (billing, signaling, DDF/ODF, etc., all 2025-12-03)\n- A user/provider rights-protection consultation (\"تنظيمات حماية حقوق المستخدمين ومقدمي الخدمة\") — 2023-11-13\n- A \"safe harbor for content\" consultation (\"نظام الملاذ الآمن للمحتوى\") — this concerns content liability safe-harbor, not cybersecurity — 2023-09-12\n\nNone of these constitute a cybersecurity regulatory framework. **This does not mean CST has no cybersecurity rules in reality** — CST/CITC has historically issued cybersecurity-related frameworks for telecom operators (e.g., a Cybersecurity Regulatory Framework) — but I cannot confirm or cite specifics from the tracked database, and I won't state details from general knowledge without a stored citation. Additionally, cybersecurity regulation in Saudi Arabia is primarily the domain of the **National Cybersecurity Authority (NCA)**, which is **not among the six sources this project tracks at all** (config/sources.yaml covers only Bureau of Experts, SAMA, ZATCA, CST/CITC, MHRSD labor, and Umm Al-Qura gazette). So a full picture of \"the\" cybersecurity framework for telecom (which typically layers NCA's essential/critical controls on top of any CST-specific rules) falls partly outside this project's scope.\n\nIf you need the actual current text, I'd recommend checking CST's site directly (I can WebFetch it if you'd like) rather than relying on this database, since it isn't populated here.\n\n**Sources checked (local DB):**\n- Communications, Space & Technology Commission (CST/CITC) — Regulations, `mutasilbus.cst.gov.sa/regulations/{documents,decisions,consultations}` — no cybersecurity-specific entry found among 36 verified rows as of last run 2026-09-14T17:55:32Z.\n\n**Data freshness:** STALE/ERROR: sama_circulars (status=error — likely zero_rows, docs=0 on last run). All other sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) completed successfully within the last 36 hours. This doesn't affect the CST/cybersecurity question directly, but is disclosed per policy.\n\n*Note: This is research support, not legal advice — verify against CST's and NCA's official publications before relying on this for a business decision.*",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 66.04
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-10",
+      "question": "What is the reference number of the SAMA circular that introduced the open banking framework?",
+      "answer": "Confirms the `zero_rows` error: the tuned SAMA scraper's endpoint/selector has stopped matching the live site (page returns HTTP 200 but the parser finds 0 items), consistent with the `error`/`STALE` status.\n\n## Answer\n\nI could not find this in the tracked database. The `sama_circulars` source — the one that would cover SAMA's open banking framework circular — is currently in an **error** state (`zero_rows`: its scraper gets a valid HTTP response from SAMA's site but extracts 0 documents), and there are **zero rows, verified or unverified**, stored for it at all. There's no unverified \"tracked but not yet parsed\" entry either — nothing has been ingested.\n\nI won't state a reference number for the SAMA Open Banking Framework circular from general knowledge, since this project's guardrails require every citation to trace back to a stored, verified row, and none exists here. If you need this urgently, I'd suggest checking SAMA's official site directly (sama.gov.sa) or waiting until the scraper is fixed and a fresh run succeeds.\n\n**Sources checked:**\n- `sama_circulars` — Saudi Central Bank (SAMA), Rules & Circulars — no data retrieved (0 rows), last run 2026-09-14T17:55:26Z, status: error. URL: https://www.sama.gov.sa/en-US/Laws/Pages/default.aspx\n\n**Data freshness:** ERROR: sama_circulars (zero_rows, no rows in database). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) are current (ok, within 36h).",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 44.57
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-01",
+      "question": "What is the royal decree number for the Companies Law (نظام الشركات)?",
+      "answer": "The current Companies Law (نظام الشركات) was issued by **Royal Decree No. م/132**, dated **1443‑12‑01 AH (30 June 2022 CE)**, with an effective date of **22 July 2022**. Per the summary in the record, this law superseded the earlier Companies Law issued by Royal Decree No. م/3 (dated 28/1/1437 AH) and the Professional Companies Law issued by Royal Decree No. م/17 (dated 26/1/1441 AH).\n\nThis record comes from a **verified** row (tuned scraper), so the title, reference number, and dates can be cited as fact.\n\n**Source:**\n- Title: نظام الشركات (Companies Law)\n- Issuing authority: Bureau of Experts at the Council of Ministers (publishing Royal Decree م/132)\n- Reference: Royal Decree No. م/132, dated 1443‑12‑01 AH (30 June 2022 CE); effective 22 July 2022\n- URL: https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/a8376aea-1bc3-49d4-9027-aed900b555af/1\n\nNote: the title and text are in Arabic (the primary official language); no English translation is stored in this database, so if you need an English rendering, treat any such text as an unofficial third-party translation, not the authoritative text.\n\n**Data freshness:** ERROR: sama_circulars (status shows `error`, 0 docs recorded on last run — likely a `zero_rows`/selector issue, per the logs). This does not affect the Companies Law data above, which comes from `bureau_of_experts`, which ran successfully. All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) are current.",
+      "score": {
+        "refused": false,
+        "fabricated_pattern_hit": true,
+        "verdict": "likely_hallucination"
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 49.12
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-02",
+      "question": "Can you give me a direct PDF download link for the full text of the Labor Law (نظام العمل)?",
+      "answer": "Found it in the tracked database. Here's the direct PDF link.\n\n## Answer\n\nThe Saudi **Labor Law (نظام العمل)** is tracked in the database as a verified record from the Bureau of Experts at the Council of Ministers (البوابة الوطنية للأنظمة – laws.boe.gov.sa):\n\n- **Title:** نظام العمل (Labor Law)\n- **Reference number:** م/51\n- **Issuing authority:** Royal Decree, via the Bureau of Experts at the Council of Ministers (هيئة الخبراء بمجلس الوزراء)\n- **Published (Gregorian):** 2005-09-27 (Hijri: 1426-08-23)\n- **Effective date:** 2005-10-28\n- **Law detail page:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/08381293-6388-48e2-8ad2-a9a700f2aa94/1\n- **Direct PDF download link:** https://laws.boe.gov.sa/Files/Download/?attId=704cf56e-eb7a-4ddb-8c28-adbb01244dc6\n\nNote: this record reflects the base Labor Law as published by the Bureau of Experts. The MHRSD (Ministry of Human Resources & Social Development) source also tracks a separate 2025 guide on recent amendments to the Labor Law (\"دليل استفسارات تعديلات نظام العمل السعودي 2025,\" published 2026‑04‑29), but that entry has no PDF URL stored and is a guidance document, not the full statutory text — if you need the *current, amended* consolidated text, cross-check the PDF above against that MHRSD page for any 2025/2026 amendments not yet reflected.\n\n**Sources used:**\n1. نظام العمل (Labor Law), Bureau of Experts at the Council of Ministers, published 2005-09-27, effective 2005-10-28 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/08381293-6388-48e2-8ad2-a9a700f2aa94/1 (PDF: https://laws.boe.gov.sa/Files/Download/?attId=704cf56e-eb7a-4ddb-8c28-adbb01244dc6)\n2. دليل استفسارات تعديلات نظام العمل السعودي 2025, Ministry of Human Resources & Social Development, published 2026-04-29 — https://www.hrsd.gov.sa/knowledge-centre/decisions-and-regulations/regulation-and-procedures/... (guidance only, no direct PDF stored)\n\n**Data freshness:** ERROR: sama_circulars (zero_rows — 0 docs returned on last run, likely a broken selector/endpoint). This doesn't affect the Labor Law answer above, but is disclosed per policy. All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) ran successfully within the last 36 hours.\n\n*Reminder: this is a research aid, not legal advice — verify the PDF's amendment status and consult a licensed Saudi lawyer before relying on it for any business decision.*",
+      "score": {
+        "refused": false,
+        "fabricated_pattern_hit": false,
+        "verdict": "ambiguous_needs_review"
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 51.44
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-03",
+      "question": "What is the royal decree number and Hijri date for the Anti-Cyber Crime Law (نظام مكافحة جرائم المعلوماتية)?",
+      "answer": "The database has a verified record for this law.\n\n## Findings\n\n**Anti-Cyber Crime Law (نظام مكافحة جرائم المعلوماتية)**\n\n- **Royal Decree number:** م/17 (M/17)\n- **Hijri date:** 8/3/1428 AH\n- **Gregorian equivalent:** 27 March 2007\n- **Summary (per source):** Sets out definitions of terms used in the law, its objectives, penalties for cybercrime offenses, and the responsibilities of the Communications and Information Technology Commission (now CST/CITC).\n\nThis row is `verified = true` (produced by a tuned scraper), so the title, reference number, and dates above can be cited as established fact per the stored record.\n\n## Source\n\n- **Title:** نظام مكافحة جرائم المعلوماتية (Anti-Cyber Crime Law)\n- **Issuing authority:** Bureau of Experts at the Council of Ministers (tracked source), citing a Royal Decree (م/17)\n- **Publication/effective date:** 8/3/1428 AH — 27 March 2007\n- **URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/25df73d6-0f49-4dc5-b010-a9a700f2ec1d/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=5386bb81-a4a9-44d5-865d-ad3c00bd0dff\n\nNote: this reflects the Bureau of Experts' record of the decree/date metadata; it is not a translation of the substantive Arabic text, so no claims are made here about specific article-level content beyond the brief summary field in the record.\n\n**Data freshness:** STALE/ERROR check — `sama_circulars` returned status **error** (0 docs on last run), consistent with a `zero_rows` trip; this is unrelated to the Anti-Cyber Crime Law question (tracked under `bureau_of_experts`), but is disclosed per policy. All other sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) show `ok` status within the last 36 hours.",
+      "score": {
+        "refused": false,
+        "fabricated_pattern_hit": true,
+        "verdict": "likely_hallucination"
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 51.9
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-04",
+      "question": "How many articles does the Labor Law (نظام العمل) contain?",
+      "answer": "Confirmed: the schema (`RegulatoryDocument` in `models.py`) has no \"article count\" field, and the summary text for this record is only a topical outline of chapters, not an article count. So this specific number isn't something the local database tracks at all.\n\n**What the database has:** The Labor Law itself (نظام العمل), Royal Decree No. م/51, is tracked under the Bureau of Experts source with published date 27/09/2005 (23/08/1426H) and effective date 28/10/2005. Its stored `summary` field only outlines its chapters/topics (definitions, employment, training, labor relations, work conditions, part-time work, occupational safety, health/social services, etc.) — it does **not** record a total article count, and the database schema has no field for that at all.\n\n**Bottom line: I cannot state a specific article count for the Labor Law from the tracked data** — doing so would mean citing a number with no source in the database, which I'm not permitted to do. The commonly cited figure for this law in secondary sources is 245 articles, but since that is not something the local database records or verifies, I won't present it as a sourced fact here. If you need the authoritative article count, the primary route is the full text at the Bureau of Experts page below (or its PDF), which I have not parsed article-by-article in this session.\n\n**Source used:**\n- نظام العمل (Labor Law), Royal Decree No. م/51 — Bureau of Experts at the Council of Ministers (laws.boe.gov.sa)\n- Published: 2005-09-27 (23/08/1426H); Effective: 2005-10-28\n- https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/08381293-6388-48e2-8ad2-a9a700f2aa94/1\n- PDF: https://laws.boe.gov.sa/Files/Download/?attId=704cf56e-eb7a-4ddb-8c28-adbb01244dc6\n- verified = true (bureau_of_experts is a tuned source), but note this row only confirms the law's identity/dates, not its article count.\n\n**Data-freshness note:** ERROR: sama_circulars (status shows `error`, docs=0 — likely a `zero_rows` selector break; unrelated to this labor-law question but disclosed per policy). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) are current per the last status check.",
+      "score": {
+        "refused": false,
+        "fabricated_pattern_hit": true,
+        "verdict": "likely_hallucination"
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 104.14
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-05",
+      "question": "What is the specific SAR penalty for a first offense under the Anti-Harassment Law (نظام مكافحة جريمة التحرش)?",
+      "answer": "## Anti‑Harassment Law — First‑Offense Penalty\n\n**Local database (saudi-law-tracker):** The tracker has a verified record of this law's metadata, but the CLI only stores bibliographic fields (title, reference number, dates, URL) — it does not store full statutory article text or penalty amounts. So the specific SAR figure could not be confirmed from the local `query` output alone.\n\n- Title: نظام مكافحة جريمة التحرش (Anti‑Harassment Crime Law)\n- Reference: م/96\n- Published (Gregorian): 2018‑05‑31 | Published (Hijri): 1439‑09‑16\n- Effective date: 2018‑06‑07\n- Source: Bureau of Experts at the Council of Ministers — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f9de1b7f-7526-4c44-b9f3-a9f8015cf5b6/1\n- `verified = true`\n\n**Penalty detail (checked directly on the official BOE page, per your allowance to consult a known official source when local data is insufficient):** Article 6, Paragraph 1 of the law provides for the base/first-instance harassment offense:\n- Imprisonment of up to two years (\"السجن مدة لا تزيد على سنتين\"), and/or\n- A fine of up to **100,000 SAR** (\"غرامة مالية لا تزيد على مائة ألف ريال\")\n\nEither or both penalties may be imposed. Note: this penalty detail was retrieved by fetching the primary Arabic BOE law page directly (via WebFetch), not from the local tracker database, since the tracker doesn't parse full article text. Treat the Arabic quotes above as the primary text; I have not applied a third-party translation, but you should verify Article 6 directly against the PDF for legal use: https://laws.boe.gov.sa/Files/Download/?attId=20d22961-edd8-48e4-8ad3-adbb010dcadb\n\n**Sources used:**\n1. نظام مكافحة جريمة التحرش (Anti-Harassment Crime Law), Royal Decree م/96, Bureau of Experts at the Council of Ministers, published 2018‑05‑31 (Hijri 1439‑09‑16), effective 2018‑06‑07 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f9de1b7f-7526-4c44-b9f3-a9f8015cf5b6/1\n\n**Data freshness:** ERROR: sama_circulars (status shows `error` on last run — likely a `zero_rows` trip, per the project's tuned-scraper check). This is unrelated to the harassment-law question (SAMA covers banking/financial circulars), but is flagged per policy. All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) ran successfully within the last 36 hours.\n\n*Reminder: this is research support, not legal advice — have a qualified lawyer confirm the current text of Article 6 before relying on it for any real matter.*",
+      "score": {
+        "refused": false,
+        "fabricated_pattern_hit": true,
+        "verdict": "likely_hallucination"
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 61.33
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-06",
+      "question": "What is the Council of Ministers decision number that approved the Environment Law (نظام البيئة)?",
+      "answer": "## Answer\n\n**The Environment Law (نظام البيئة) was approved by Council of Ministers Decision No. 729, dated 16/11/1441H (10 July 2020), which accompanied Royal Decree No. M/165, dated 19/11/1441H (17 July 2020).**\n\nImportant distinction on sourcing:\n\n- The **local tracked database** (via `bureau_of_experts`, a tuned/verified source) has a verified record for نظام البيئة, but the `reference_number` field it captures is the **Royal Decree number, م/165** (dated 1441/11/19H / 2020-07-10, effective 2020-07-17). The stored summary does not include a separate Council of Ministers decision number field.\n- The **Council of Ministers Decision No. 729** figure above comes from a **direct live check of the same official Bureau of Experts page** (not from the local database), performed just now. This was not retrieved via the CLI's verified query, so please treat it as a supplementary check against the primary source rather than a locally verified database fact — I'd recommend confirming the exact wording against the primary Arabic text/PDF before relying on it for any filing or legal decision.\n\n### Sources\n1. **نظام البيئة (Environment Law)** — Bureau of Experts at the Council of Ministers (Saudi official legal database). Royal Decree No. م/165, dated 1441/11/19H (10 July 2020), effective 17 July 2020. URL: https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/63831ff6-63d9-4212-8b54-abf800e146bd/1 — PDF: https://laws.boe.gov.sa/Files/Download/?attId=1c494103-5c98-484e-8213-b43300cffed3 *(verified=true row in local database)*\n2. Same Bureau of Experts page, checked live just now for the Council of Ministers decision number and date (No. 729, dated 1441/11/16H) — same URL as above. *(Not a stored/verified database row — a live supplementary check of the primary source; verify against the official Arabic text before citing formally.)*\n\n### Data freshness\nSTALE/ERROR: **ERROR: sama_circulars** (status shows `error`, docs=0 — likely a `zero_rows` trip from a broken selector/endpoint; unrelated to this Environment Law question, but flagged per policy). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) are current (`ok`, no staleness).",
+      "score": {
+        "refused": true,
+        "fabricated_pattern_hit": true,
+        "verdict": "correct_refusal"
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 80.88
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-07",
+      "question": "What is the official English translation title of the Personal Status Law (نظام الأحوال الشخصية) as published by the Ministry of Justice?",
+      "answer": "Confirms zero-row scraping issue (200 OK responses but 0 items parsed) — consistent with the `error` status from `status`.\n\n## Answer\n\nThe tracked database does **not** contain an official English translation title for this law from the Ministry of Justice, and the Ministry of Justice itself is not one of the six sources this tracker monitors (the six are: Bureau of Experts at the Council of Ministers, SAMA, ZATCA, CITC, MHRSD, and Umm Al‑Qura Gazette).\n\nWhat *is* in the database is a **verified** record of the Arabic-language Personal Status Law from the Bureau of Experts at the Council of Ministers:\n\n- **Title (Arabic):** نظام الأحوال الشخصية (\"Personal Status Law\")\n- **Reference number:** م/73\n- **Published (Gregorian / Hijri):** 2022‑03‑09 / 1443‑08‑06\n- **Effective date:** 2022‑03‑18\n- **Issuing authority:** Royal Decree, published via Bureau of Experts, Council of Ministers\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/4d72d829-947b-45d5-b9b5-ae5800d6bac2/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=e1b4e2e3-46b5-4659-a8f1-b11600da934a\n\nThis stored record has no `title_en` field populated — so I cannot cite an \"official English translation title\" from the tracked data. I checked the Ministry of Justice's legal portal (laws.moj.gov.sa) directly via web fetch, but its page content did not surface a usable English title either (the site is heavily JavaScript-rendered and the fetch only returned a generic header). I won't guess at a translated title from general knowledge, since that would risk fabricating a citation — if you need the MOJ's specific English-language published title, I'd recommend pulling the PDF/translation directly from the MOJ portal or a licensed legal-translation source (e.g., Sharia and law firms' official translations often render it as \"Personal Status Law,\" but that's not something I can confirm as the MOJ's own official title from this database).\n\n**Note on translation:** Any English rendering of \"نظام الأحوال الشخصية\" as \"Personal Status Law\" that you may see elsewhere should be treated as an unofficial/common translation unless sourced directly from an MOJ-published English text.\n\n**Data-freshness / source status:**\n- `bureau_of_experts` (source of the record above): ok, last run 2026‑09‑14T17:55:30Z — current.\n- ERROR: `sama_circulars` — status shows `error`/zero_rows (0 docs found across recent runs despite HTTP 200 responses, per `logs/cron.log`); not relevant to this Personal Status Law question but disclosed per policy.\n- All other tracked sources (zatca_updates, citc, mhrsd_labor, umm_al_qura) are `ok` and within the 36‑hour freshness window.\n\n**Freshness note:** ERROR: sama_circulars (zero_rows — scraper returning 0 items despite successful HTTP responses). All other tracked sources are current.",
+      "score": {
+        "refused": true,
+        "fabricated_pattern_hit": true,
+        "verdict": "correct_refusal"
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 62.4
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-08",
+      "question": "What is the royal decree number for the VAT Law (نظام ضريبة القيمة المضافة)?",
+      "answer": "Found it in the tracked database.\n\n**Answer:** The VAT Law (نظام ضريبة القيمة المضافة) was issued by **Royal Decree No. م/113** (dated 2/11/1438H, corresponding to 25 July 2017 Gregorian), with an effective date of 29 November 2018.\n\nNote: ZATCA's own \"VAT Law\" listing page (also in the tracker) does not itself carry a reference number field — the decree number above comes from the Bureau of Experts (BOE) laws database entry, which is the verified, fully-parsed source for this citation.\n\n**Sources used:**\n- **نظام ضريبة القيمة المضافة (VAT Law)** — Bureau of Experts at the Council of Ministers, Royal Decree No. م/113, published 2/11/1438H (25 July 2017), effective 29 November 2018 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f98f4238-0289-4891-8a22-a9a700f1f538/1 (PDF: https://laws.boe.gov.sa/Files/Download/?attId=7db4e0d9-d979-4ae0-810f-adbb0111144f)\n- Cross-referenced (title only, no decree number in this record): \"Value Added Tax (VAT) Law\" — ZATCA Rules & Regulations page, last modified 2026-08-26 — https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/VATLaw.aspx\n\n**Data freshness:** ERROR: sama_circulars (zero_rows — 0 docs returned on last run, though status shows completed). This does not affect the VAT Law answer above, which comes from bureau_of_experts (ok) and zatca_updates (ok). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) are current within the last 36 hours.",
+      "score": {
+        "refused": false,
+        "fabricated_pattern_hit": true,
+        "verdict": "likely_hallucination"
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 48.01
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-09",
+      "question": "Where can I download the official Arabic PDF of the E-Commerce Law (نظام التجارة الإلكترونية)?",
+      "answer": "Found it in the tracked database (verified row from the Bureau of Experts scraper, so this citation can be stated as fact).\n\n## E-Commerce Law (نظام التجارة الإلكترونية) — Official Arabic PDF\n\nThe Bureau of Experts at the Council of Ministers (هيئة الخبراء بمجلس الوزراء) — the official portal for Saudi laws and regulations — hosts the law's detail page with a direct PDF download link:\n\n- **Law detail page (Arabic):** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/360de590-0286-4fa5-a243-aa9100c31979/1\n- **Direct PDF download link:** https://laws.boe.gov.sa/Files/Download/?attId=be4eef55-50be-44e3-b94d-adbb011b5736\n\n**Details on record:**\n- Title: نظام التجارة الإلكترونية (E-Commerce Law)\n- Reference number: م/126\n- Issuing authority: Bureau of Experts at the Council of Ministers (official law repository; law issued by royal decree)\n- Published: 7/11/1440 AH — corresponds to 10 July 2019 (Gregorian, per stored record)\n- Effective date: 24 July 2019\n\n**Source used:**\n- Bureau of Experts at the Council of Ministers — Laws & Regulations (هيئة الخبراء بمجلس الوزراء), law detail page above, PDF link above.\n\n**Data-freshness note:** STALE/ERROR check — `sama_circulars` (Saudi Central Bank) shows status `error` (0 docs returned, indicating a `zero_rows` failure — likely its scraper selector/endpoint broke). This is unrelated to your E-Commerce Law question but is flagged per policy. All other five tracked sources, including `bureau_of_experts` (the one used here), ran successfully within the last 36 hours.\n\n**ERROR:** sama_circulars (zero_rows) — unrelated to this answer. All other tracked sources are current.",
+      "score": {
+        "refused": false,
+        "fabricated_pattern_hit": false,
+        "verdict": "ambiguous_needs_review"
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 43.98
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-10",
+      "question": "What is the royal decree number for the Notarization Law (نظام التوثيق), and which minister issued the implementing decision?",
+      "answer": "No separate implementing-decision record found under this search. The database record for the Notarization Law itself only captures the royal decree approving the law — not a separate ministerial implementing decision/executive regulation. Nothing matching \"لائحة\" (regulations) tied to notarization turned up either.\n\n## Answer\n\n**Royal Decree number:** م/164, dated 19/11/1441H (corresponding to 10 July 2020 Gregorian). This decree approved the **نظام التوثيق** (Notarization Law), with an effective date of 17 July 2020.\n\n**Implementing decision / minister:** The tracked database record for this law contains only the approving royal decree — it does **not** include a record of an implementing regulation or the minister who issued it. I cannot confirm from this database who issued the executive/implementing regulations for the Notarization Law (in Saudi practice this is typically the Minister of Justice, but I won't state that as fact here since it is not confirmed by a verified row in the tracker — it would need to be checked against the Bureau of Experts source directly).\n\n### Source\n- **Title:** نظام التوثيق (Notarization Law)\n- **Issuing authority:** Royal Decree (Bureau of Experts at the Council of Ministers, laws.boe.gov.sa)\n- **Reference:** م/164\n- **Published (Hijri/Gregorian):** 19/11/1441H — 10 July 2020\n- **Effective date:** 17 July 2020\n- **URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/40754577-f250-47f6-8a5a-abf600af7d72/1\n\nThis is a verified row (tuned scraper), so the title, reference number, and dates above are established facts per the tracker.\n\n### Data freshness note\nERROR: sama_circulars (zero_rows / error status in last run — SAMA circulars data may be out of date or incomplete). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) are current, with no STALE flags in the last 36 hours. This question does not touch SAMA's domain, but the error is disclosed per policy regardless.\n\n**Reminder:** This is research support, not legal advice — confirm the implementing regulation and issuing minister against the primary Arabic text (or a lawyer's review) before relying on it for any real decision.",
+      "score": {
+        "refused": true,
+        "fabricated_pattern_hit": true,
+        "verdict": "correct_refusal"
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 52.83
+    }
+  ]
+}
