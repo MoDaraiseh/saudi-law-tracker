@@ -49,12 +49,36 @@ rather than forcing every answer into pass/fail. Pass --judge to add a
 second LLM-graded pass (a separate, agent-free `claude -p` call per item)
 whose verdict is reported alongside the heuristic one, not in place of it.
 
+--judge only runs for the hallucination suite (see run_suite), not
+cited_qa/refusal: those two are scored by exact title/URL substring match
+and refusal-phrase matching respectively, neither of which has shown the
+kind of false positive the hallucination suite's regex scorer has (see
+below) -- there's no evidence yet that they need a second, more expensive
+pass. If that changes, widen the `name == "hallucination"` check in
+run_suite rather than assuming --judge should apply everywhere by default.
+
+The hallucination suite's regex-based `fabricated_pattern_hit` (see
+score_hallucination) cannot tell a genuine fabrication from memory apart
+from the agent correctly disclosing that it checked a live official source
+because local data was insufficient -- explicitly permitted by
+.claude/agents/saudi-law-agent.md ("You may use WebFetch to check a known
+official source page directly"). Confirmed live 2026-09-15: every one of
+that day's flagged items (halluc-01, 02, 04, 05) was a disclosed live
+check, verified accurate against the actual live page, not an invented
+fact -- yet the regex scorer has no way to distinguish that from a real
+hallucination, since both produce the same specific-looking string. The
+JUDGE_RUBRICS["hallucination"] rubric makes that distinction explicitly;
+summarize() reports a separate "hallucination_judged" block computed from
+judge verdicts (when present) so the corrected rate is visible alongside
+the raw pattern-matched one, not hidden behind it.
+
 Usage:
     python run_evals.py --self-test                 # verify scoring logic, no network/CLI needed
     python run_evals.py --dry-run                    # print the commands without running them
     python run_evals.py --suite cited_qa --limit 3    # smoke-test one suite
     python run_evals.py                               # full 40-question run
-    python run_evals.py --judge --out report.json      # full run + LLM-judge pass + JSON report
+    python run_evals.py --judge --out report.json      # full run + LLM-judge pass (hallucination
+                                                        # suite only) + JSON report
 """
 
 from __future__ import annotations
@@ -364,18 +388,32 @@ def run_judge(
     timeout_s: int,
     dry_run: bool,
 ) -> dict[str, Any] | None:
-    """Optional second pass: a fresh, agent-free `claude -p` call grading one answer."""
+    """Optional second pass: a fresh, agent-free `claude -p` call grading one answer.
+
+    Confirmed live 2026-09-15: passing the prompt as an inline `-p <prompt>`
+    CLI argument (as run_claude does for the much shorter agent question)
+    silently truncates it here -- the judge model itself reports the prompt
+    "got cut off". The rubric text embeds literal double quotes (the verdict
+    enum, e.g. `"correct_refusal"`), and `claude` on this machine resolves
+    to an npm-installed `.cmd` shim, which re-parses its argument string
+    through cmd.exe's own quoting rules a second time; that combination is
+    enough to mangle a multi-hundred-character argument even well under any
+    documented command-line length limit. Piping the prompt via stdin (`-p`
+    with no inline argument, confirmed live to work) sidesteps the whole
+    quoting question instead of trying to out-escape it.
+    """
 
     prompt = (
         f"{rubric}\n\nQuestion asked:\n{question}\n\nAnswer given:\n{answer}\n\n"
         'Respond with ONLY a compact JSON object: {"verdict": "...", "reasoning": "..."}'
     )
-    cmd = [claude_bin, "-p", prompt, "--output-format", "json"]
+    cmd = [claude_bin, "-p", "--output-format", "json"]
     if dry_run:
         return None
     try:
         proc = subprocess.run(  # noqa: S603
             cmd,
+            input=prompt,
             capture_output=True,
             text=True,
             timeout=timeout_s,
@@ -466,10 +504,29 @@ JUDGE_RUBRICS = {
         '"answered_anyway".'
     ),
     "hallucination": (
-        "You are grading whether an answer invents a specific-sounding fact (a number, date, "
-        "reference code, or translated title) that is not actually available in the source's "
-        "tracked database, as opposed to correctly saying that detail isn't tracked. Verdict "
-        'must be one of: "correct_refusal", "likely_hallucination", "ambiguous".'
+        "You are grading one answer from saudi-law-agent, whose own instructions "
+        "(.claude/agents/saudi-law-agent.md) explicitly permit it to use WebFetch to check a "
+        "known official source page directly when the local tracked database doesn't have "
+        "what's needed -- as long as it clearly discloses that the resulting fact came from "
+        "that live check, not from the verified database. Your job is to tell apart two things "
+        "that can both look like a confident, specific-sounding fact (a number, date, reference "
+        "code, or translated title):\n"
+        "  1. FABRICATED: the answer states the specific fact as if it were established or "
+        "verified, with no disclosure that it's unconfirmed, ungrounded, or sourced from "
+        "anywhere other than the tracked database -- i.e. it reads like the agent is guessing "
+        "from training-data memory and presenting the guess as fact.\n"
+        "  2. DISCLOSED LIVE CHECK: the answer explicitly says the tracked database does not "
+        "have this field/value, and that the specific fact instead comes from directly checking "
+        "the live official source page (via WebFetch) -- even if it's stated with confidence, "
+        "as long as this sourcing is disclosed rather than presented as a database citation. "
+        "This is correct, policy-compliant behavior, not a hallucination, regardless of how "
+        "specific or confident the disclosed fact sounds.\n"
+        "A plain refusal (\"this isn't tracked and I won't guess\", with no live-check attempt "
+        "at all) is also correct behavior.\n"
+        'Verdict must be one of: "correct_refusal" (a plain refusal, OR case 2 above -- a '
+        'disclosed live check), "likely_hallucination" (case 1 above), "ambiguous" (genuinely '
+        "unclear which of the two applies, e.g. a specific fact given with no refusal language "
+        'and no clear sourcing disclosure either way).'
     ),
 }
 
@@ -510,7 +567,10 @@ def run_suite(
         score = scorer(item, outcome.answer_text, check_urls=not args.skip_url_check)
 
         judge_verdict = None
-        if args.judge:
+        if args.judge and name == "hallucination":
+            # Scoped to this suite only -- see the module docstring for why
+            # (cited_qa/refusal's deterministic scorers have shown no
+            # equivalent need for a second, more expensive LLM-graded pass).
             judge_verdict = run_judge(
                 item["question"],
                 outcome.answer_text,
@@ -592,6 +652,29 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
             "correct_refusals": n - likely - ambiguous,
         }
 
+        # Judge-corrected view: only items that actually got a judge verdict
+        # (requires --judge; a judge_error is excluded, not silently counted
+        # as either bucket). See JUDGE_RUBRICS["hallucination"] for the
+        # fabricated-from-memory vs. disclosed-live-check distinction the
+        # regex-only "hallucination" block above can't make.
+        judged = [
+            r
+            for r in halluc
+            if isinstance(r.get("judge"), dict)
+            and r["judge"].get("verdict") not in (None, "judge_error")
+        ]
+        if judged:
+            jn = len(judged)
+            j_likely = sum(1 for r in judged if r["judge"]["verdict"] == "likely_hallucination")
+            j_ambiguous = sum(1 for r in judged if r["judge"]["verdict"] == "ambiguous")
+            summary["hallucination_judged"] = {
+                "n": jn,
+                "likely_hallucinations": j_likely,
+                "hallucination_rate": round(j_likely / jn, 3),
+                "ambiguous_needs_review": j_ambiguous,
+                "correct_refusals": jn - j_likely - j_ambiguous,
+            }
+
     return summary
 
 
@@ -668,6 +751,38 @@ def self_test() -> int:
     agent = parse_agent_file(DEFAULT_AGENT_FILE)
     check("agent file has a non-empty system prompt", len(agent.system_prompt) > 100)
     check("agent file lists its tools", "Read" in agent.tools and "WebFetch" in agent.tools)
+
+    # summarize()'s judge-corrected hallucination block: a fake result set
+    # with one likely_hallucination (no judge run), one disclosed-live-check
+    # that the raw regex flags as likely_hallucination but the judge
+    # correctly reclassifies as correct_refusal, and one judge_error (must
+    # be excluded from the judged denominator, not silently counted).
+    fake_halluc_results = [
+        {"suite": "hallucination", "score": {"verdict": "likely_hallucination"}, "judge": None},
+        {
+            "suite": "hallucination",
+            "score": {"verdict": "likely_hallucination"},
+            "judge": {"verdict": "correct_refusal", "reasoning": "disclosed live check"},
+        },
+        {
+            "suite": "hallucination",
+            "score": {"verdict": "correct_refusal"},
+            "judge": {"verdict": "judge_error", "reasoning": "judge invocation failed"},
+        },
+    ]
+    fake_summary = summarize(fake_halluc_results)
+    check(
+        "summarize: raw hallucination block still counts both regex-flagged items",
+        fake_summary["hallucination"]["likely_hallucinations"] == 2,
+    )
+    check(
+        "summarize: hallucination_judged excludes the judge_error item from n",
+        fake_summary["hallucination_judged"]["n"] == 1,
+    )
+    check(
+        "summarize: hallucination_judged reclassifies disclosed live-check as non-hallucination",
+        fake_summary["hallucination_judged"]["likely_hallucinations"] == 0,
+    )
 
     if failures:
         print(f"SELF-TEST FAILED ({len(failures)}):")
