@@ -33,6 +33,31 @@ again, not that it's confirmed working today — the pipeline's own
 pipeline.py) is what correctly flags this source as `error` in the
 meantime, exactly as intended.
 
+Re-confirmed live 2026-09-16, and the situation has *worsened*, not just
+persisted: `/en-US/MediaCenter/News` and `/en-US/Statistics/Indices` —
+both explicitly noted as "loads fine" above on 2026-09-14 — now return the
+identical fake response too. That response is distinguishable from a real
+SharePoint page by more than content: a genuine page carries SharePoint's
+own infrastructure headers (`X-SharePointHealthScore`,
+`MicrosoftSharePointTeamServices`, `SPRequestGuid`, Dynatrace injection
+headers); the fake one has none of them, just a generic
+`Cache-Control: no-cache` / `Connection: close` response with no
+SharePoint fingerprint at all — meaning it isn't reaching the SharePoint
+backend, something in front of it (a proxy, CDN rule, or an
+in-progress-migration router) is intercepting these paths and serving a
+placeholder. This isn't a casing or specific-path issue either: `/en-us`,
+`/en-US`, `/ar-sa`, and `/en-us/publications` all still resolve to the real
+site (confirmed real via the same header fingerprint) while every other
+inner path tried, including ones that worked two days ago, does not. Root
+cause is most consistent with an active, in-progress site
+migration/relaunch being rolled out section by section (the homepage and
+`/publications` already cut over, most everything else not yet), not a
+security block or a dead API specifically — but this is inferred from the
+pattern, not confirmed against anything SAMA has published about it.
+There is nothing to fix scraper-side until more of the real site is live;
+re-run the probes above periodically rather than assuming a code change
+here can route around an unreachable backend.
+
 Each configured `start_paths` entry is a page under a SharePoint site, e.g.
 `/ar-sa/Laws/Pages/default.aspx`; the REST API lives at the *site* root, one
 level up from `/Pages/...` — `/ar-sa/Laws` in that example. The list is
