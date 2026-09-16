@@ -1,5 +1,18 @@
 """Saudi Central Bank (SAMA) — www.sama.gov.sa
 
+STATUS (as of 2026-09-16, last re-checked live -- see the full investigation
+below): this source is down, not broken. Since at least 2026-09-14, every
+inner path on sama.gov.sa (the Laws REST API included) has returned a fake
+shell page instead of real content -- confirmed by infrastructure-header
+analysis (a genuine SharePoint response carries X-SharePointHealthScore/
+MicrosoftSharePointTeamServices/SPRequestGuid headers; the fake one has
+none of them and never reaches the SharePoint backend at all), not by
+content inspection alone. This is a site-side outage/migration, not a
+selector or endpoint bug in this scraper -- re-check the probes below
+periodically rather than assuming a future scraper change here is what's
+needed. `min_expected_docs`/the pipeline's zero_rows check (SLT-08) is
+correctly flagging this as `error` for as long as this persists.
+
 Confirmed live 2026-09-14: the previous docstring's "the REST endpoint just
 needs the right list name" theory does not hold. `_api/web/lists/
 getbytitle('Laws')/items` returns HTTP 200 with `Content-Type: text/html`

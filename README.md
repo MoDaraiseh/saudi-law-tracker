@@ -10,7 +10,7 @@ Configured in [`config/sources.yaml`](config/sources.yaml). Defaults:
 | Key | Source | Notes |
 | --- | --- | --- |
 | `bureau_of_experts` | Bureau of Experts at the Council of Ministers — laws.boe.gov.sa | Consolidated laws & regulations, Hijri issue dates |
-| `sama_circulars` | Saudi Central Bank (SAMA) | Rules & circulars |
+| `sama_circulars` | Saudi Central Bank (SAMA) | Rules & circulars — **currently down site-side, not a scraper bug; see below** |
 | `zatca_updates` | Zakat, Tax and Customs Authority (ZATCA) | Tax rulings, regulations, public consultations |
 | `citc` | Communications, Space & Technology Commission (CST/CITC) | Regulations & consultations |
 | `mhrsd_labor` | Ministry of Human Resources & Social Development | Labor System + ministerial-decision amendments |
@@ -18,6 +18,17 @@ Configured in [`config/sources.yaml`](config/sources.yaml). Defaults:
 
 Add, disable, or remove sources by editing the YAML — set `enabled: false` to
 pause one without losing its config.
+
+**Known limitation:** `sama_circulars` has returned a fake shell page instead
+of real API/JSON responses since at least 2026-09-14 (last re-confirmed live
+2026-09-16), across every inner path on sama.gov.sa, in both languages —
+confirmed via infrastructure-header analysis distinguishing it from genuine
+SharePoint responses, not just content inspection. This looks like a
+site-side outage or in-progress migration, not a selector bug here — see the
+full investigation in [`scrapers/sama.py`](src/saudi_law_tracker/scrapers/sama.py)'s
+module docstring. Re-check periodically rather than assuming a scraper fix
+here is what's needed; `saudi-law-tracker status` correctly reports it as
+`error` in the meantime.
 
 ## Layout
 
