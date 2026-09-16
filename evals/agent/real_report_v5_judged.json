@@ -1,0 +1,693 @@
+{
+  "summary": {
+    "cited_qa": {
+      "n": 20,
+      "citation_valid": 20,
+      "citation_valid_rate": 1.0,
+      "title_match_rate": 1.0,
+      "url_present_rate": 1.0,
+      "url_resolves_rate": 1.0
+    },
+    "refusal": {
+      "n": 10,
+      "correct_refusals": 8,
+      "refusal_correctness_rate": 0.8
+    },
+    "hallucination": {
+      "n": 10,
+      "likely_hallucinations": 3,
+      "hallucination_rate": 0.3,
+      "ambiguous_needs_review": 0,
+      "correct_refusals": 7
+    },
+    "hallucination_judged": {
+      "n": 10,
+      "likely_hallucinations": 0,
+      "hallucination_rate": 0.0,
+      "ambiguous_needs_review": 0,
+      "correct_refusals": 10
+    }
+  },
+  "results": [
+    {
+      "suite": "cited_qa",
+      "id": "cited-01",
+      "question": "What is the tracked title and source URL for Saudi Arabia's Labor Law (نظام العمل)?",
+      "answer": "Found it — the exact tracked entry for the base Labor Law.\n\n## Answer\n\nThe tracked database has a verified entry for Saudi Arabia's Labor Law:\n\n- **Title (Arabic):** نظام العمل (Labor Law)\n- **Reference number:** م/51\n- **Issuing authority:** Royal Decree, tracked via the Bureau of Experts at the Council of Ministers (`bureau_of_experts` source)\n- **Published (Gregorian):** 2005-09-27 (1426-08-23 Hijri)\n- **Effective date:** 2005-10-28\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/08381293-6388-48e2-8ad2-a9a700f2aa94/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=704cf56e-eb7a-4ddb-8c28-adbb01244dc6\n\nThis row is `verified = true`, so the title/dates above can be cited as fact from the tracked database. Note this is the base law text as recorded by the Bureau of Experts scraper; it does not by itself capture every subsequent amendment. Separately, `mhrsd_labor` (the Ministry of Human Resources & Social Development) has several verified entries specifically about the **2025 amendments** to نظام العمل (e.g., \"دليل استفسارات تعديلات نظام العمل السعودي 2025\", published 2026‑04‑29, at hrsd.gov.sa) — worth checking if you need the current amended text rather than just the original 2005 decree.\n\n## Sources used\n1. **نظام العمل** (Labor Law), Royal Decree م/51, published 2005‑09‑27, effective 2005‑10‑28 — Bureau of Experts at the Council of Ministers. https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/08381293-6388-48e2-8ad2-a9a700f2aa94/1\n2. **دليل استفسارات تعديلات نظام العمل السعودي 2025** (guide on 2025 Labor Law amendments), published 2026‑04‑29 — Ministry of Human Resources & Social Development. https://www.hrsd.gov.sa/knowledge-centre/decisions-and-regulations/regulation-and-procedures/دليل-استفسارات-تعديلات-نظام-العمل\n\n## Data freshness note\nAll six tracked sources currently show `error` in `saudi-law-tracker status --max-age-hours 36`: **bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura**. Checking `logs/cron.log`, the latest run (2026‑09‑15T07:41 UTC) failed for all sources with `zero_rows` due to a DNS resolution failure (`getaddrinfo failed`) reaching the target sites — this looks like a network connectivity problem in the last run rather than confirmed site breakage, but per policy it's flagged as ERROR regardless of cause. The most recent successful run was 2026‑09‑13, from which the data above (including the Labor Law entry, first/last seen 2026‑09‑08 through 2026‑09‑14) is drawn. Treat all current data as potentially one cycle stale until a clean run completes.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 77.64
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-02",
+      "question": "Find the Bureau of Experts entry for the Companies Law (نظام الشركات) and give me its title and URL.",
+      "answer": "Found it. The exact match is the first result: **نظام الشركات** (Companies Law).\n\n## Answer\n\n**Title (Arabic):** نظام الشركات (Companies Law)\n**Reference number:** م/132\n**Issuing authority:** Royal Decree, via the Bureau of Experts at the Council of Ministers (Bureau of Experts law portal)\n**Published (Hijri):** 1443-12-01 AH / **Gregorian:** 2022-06-30\n**Effective date:** 2022-07-22\n**URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/a8376aea-1bc3-49d4-9027-aed900b555af/1\n**PDF:** https://laws.boe.gov.sa/Files/Download/?attId=64f8ea4b-0a7a-4491-8149-b42700884551\n\nPer the stored summary, this law superseded the earlier Companies Law (Royal Decree No. م/3, dated 28/1/1437H) and the Professional Companies Law (Royal Decree No. م/17, dated 26/1/1441H). This row is `verified = true` (bureau_of_experts is a tuned source), so the title, dates, and reference number above can be cited as fact.\n\nNote: this is the Bureau of Experts' own Arabic listing — I have not translated the primary text itself, only relayed the stored title/metadata.\n\n**Source used:**\n- نظام الشركات (Companies Law), Bureau of Experts at the Council of Ministers, published 2022-06-30 (1443-12-01 AH), effective 2022-07-22 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/a8376aea-1bc3-49d4-9027-aed900b555af/1\n\n**Data freshness note:** ERROR (all 6 tracked sources, including bureau_of_experts): the most recent scrape run (2026-09-15T07:41 UTC) failed for every source with a `zero_rows` error, and logs show the underlying cause was a DNS/network failure (`getaddrinfo failed` fetching robots.txt) in that run, not necessarily a genuine site change. The last *successful* run for bureau_of_experts was 2026-09-13T19:01 UTC (75 docs, including this Companies Law entry, confirmed present), and the database still holds 538 stored bureau_of_experts docs from prior successful runs — the record above comes from that stored, verified data. However, since the source's live scrape is currently erroring, I can't confirm as of right now whether anything has changed on the live site since 2026-09-13. Treat this citation as accurate as of the last successful scrape, not necessarily reflecting any changes in the last ~40 hours.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 83.83
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-03",
+      "question": "What is the tracked source URL for the VAT Law (نظام ضريبة القيمة المضافة)?",
+      "answer": "## Tracked Source URL — VAT Law (نظام ضريبة القيمة المضافة)\n\nThe database has two **verified** entries matching this law:\n\n**1. Bureau of Experts (primary legal text, Arabic)**\n- Title: نظام ضريبة القيمة المضافة (VAT Law)\n- Issuing authority: Bureau of Experts at the Council of Ministers (Royal Decree م/113)\n- Published (Gregorian/Hijri): 2017-07-25 / 1438-11-02; Effective date: 2018-11-29\n- Source URL: https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f98f4238-0289-4891-8a22-a9a700f1f538/1\n- PDF: https://laws.boe.gov.sa/Files/Download/?attId=7db4e0d9-d979-4ae0-810f-adbb0111144f\n\n**2. ZATCA (regulatory authority's own page, English)**\n- Title: \"Value Added Tax (VAT) Law\"\n- Issuing authority: Zakat, Tax and Customs Authority (ZATCA)\n- No published/effective date recorded in this row; last modified (per ZATCA page metadata): 2026-08-26\n- Source URL: https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/VATLaw.aspx\n\nBoth rows are `verified = true`, so the titles/dates above are safe to treat as established fact from the tracked data. Note the ZATCA row's \"last_modified\" reflects when ZATCA's page was last updated, not a formal enactment date — for the authoritative promulgation date/reference number, rely on the Bureau of Experts entry.\n\n**Data freshness note:** The most recent `status --max-age-hours 36` check shows **every** tracked source currently reporting `error` on its last run (bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura — all last run 2026-09-15T07:41 UTC, status=error). This includes both sources cited above (`bureau_of_experts` and `zatca_updates`). This likely reflects a `zero_rows`-style scraper failure rather than a change to the underlying law, but it means the most recent refresh attempt did not succeed, and I cannot confirm the stored rows reflect the current state of these pages beyond their `last_seen` timestamps (2026-09-14). Treat the citations above as the last known-good verified snapshot, not necessarily current as of today.\n\n**ERROR:** bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura (all showed `error` status on last run, 2026-09-15T07:41 UTC).\n\nThis is a research/monitoring tool, not a substitute for a lawyer's review before relying on this for any real decision.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 45.49
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-04",
+      "question": "Is the Basic Law of Governance (النظام الأساسي للحكم) in the tracked database? If so, give its title and URL.",
+      "answer": "**Yes** — the Basic Law of Governance (النظام الأساسي للحكم) is in the tracked database, and it is a **verified** row.\n\n- **Title (Arabic, as stored):** النظام الأساسي للحكم (Basic Law of Governance)\n- **Issuing authority:** Royal Decree (نظام أساسي / Royal Order), per the Bureau of Experts (National Center for Legislation) laws portal\n- **Reference number:** أ/90\n- **Published (Gregorian / Hijri):** 1992-03-01 / 1412-08-27\n- **Effective date:** 1992-03-06\n- **Summary (Arabic, as stored):** Covers general principles, the system of governance, foundations of Saudi society, economic principles, rights and duties, state authorities, financial affairs, and general provisions.\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/16b97fcb-4833-4f66-8531-a9a700f161b6/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=ed4842e1-9543-40b9-973b-ada200d4ed10\n\nNote: the stored title/summary are in Arabic (the primary text); I have not translated them as an authoritative English rendering — treat any English gloss above as informal description only, not an official translation.\n\n**Data-freshness note:** `saudi-law-tracker status --max-age-hours 36` reported **all six tracked sources** currently showing status `error`: ERROR: bureau_of_experts, ERROR: sama_circulars, ERROR: zatca_updates, ERROR: citc, ERROR: mhrsd_labor, ERROR: umm_al_qura. A check of `logs/` shows the most recent smoke-test run failing specifically for `bureau_of_experts` and `sama_circulars` (no verified dated row returned in that test), consistent with the `error` status. This means the Basic Law of Governance record above — while verified and from a tuned scraper — comes from a source (`bureau_of_experts`) that is not currently running cleanly; the record itself may still be accurate (it's a static, long-standing constitutional-type document unlikely to have changed), but you should treat the source's overall feed as potentially stale/incomplete until it recovers, and verify against the live BOE portal for anything time-sensitive.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 39.23
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-05",
+      "question": "What is the source URL the tracker has on file for the Anti-Cyber Crime Law (نظام مكافحة جرائم المعلوماتية)?",
+      "answer": "## Anti-Cyber Crime Law — Source URL on File\n\nFound a **verified** row in the tracker for this law:\n\n- **Title:** نظام مكافحة جرائم المعلوماتية (Anti-Cyber Crime Law)\n- **Issuing authority:** Bureau of Experts at the Council of Ministers (via Royal Decree م/17)\n- **Reference number:** م/17\n- **Published:** 2007-03-27 (Gregorian) / 1428-03-08 (Hijri)\n- **Effective date:** 2007-03-27\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/25df73d6-0f49-4dc5-b010-a9a700f2ec1d/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=5386bb81-a4a9-44d5-865d-ad3c00bd0dff\n- **Last confirmed by scraper:** 2026-09-14T17:55:30Z (last_seen)\n\nThis row is `verified = true` (from the tuned `bureau_of_experts` scraper), so the title, dates, and URL above can be treated as established fact per the last successful scrape.\n\n## ⚠️ Data-freshness warning\n\nI ran `status --max-age-hours 36` before answering, as required, and **all six tracked sources currently show status `error`**, including `bureau_of_experts` — the very source this law is sourced from:\n\n- `bureau_of_experts` — **ERROR** (zero_rows: selector or endpoint no longer matches)\n- `sama_circulars` — **ERROR** (zero_rows)\n- `zatca_updates` — **ERROR** (zero_rows)\n- `citc` — **ERROR** (zero_rows)\n- `mhrsd_labor` — **ERROR** (zero_rows)\n- `umm_al_qura` — **ERROR** (zero_rows)\n\nI checked `logs/cron.log` as a secondary check: the most recent run (2026-09-15T07:41 UTC) failed for every source with `zero_rows`, and the log also shows DNS resolution failures (`getaddrinfo failed`) fetching `robots.txt` for these sites, along with `robots.disallowed` blocks — suggesting today's failures may stem from a network/connectivity issue in this run rather than confirmed site-structure changes, but I can't rule out real selector drift from this alone.\n\n**Bottom line:** the URL and details above come from the last successful, verified scrape (2026-09-14), not today's run, so they should still be reliable as the record on file — but the `bureau_of_experts` source is not currently refreshing, so if the underlying page has changed very recently, the tracker wouldn't yet reflect it. I'd recommend a lawyer or direct check of the live BOE page before relying on this for a real decision.\n\n**Data-freshness note:** ERROR: bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura (all zero_rows on most recent run, 2026-09-15).",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 52.37
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-06",
+      "question": "Give me the exact tracked title and URL for the Saudi Arbitration Law (نظام التحكيم).",
+      "answer": "Found it — a verified record in the tracked database.\n\n## Saudi Arbitration Law (نظام التحكيم)\n\n- **Tracked title (Arabic, as stored):** نظام التحكيم\n- **Reference number:** م / 34\n- **Issuing authority:** Bureau of Experts at the Council of Ministers (Saudi royal decree/law registry) — تصنيف: law / regulation / royal_decree\n- **Published (Gregorian / Hijri):** 2012-04-16 / 1433-05-24\n- **Effective date:** 2012-06-08\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/5535039e-13da-43f6-8f53-a9a700f26485/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=67301cd6-bad9-4e1e-bedf-adbb011be2c9\n- **Verified:** true (this row comes from the tuned `bureau_of_experts` scraper, so the title, dates, and reference number above can be cited as fact)\n\nTwo related, also-verified records turned up in the same search and may be useful context:\n- **اللائحة التنفيذية لنظام التحكيم** (Implementing Regulations of the Arbitration Law), ref. 541, published 2017-05-22 (1438-08-26), effective 2018-11-29 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/12752a60-2a4a-4cab-a05d-a9a700f274a5/1\n- **تنظيم المركز السعودي للتحكيم التجاري** (Statute of the Saudi Center for Commercial Arbitration), ref. 448, published 2019-04-30 (1440-08-25), effective 2019-05-10 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/54ff827d-8488-49aa-b593-aa4400c961fd/1\n\nNote: these titles are shown here in the original Arabic exactly as stored; no unofficial English translation is being presented as authoritative.\n\n---\n\n**⚠️ Data-freshness note:** I ran `status --max-age-hours 36` first as required. **Every tracked source came back with status `error`** on the latest run (2026-09-15T07:41:09Z), including `bureau_of_experts` (the source this record comes from):\n\n- ERROR: `bureau_of_experts` (zero_rows — selector/endpoint returned 0 on this run; 538 docs from prior successful runs remain in the DB, including the one above)\n- ERROR: `sama_circulars` (zero_rows)\n- ERROR: `zatca_updates` (zero_rows)\n- ERROR: `citc` (zero_rows)\n- ERROR: `mhrsd_labor` (zero_rows)\n- ERROR: `umm_al_qura` (zero_rows)\n\nThe logs show these failures stem from network/DNS resolution failures (`getaddrinfo failed`) and robots.txt fetch failures in this environment, not necessarily from the live sites' markup changing — but per protocol I'm flagging this regardless. The Arbitration Law row above was captured during a prior successful, verified run (first/last seen 2026-09-08 to 2026-09-14) and its content should still be accurate, but be aware the source hasn't successfully re-confirmed it in the most recent run, so treat it as very likely current but not freshly re-verified today.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 48.47
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-07",
+      "question": "What entry does the database have for the Anti-Narcotics and Psychotropic Substances Law (نظام مكافحة المخدرات والمؤثرات العقلية)? Give the title and URL.",
+      "answer": "## Anti-Narcotics and Psychotropic Substances Law — database entry\n\nThe tracked database does have a verified entry that matches this law exactly:\n\n- **Title (Arabic, as stored):** نظام مكافحة المخدرات والمؤثرات العقلية *(Anti-Narcotics and Psychotropic Substances Law — unofficial English rendering of the Arabic title; the database stores only the Arabic title, no official English translation)*\n- **Issuing authority / source tracked:** Bureau of Experts at the Council of Ministers — Laws & Regulations (`bureau_of_experts`)\n- **Reference number:** م/39\n- **Published (Gregorian / Hijri):** 2005-08-13 / 1426-07-08\n- **Effective date:** 2005-09-16\n- **URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/221b3286-a3c6-4ea4-97c7-a9a700f18273/1\n- **Verified:** true (this row comes from a tuned scraper, so the title/dates/reference above can be cited as fact)\n\n**Related entries also found (verified, same source), in case they're useful:**\n- اللائحة التنفيذية لنظام مكافحة المخدرات والمؤثرات العقلية (Implementing Regulation, ref. 201, published 2010-05-24) — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/be479758-9a84-4e94-b1d3-a9a700f19454/1\n- تنظيم اللجنة الوطنية لمكافحة المخدرات (National Anti-Narcotics Committee regulation, ref. 119, 2009-04-13) — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/b2c545f0-d65f-4c13-b712-a9a700f193b6/1\n- النظام الأساسي لمركز المعلومات الجنائية لمكافحة المخدرات لمجلس التعاون لدول الخليج العربية (GCC narcotics criminal-info center statute, ref. م/56, 2009-10-13) — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/76988d51-8339-42a8-97d1-a9a700f194dc/1\n\nOne more row turned up from `umm_al_qura` (\"أحكام عامة على الجداول المرافقة لنظام مكافحة المخدرات والمؤثرات العقلية\") but it is **unverified** (verified=false) — it's only tracked, not fully parsed, so I can't confirm its title/dates as fact.\n\nI did not find an official English title in the database — the \"Anti-Narcotics and Psychotropic Substances Law\" name in your question is a common unofficial translation of the Arabic title above, not something the database itself provides.\n\n## Data freshness note (required disclosure)\n\n`status --max-age-hours 36` currently shows **every** enabled source with status `error`:\n- ERROR: bureau_of_experts (zero_rows in latest run)\n- ERROR: sama_circulars (zero_rows in latest run)\n- ERROR: zatca_updates (zero_rows in latest run)\n- ERROR: citc (zero_rows in latest run)\n- ERROR: mhrsd_labor (zero_rows in latest run)\n- ERROR: umm_al_qura (zero_rows in latest run)\n\nI checked `logs/cron.log` as a secondary check: the live smoke test shows the `bureau_of_experts` scraper hit a DNS resolution failure (`getaddrinfo failed`) reaching `laws.boe.gov.sa` during today's run, which is consistent with a transient network issue rather than necessarily a broken selector — but I can't rule out real site drift from the log alone. **Practical effect for this answer:** the law entry above was already stored from a previous successful, verified run (`last_seen: 2026-09-14T17:55:30Z`), so I'm confident in citing it, but bureau_of_experts' data has not been successfully refreshed in the latest run, so I can't guarantee no newer amendments have been published since 2026-09-14 without missing them. Treat this citation as current as of that last successful crawl, not necessarily as of today.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 52.43
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-08",
+      "question": "What is the tracked source URL for the Personal Status Law (نظام الأحوال الشخصية)?",
+      "answer": "Found it, and it's a **verified** row from the tuned `bureau_of_experts` scraper.\n\n## Answer\n\n**نظام الأحوال الشخصية (Personal Status Law)**\n- **Publication date:** 1443-08-06 AH (Hijri, as stored)\n- **Doc type:** Law\n- **Issuing/publishing authority:** Bureau of Experts at the Council of Ministers (هيئة الخبراء بمجلس الوزراء) — this is the official legislation portal that publishes the promulgated text, not necessarily the sole issuing body of the law itself\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/4d72d829-947b-45d5-b9b5-ae5800d6bac2/1\n- **Verification status:** `verified = true` (tuned scraper) — the title and this URL can be cited as fact per the tracker's own record.\n\nNote: the Hijri date is what's stored in the database; I have not independently converted it to a Gregorian date or verified additional detail (e.g., royal decree number) beyond what the record above holds — for anything beyond title/date/URL, consult the primary text at the link.\n\n**Sources used:**\n- نظام الأحوال الشخصية (Personal Status Law), Bureau of Experts at the Council of Ministers — Laws & Regulations, published 1443-08-06 AH, https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/4d72d829-947b-45d5-b9b5-ae5800d6bac2/1\n\n**Data freshness note:** ERROR: bureau_of_experts (status command reports `error`); ERROR: sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura (all also show `error` in the latest status check). I checked `logs/cron.log` as a secondary signal: it shows a live-smoke test confirming `bureau_of_experts` and `sama_circulars` returned 0 verified/dated rows on the most recent live check (partly attributable to a DNS/network failure in that test run, but the `status` command's `error` flag is the authoritative signal here regardless of cause). **Because the source relevant to this answer (bureau_of_experts) is itself flagged `error`, the Personal Status Law record above may not reflect the very latest state of that source** — the row was captured on a prior successful run, but new amendments or listings since then would not yet be captured. Treat this as the most recent verified snapshot, not a guarantee of full currency.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 61.92
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-09",
+      "question": "Find the E-Commerce Law (نظام التجارة الإلكترونية) in the tracked database and give its title and URL.",
+      "answer": "I found the E‑Commerce Law in the tracked database.\n\n## Result\n\n**نظام التجارة الإلكترونية** (E‑Commerce Law)\n- **Issuing authority:** Saudi royal decree, tracked via the Bureau of Experts at the Council of Ministers (البوابة الوطنية للأنظمة)\n- **Reference number:** م/126\n- **Published (Gregorian):** 2019-07-10 (Hijri: 1440-11-07)\n- **Effective date:** 2019-07-24\n- **Doc type:** law\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/360de590-0286-4fa5-a243-aa9100c31979/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=be4eef55-50be-44e3-b94d-adbb011b5736\n- **verified:** true — this row comes from the tuned `bureau_of_experts` scraper, so title/dates/reference number can be cited as fact.\n\nNote: the stored title and summary are the original Arabic text; no English translation is stored in the database, so I have not provided an unofficial English rendering.\n\n## Data freshness — important caveat\n\nPer the required pre-check (`status --max-age-hours 36`), **all six tracked sources currently show status `error`** on their most recent run, including `bureau_of_experts` (the source this record comes from):\n\n- **bureau_of_experts** — ERROR (zero_rows: selector/endpoint no longer matching in the latest run)\n- **sama_circulars** — ERROR (zero_rows)\n- **zatca_updates** — ERROR (zero_rows)\n- **citc** — ERROR (zero_rows)\n- **mhrsd_labor** — ERROR (zero_rows)\n- **umm_al_qura** — ERROR (zero_rows)\n\nChecking `logs/cron.log`, the failures during today's live test run trace to network resolution failures (`getaddrinfo failed`) reaching the source sites from this environment, plus `robots.txt` disallow responses on a couple of endpoints — so this looks like an environment/connectivity issue in the latest run rather than necessarily broken scrapers, but I can't confirm that without a successful re-run.\n\n**Practical implication for this specific answer:** the E‑Commerce Law record itself was captured in an earlier successful run (`last_seen: 2026-09-14T17:55:30Z`) and is verified, so I'm confident in the title, reference number, and dates shown above. However, since `bureau_of_experts` failed on its most recent run, I cannot guarantee this is the *current* state of the law (e.g., any amendments published very recently might not yet be reflected). Treat this as accurate as of 2026‑09‑14, not necessarily as of today.\n\n**Freshness note:** STALE/ERROR — ERROR: bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura (all zero_rows on most recent run, per `status` and `logs/cron.log`).\n\nThis project only tracks these six sectors/sources (Bureau of Experts laws, SAMA circulars, ZATCA updates, CITC/CST regulations, MHRSD labor law, and Umm Al‑Qura gazette) — this question falls within scope (commercial law via Bureau of Experts).\n\nFor anything beyond confirming this citation, please have a qualified Saudi lawyer review the current, official Arabic text before relying on it for a business decision.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 65.44
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-10",
+      "question": "What is the source URL on file for the Income Tax Law (نظام ضريبة الدخل)?",
+      "answer": "## Income Tax Law (نظام ضريبة الدخل) — Source on file\n\nThe tracked database has a **verified** record for this law, from the Bureau of Experts (Bureau of Experts at the Council of Ministers — Laws & Regulations) source:\n\n- **Title:** نظام ضريبة الدخل (Income Tax Law)\n- **Reference number:** م/1\n- **Issuing authority:** Royal Decree, via Bureau of Experts at the Council of Ministers (laws.boe.gov.sa)\n- **Published (Gregorian):** 2004-03-06 (1425-01-15 Hijri)\n- **Effective date:** 2004-04-30\n- **Source URL (law detail page):** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/23576008-1ce4-4685-ac3e-a9a700f2cb02/1\n- **PDF download link on file:** https://laws.boe.gov.sa/Files/Download/?attId=8b8fa466-1e37-44ca-a876-adbb011146c2\n\nSummary (Arabic, as stored): \"يتضمن النظام ما يلي: فرض ضريبة على دخل الأفراد الشخصي، وعلى الدخل أو الربح الذي تدره استثمارات رؤوس الأموال، وبيان الخاضعين للضريبة، ونسبتها، والمبالغ التي تستحق عليها الضريبة. المعفون من الضرائب.\"\n\nThis is the primary Arabic text/source, not a translation — good for citation purposes, though I have not independently re-verified the live page content beyond what's stored.\n\nRelated tracked entries you may also want:\n- ZATCA (Zakat, Tax and Customs Authority) hosts English-language pages summarizing the Income Tax Law and its implementing regulations, e.g. https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/income-tax.aspx — these ZATCA rows are also verified but are guidance/portal pages, not the primary legal text.\n\n## ⚠️ Important data-freshness caveat\n\nBefore answering, I ran `status --max-age-hours 36` as required. **All six tracked sources — including `bureau_of_experts`, the source for this exact record — currently show status `error`.** I also checked `logs/cron.log`, which shows the live smoke test failing for `bureau_of_experts` and `sama_circulars` specifically: the scraper got 0 verified/dated rows on its last live run, with a DNS resolution failure (`getaddrinfo failed`) reaching `laws.boe.gov.sa` and a robots.txt disallow warning. This means the **`bureau_of_experts` record above was last successfully confirmed as of `last_seen: 2026-09-14T17:55:30Z`, but the most recent scrape attempt could not re-verify it** — the site may be unreachable or its scraper selectors may need attention. Treat the citation as likely accurate but not confirmed as of today.\n\n**STALE/ERROR sources:** ERROR: bureau_of_experts (live smoke test found 0 rows / DNS failure reaching laws.boe.gov.sa); ERROR: sama_circulars (zero_rows); ERROR: zatca_updates; ERROR: citc; ERROR: mhrsd_labor; ERROR: umm_al_qura — all six sources show `error` status in the latest run per `status --max-age-hours 36`.\n\nThis is a research aid, not legal advice — please have a qualified lawyer confirm this citation against the live official text before relying on it for any business decision.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 58.59
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-11",
+      "question": "Does the tracker have an entry for the Environment Law (نظام البيئة)? Give the title and URL.",
+      "answer": "Yes — the tracker has a verified entry for the Environment Law (نظام البيئة).\n\n**Finding:** The database contains a verified record titled **\"نظام البيئة\"** (Environment Law), issued via Royal Decree No. م/165 dated 19/11/1441H (published 2020-07-10 Gregorian, effective 2020-07-17). Its summary notes it repealed the prior Saudi Wildlife Authority system and the wildlife/bird hunting system.\n\n- **Title:** نظام البيئة (Environment Law)\n- **Issuing authority:** Royal Decree م/165, tracked via the Bureau of Experts at the Council of Ministers (Laws & Regulations database)\n- **Published/effective date:** 1441-11-19 H / 2020-07-10 (Gregorian), effective 2020-07-17\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/63831ff6-63d9-4212-8b54-abf800e146bd/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=1c494103-5c98-484e-8213-b43300cffed3\n\nNote: this row is `verified = true`, so the title, dates, and reference number above can be treated as established from the tracked source. There is no separate \"environment\" sector called out in `config/sources.yaml` — this record simply came from the Bureau of Experts source, which tracks all Saudi laws/royal decrees broadly (not a dedicated environmental-regulation feed).\n\n**⚠️ Important freshness caveat:** I ran `saudi-law-tracker status --max-age-hours 36` (via `python -m saudi_law_tracker.cli status`) before answering, as required, and **every tracked source currently reports status `error`**, including `bureau_of_experts` (the source of this Environment Law record). The `logs/cron.log` shows the underlying cause is a live network/DNS failure in this environment (`getaddrinfo failed` hitting laws.boe.gov.sa and other source domains) plus a robots.txt fetch failure, not necessarily a scraper-selector break — but per the instructions, `error` status is disclosed identically regardless of root cause. This means the Environment Law record above is a **previously verified, stored row** (last confirmed present on 2026-09-14), but the source could not be re-checked for freshness in the most recent run, so I can't confirm nothing has changed since.\n\n- **ERROR:** bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura — all showing status `error` on the last run (2026-09-15T07:41 UTC).\n\nThis is a broader data-freshness issue than just the environment topic — treat all current tracker output with that caveat until sources report `ok` again. This tool is for research/monitoring support only, not a substitute for a lawyer's review of the primary Arabic text before any business decision.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 58.49
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-12",
+      "question": "What is the tracked title and URL for the Electricity Law (نظام الكهرباء)?",
+      "answer": "Found it. The current, verified **Electricity Law** (نظام الكهرباء) is tracked as follows:\n\n**Title:** نظام الكهرباء (Electricity Law)\n**Reference number:** م/44\n**Issuing authority:** Bureau of Experts at the Council of Ministers (البوابة الرسمية لهيئة الخبراء) — issued by Royal Decree\n**Published (Gregorian):** 2020-12-31 (1442-05-16 Hijri)\n**Effective date:** 2021-01-08\n**URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/b3060214-c11a-4709-b191-aca700cbcc58/1\n**Verified:** true — this row comes from a tuned scraper, so the title/dates above may be cited as fact.\n\nNote: the database also has an older, superseded entry titled \"نظام الكهرباء 1426هـ\" (م/56, dated 2005-11-22) from the original electricity establishment law, and a related regulatory-body item on the water/electricity regulator — these are distinct records, not the current Electricity Law, in case you need the historical version.\n\n---\n\n**Sources used:**\n- نظام الكهرباء (Electricity Law), Royal Decree م/44, Bureau of Experts at the Council of Ministers, published 2020-12-31, effective 2021-01-08 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/b3060214-c11a-4709-b191-aca700cbcc58/1\n\n**Data-freshness note:** All six tracked sources currently show status `error` per `saudi-law-tracker status --max-age-hours 36`: ERROR: bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura. Log inspection confirms at least `bureau_of_experts` and `sama_circulars` are failing live scrapes (selectors/robots.txt issues) as of today's run. This means the Electricity Law record above, while `verified = true` from a past successful tuning run, has not been reconfirmed by a successful scrape in the last 36 hours — treat it as likely still accurate but not freshly re-verified, and double-check against the official Umm Al-Qura Gazette or laws.boe.gov.sa directly before relying on it for a real decision.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 53.35
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-13",
+      "question": "Find the Anti-Harassment Law (نظام مكافحة جريمة التحرش) and give me its exact stored title and URL.",
+      "answer": "Found it — verified row from Bureau of Experts.\n\n**Anti-Harassment Law (نظام مكافحة جريمة التحرش)**\n\n- **Exact stored title:** نظام مكافحة جريمة التحرش\n- **URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f9de1b7f-7526-4c44-b9f3-a9f8015cf5b6/1\n- Additional stored fields (verified): Reference No. م/96; Issuing authority (source): Bureau of Experts at the Council of Ministers; Published (Gregorian): 2018-05-31 (Hijri: 1439-09-16); Effective date: 2018-06-07; PDF: https://laws.boe.gov.sa/Files/Download/?attId=20d22961-edd8-48e4-8ad3-adbb010dcadb\n\nThis row has `verified = true`, so the title, reference number, and dates above can be cited as fact per the tracker's stored data.\n\n⚠️ **Important caveat on freshness:** Every tracked source — including `bureau_of_experts` — came back with status `error` on the `status --max-age-hours 36` check I ran first. This most likely reflects the scraper's `zero_rows`/health check tripping on a recent run (possibly a site/selector change), not necessarily that this specific stored record is wrong — but it means no source has had a clean successful run within the last 36 hours, so I can't confirm this record reflects the current state of laws.boe.gov.sa. I'd recommend verifying directly against the live Bureau of Experts page before relying on this for a real decision.\n\n**Sources used:**\n- نظام مكافحة جريمة التحرش — Bureau of Experts at the Council of Ministers, published 2018-05-31 (effective 2018-06-07) — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f9de1b7f-7526-4c44-b9f3-a9f8015cf5b6/1\n\n**Data-freshness note:** ERROR: bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura (all six sources returned status `error` on their last run, per `status --max-age-hours 36`; none showed a clean success within the window). Treat all stored data, including the record above, as potentially stale until these are investigated (check `logs/` for the underlying scraper errors).",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 52.17
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-14",
+      "question": "What is the most recent version of the Enforcement Law (نظام التنفيذ) tracked in the database, and what is its source URL?",
+      "answer": "## Answer\n\nThe most recent version of the **Enforcement Law (نظام التنفيذ)** tracked in the database is:\n\n- **Title:** نظام التنفيذ (Law of Enforcement)\n- **Reference number:** م/237\n- **Issuing authority:** Royal Decree, published via the Bureau of Experts at the Council of Ministers (البوابة الوطنية للأنظمة)\n- **Published (Hijri/Gregorian):** 1447-11-03 AH / 2026-04-20\n- **Effective date:** 2026-05-01\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/67dd54bc-c33a-48c8-8356-b44700a9ab55/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=fd994824-0c2c-4423-b86d-b49d00d779eb\n- **Row status:** `verified = true` (from the tuned `bureau_of_experts` scraper), so this title/date/reference data can be cited as fact.\n- Per the stored summary, this law explicitly supersedes the prior 1433 AH Enforcement Law and takes effect 180 days after its publication in the Official Gazette.\n\nFor reference, the database also holds two earlier/related entries, both also verified:\n- **نظام التنفيذ 1433هـ** (ref. م/53), published 1433-08-13 AH / 2012-07-03, effective 2012-08-31 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/c81ba2f1-1bf1-443b-9b1c-a9a700f27110/1\n- **نظام التنفيذ أمام ديوان المظالم** (ref. م/15) — a distinct enforcement-before-the-Board-of-Grievances law, 1443-01-27 AH / 2021-09-04 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/ae1d79bf-3716-4bc5-a85e-ada100c8a870/1\n\n**Important caveat on freshness:** the `status --max-age-hours 36` check I ran just before this query shows **every** enabled source — including `bureau_of_experts`, the source this answer relies on — currently reporting **status `error`** (the run's `zero_rows` check tripped: `logs/cron.log` shows the scraper hitting `robots.txt`/DNS failures and returning 0 new rows in its latest run today, 2026-09-15). The specific verified row above was last confirmed present as of `last_seen = 2026-09-14`, one day before today, so it's very likely still current, but I cannot confirm via a fresh live run right now that no newer amendment has since been published.\n\nAll original text is in Arabic as scraped from the primary source; no third-party translation was used for the facts above.\n\n## Sources used\n1. نظام التنفيذ (Enforcement Law), Royal Decree/Bureau of Experts, published 1447-11-03 AH (2026-04-20), effective 2026-05-01 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/67dd54bc-c33a-48c8-8356-b44700a9ab55/1\n2. نظام التنفيذ 1433هـ, published 1433-08-13 AH (2012-07-03) — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/c81ba2f1-1bf1-443b-9b1c-a9a700f27110/1\n3. نظام التنفيذ أمام ديوان المظالم, published 1443-01-27 AH (2021-09-04) — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/ae1d79bf-3716-4bc5-a85e-ada100c8a870/1\n\n**Data freshness:** ERROR (zero_rows, latest run 2026-09-15): bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura — every tracked source is currently flagged as error in the last run (network/robots.txt fetch failures per `logs/cron.log`), so treat all stored data, including the above, as pending re-verification even though the specific rows cited remain marked `verified=true` from their last successful parse.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 82.86
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-15",
+      "question": "What is the tracked source URL for the Postal Law (نظام البريد)?",
+      "answer": "## Postal Law (نظام البريد) — Source Found\n\nThe tracked database has a **verified** entry for the Postal Law:\n\n- **Title:** نظام البريد (Postal Law)\n- **Issuing authority:** Bureau of Experts at the Council of Ministers (published via Umm Al-Qura / Royal Decree process); reference number **م/22**\n- **Published (Gregorian):** 2021-10-14 (1443-03-08 Hijri)\n- **Effective date:** 2021-10-22\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/8ca91427-5be7-4807-80ae-adc700a97f0d/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=6a28acd0-42f9-4c81-8e33-b11600daf2e3\n- **Verified:** true (from the tuned `bureau_of_experts` scraper)\n\nPer its own summary, this law replaced the earlier Postal Law issued by Royal Decree (م/4) dated 1406-02-21H — the database also has that superseded 1985 version tracked separately (title \"نظام البريد 1406ه\", ref م/4, at https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/87aa6473-8e77-4dc5-b45d-a9a700f2e50f/1), plus a related organizational regulation \"تنظيم مؤسسة البريد السعودي\" (ref 78, 2002) — noting these in case you meant one of those instead.\n\n**Note on language:** The title and summary above are the original Arabic as stored; I have not translated them into English, so there's no third-party translation risk here — but if you need an English rendering of the substantive provisions, flag that any such translation would be unofficial and should be checked against the Arabic original at the URL above.\n\n## ⚠️ Data freshness warning — this is directly relevant here\n\nI ran `status --max-age-hours 36` first, as required. **All six tracked sources currently show status `error`**, including `bureau_of_experts` — the very source this Postal Law citation comes from:\n\n- bureau_of_experts — **ERROR**\n- sama_circulars — **ERROR**\n- zatca_updates — **ERROR**\n- citc — **ERROR**\n- mhrsd_labor — **ERROR**\n- umm_al_qura — **ERROR**\n\nI checked `logs/cron.log` as a secondary check: the failures for `bureau_of_experts` and `sama_circulars` (the two run under the live smoke test) show `getaddrinfo failed` / `robots.fetch_failed` — i.e., DNS/network resolution errors reaching `laws.boe.gov.sa` and `www.sama.gov.sa` from this environment, not evidence of a genuine selector break on the live site. However, per the operating rules I'm required to disclose the `error` status regardless of cause and regardless of whether it's network-environment-related or a real site change.\n\nBecause `bureau_of_experts` itself is in `error` state, **treat the Postal Law citation above as possibly stale** — it was last successfully confirmed on 2026-09-14T17:55:30Z (its `last_seen` timestamp), but the most recent scrape run today did not complete successfully, so I cannot confirm there hasn't been a more recent amendment since then. I'd recommend verifying directly against the live BOE page before relying on this for a real decision.\n\n**Data-freshness note:** ERROR: bureau_of_experts (zero_rows / network failure on latest run); ERROR: sama_circulars (zero_rows / network failure); ERROR: zatca_updates; ERROR: citc; ERROR: mhrsd_labor; ERROR: umm_al_qura — all six enabled sources failed their most recent run as of 2026-09-15T07:41 UTC.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 57.97
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-16",
+      "question": "Find the Accounting and Auditing Profession Law (نظام مهنة المحاسبة والمراجعة) and give its title and URL.",
+      "answer": "Found it, and it's a verified record.\n\n## Accounting and Auditing Profession Law (نظام مهنة المحاسبة والمراجعة)\n\n- **Title:** نظام مهنة المحاسبة والمراجعة (Accounting and Auditing Profession Law)\n- **Issuing authority:** Royal Decree (published/tracked via the Bureau of Experts at the Council of Ministers — هيئة الخبراء بمجلس الوزراء)\n- **Reference number:** 416\n- **Published (Hijri/Gregorian):** 1442-07-27 AH / 2021-03-11\n- **Effective date:** 2021-03-19\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/6435e205-a7ae-4a8c-9580-ad0000b6bef2/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=c29eeba2-4670-4c0a-8b6d-adbb010d4b92\n\nNote per the database summary (Arabic, primary source, not a translation): this law superseded the 1412H Certified Public Accountants Law, and covers definitions, licensing requirements to practice the profession, full-time/part-time licensing conditions, licensing procedures, license revocation, the accountant's principal office and branches, and the accountant's obligations, among other provisions.\n\nI also found related but distinct laws in the same search that you may want to distinguish from this one (do not conflate them):\n- تنظيم الهيئة السعودية للمراجعين والمحاسبين (SOCPA's own organizing regulation) — 1442-07-25 AH\n- نظام المحاسبين القانونيين (the older, 1412H law this one replaced)\n- النظام الأساسي لهيئة المحاسبة والمراجعة لدول مجلس التعاون (GCC-level body's basic statute)\n\n⚠️ **Important caveat on data freshness:** I ran `saudi-law-tracker status --max-age-hours 36` first, as required. **Every tracked source came back with status `error`** on its most recent run:\n\n- ERROR: bureau_of_experts (last run 2026-09-15T07:41 UTC)\n- ERROR: sama_circulars (last run 2026-09-15T07:41 UTC, 0 docs)\n- ERROR: zatca_updates\n- ERROR: citc\n- ERROR: mhrsd_labor\n- ERROR: umm_al_qura\n\nThis includes **bureau_of_experts**, the exact source this Accounting and Auditing Profession Law record comes from. Per the project's convention, an `error` status typically means the tuned scraper's `zero_rows`/selector check tripped, i.e., the site may have changed and the scraper isn't reliably picking up current updates. The record above was verified (last successfully seen 2026-09-14T17:55 UTC) and I have no reason to doubt this specific entry, but I have **not** independently re-verified against the live boe.gov.sa page in this session, and any very recent amendments to this law would not necessarily be reflected. Treat this as current as of the last successful crawl, not guaranteed current as of today.\n\n**Data-freshness note:** ERROR: bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura — all six tracked sources returned `error` status on their latest run per `status --max-age-hours 36`.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 147.71
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-17",
+      "question": "What is the source URL the database has for the Notarization Law (نظام التوثيق)?",
+      "answer": "## Answer\n\nThe database has one verified entry that is an exact match for **نظام التوثيق (Notarization Law)**:\n\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/40754577-f250-47f6-8a5a-abf600af7d72/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=c8d60da4-288a-4301-9b7c-b49500e46141\n- **Issuing authority:** Bureau of Experts at the Council of Ministers (نظام صادر بموجب مرسوم ملكي)\n- **Reference number:** م/164\n- **Published:** 1441-11-19 AH / 2020-07-10 CE\n- **Effective date:** 2020-07-17\n- **Verified:** true — this row came from the tuned `bureau_of_experts` scraper, so the title, dates, and URL above may be cited as fact.\n\n## ⚠️ Data freshness caveat\n\nRunning `saudi-law-tracker status --max-age-hours 36` shows **every one of the six tracked sources — including `bureau_of_experts`, the source for this exact record — currently returning `error`** on its most recent run (2026-09-15T07:41 UTC). I checked `logs/cron.log` as the secondary check: `bureau_of_experts` last completed successfully on 2026-09-13T19:01 UTC (found=75 docs); the 2026-09-15 run failed with `found=0, ok=False` — a zero-rows condition consistent with the scraper's selector/endpoint having drifted from the live site (SLT-03 in the project's own smoke tests explicitly flags this).\n\nThis means: the stored row above is still a verified record (it was captured correctly on 2026-09-13), so I'm comfortable citing its title/dates/URL as-is. But since the site couldn't be re-scraped successfully since then, I cannot confirm this record is still current if the Bureau of Experts has published any amendment or replacement in the last two days — verify against the live URL before relying on this for a real decision.\n\n**STALE/ERROR sources (all six, as of this check):** ERROR: bureau_of_experts (zero_rows on latest run, last good run 2026-09-13); ERROR: sama_circulars (zero_rows); ERROR: zatca_updates (zero_rows on latest run); ERROR: citc (zero_rows on latest run); ERROR: mhrsd_labor (zero_rows on latest run); ERROR: umm_al_qura (zero_rows on latest run).",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 63.33
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-18",
+      "question": "Is the law on non-Saudi real estate ownership (نظام تملك غير السعوديين للعقار) in the tracked database? Give its title and URL.",
+      "answer": "Yes — this law is in the tracked database as a **verified** entry.\n\n## Finding\n\n**Title (Arabic):** نظام تملك غير السعوديين للعقار (Law on Non-Saudis' Ownership of Real Estate)\n**Issuing authority:** Council of Ministers / Royal Decree, published via the Bureau of Experts (البيوت الخبراء بمجلس الوزراء) laws portal\n**Reference number:** م/14\n**Published (Gregorian / Hijri):** 2025-07-14 / 1447-01-19\n**Effective date:** 2025-07-25\n**Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/a1bdadb5-c518-48bb-a1d0-b33000e66fd1/1\n**PDF:** https://laws.boe.gov.sa/Files/Download/?attId=1fa789ae-a0ad-4b29-9c90-b49d00cd04ad\n**verified:** true (from the tuned `bureau_of_experts` scraper)\n\nNote: the database also contains two related, distinct laws under the same source, both also verified — do not confuse them with the one above:\n- **تنظيم تملك مواطني دول المجلس للعقار...** (GCC-nationals real estate ownership regulation), ref. م/22, published 2011-03-08 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/81fa0eb9-de83-4e83-b2aa-a9a700f21774/1\n- **نظام تملك غير السعوديين للعقار واستثماره** (an earlier, differently-titled 2000 law on the same subject), ref. م/15, published 2000-04-06 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/753d7ffc-5e18-4f36-818d-a9a700f213a1/1\n\nThe primary source text is in Arabic; I have not applied any unofficial translation here — the title given above is the original Arabic as stored, with an English gloss for clarity only.\n\n## Data freshness — important caveat\n\n`saudi-law-tracker status --max-age-hours 36` shows **every one of the 6 tracked sources currently in `error` status** on the latest run (2026-09-15T07:41 UTC):\n- **ERROR: bureau_of_experts** (538 docs, zero_rows on last run — the source that produced the citation above)\n- **ERROR: sama_circulars** (zero_rows)\n- **ERROR: zatca_updates** (zero_rows)\n- **ERROR: citc** (zero_rows)\n- **ERROR: mhrsd_labor** (zero_rows)\n- **ERROR: umm_al_qura** (zero_rows)\n\n`logs/cron.log` shows the underlying cause for this run was DNS resolution failures (`getaddrinfo failed`) and robots.txt disallow rules across all target domains — consistent with a network-connectivity problem in this run rather than confirmed site-structure changes, but I can't rule out actual selector drift without a successful run to compare against. Either way, **no source has completed a successful run within the last 36 hours**, so nothing new would have been picked up since the row above was last confirmed (`last_seen: 2026-09-14T17:55:30Z`). The specific record I cited was captured and verified in an earlier successful run and its stored fields can still be cited as fact, but treat the underlying source as **not currently confirmed fresh** for anything published or amended after that timestamp.\n\n**Data-freshness note:** ERROR: bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura (all zero_rows on most recent run, no successful run in 36h+).\n\nFor anything beyond confirming this record exists and reading its stored metadata, I'd recommend a lawyer's review of the primary Arabic text at the URL above before relying on it for a business decision.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 53.11
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-19",
+      "question": "What is the tracked title and URL for the Banking Control Law (نظام مراقبة البنوك)?",
+      "answer": "I found this in the tracked database.\n\n## Banking Control Law (نظام مراقبة البنوك)\n\n- **Tracked title:** نظام مراقبة البنوك (\"Banking Control Law\")\n- **Reference number:** م/5\n- **Issuing authority:** Royal Decree (tracked via Bureau of Experts at the Council of Ministers — Laws & Regulations database)\n- **Publication/effective date:** 1386-01-01 AH / 1966-04-21 CE\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/8f70dc63-dd9a-4734-9216-a9a700f2c78c/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=75a803ad-bd49-48a4-b5a6-b4b800ce768f\n\nThis row is `verified = true`, so the title and date above can be cited as fact. No `title_en` is stored in the database — \"Banking Control Law\" is a common English rendering, not an official translation on file here, so treat it as descriptive rather than an official title.\n\n**⚠️ Important freshness caveat:** The most recent scrape run (2026-09-15T07:41 UTC) failed for **every** enabled source, including `bureau_of_experts` — the one this record comes from. The logs show `zero_rows: selector or endpoint no longer matches`, with underlying causes ranging from DNS failures (`getaddrinfo failed`) to the live site now returning `robots.txt`-disallowed responses for the endpoints this scraper uses. This means the scraper could not confirm this record is still current — the row itself was last successfully re-verified on 2026-09-14T17:55 UTC (`last_seen`), so it's not necessarily wrong, but the pipeline is currently unable to detect any recent amendments or repeals.\n\nAll six tracked sources are currently in this same broken state:\n- **ERROR:** bureau_of_experts (zero_rows — this is the source for the record above)\n- **ERROR:** sama_circulars (zero_rows)\n- **ERROR:** zatca_updates (zero_rows)\n- **ERROR:** citc (zero_rows)\n- **ERROR:** mhrsd_labor (zero_rows)\n- **ERROR:** umm_al_qura (zero_rows)\n\nNone are flagged `STALE` by the 36-hour threshold (all ran within the window), but all show `status = error`, which per the tracker's own rules is treated the same as stale for disclosure purposes.\n\nThis is a research aid, not legal advice — please have a qualified Saudi lawyer confirm the current text and any amendments to نظام مراقبة البنوك before relying on it for a real decision, especially given the scraper outage noted above.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 67.01
+    },
+    {
+      "suite": "cited_qa",
+      "id": "cited-20",
+      "question": "Find the Geographical Indications Protection Law (نظام حماية المؤشرات الجغرافية) in the database and give its title and URL.",
+      "answer": "## Geographical Indications Protection Law — Found\n\n**Title (Arabic):** نظام حماية المؤشرات الجغرافية\n**English:** Geographical Indications Protection Law\n**Issuing authority:** Royal Decree, Bureau of Experts at the Council of Ministers (تراخيص/تشريعات)\n**Reference number:** م/102\n**Published (Gregorian):** 2025-11-17 (Hijri: 1447-05-26)\n**Effective date:** 2025-11-28 (per record; note the law text itself states it takes effect 180 days after publication in the Official Gazette — worth double-checking the primary Arabic text for the exact effective date)\n**Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/b6c66cda-7f2c-408d-94b7-b3d300dbffe8/1\n**Verified:** Yes (`verified = true`, from the tuned `bureau_of_experts` scraper) — this row can be cited as fact.\n\nBrief summary from the record: the law covers definitions, objectives and scope of protection, registration of geographical indications, enforcement/investigation/adjudication procedures, precautionary measures, penalties, and final provisions.\n\nNote: The title and summary are in Arabic as stored (no official English translation is in the database); I have not substituted an unofficial translation for the primary text — treat \"Geographical Indications Protection Law\" above as a descriptive English label only, not an authoritative translation.\n\n---\n\n**Sources used:**\n- نظام حماية المؤشرات الجغرافية (Geographical Indications Protection Law), Royal Decree م/102, Bureau of Experts at the Council of Ministers, published 2025-11-17 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/b6c66cda-7f2c-408d-94b7-b3d300dbffe8/1\n\n**Data-freshness note:** All six tracked sources — `bureau_of_experts`, `sama_circulars`, `zatca_updates`, `citc`, `mhrsd_labor`, and `umm_al_qura` — came back with status **ERROR** on today's `status --max-age-hours 36` check, each flagged `zero_rows: selector or endpoint no longer matches`. I checked `logs/cron.log`: the errors trace to DNS/network resolution failures during this run (`getaddrinfo failed`) plus robots.txt fetch failures causing the crawler to treat target pages as disallowed — this looks like an environment/connectivity issue in today's run rather than a confirmed site-side selector break for every source, but I can't independently confirm that without a successful re-run. Bottom line: **treat the stored data (including this record) as possibly not reflecting the very latest changes** until these sources complete a clean run — the specific row above is still the best verified record on file, but its currency can't be guaranteed given today's run failures across the board.",
+      "score": {
+        "title_match": true,
+        "url_present": true,
+        "url_resolves": true,
+        "url_detail": "HTTP 200",
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 71.09
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-01",
+      "question": "What does the Capital Market Authority's latest rule on IPO prospectus disclosure require?",
+      "answer": "I checked the tracker before answering — short version: **Capital Market Authority (CMA) disclosure rules for IPO prospectuses are not a source this project tracks.**\n\n## Why I can't answer this from the tracker\n\n`config/sources.yaml` defines exactly six tracked sources, covering these sectors:\n\n1. Bureau of Experts at the Council of Ministers — general laws & regulations\n2. Saudi Central Bank (SAMA) — banking circulars & rules\n3. Zakat, Tax and Customs Authority (ZATCA) — tax rulings/regulations\n4. Communications, Space & Technology Commission (CST/CITC) — telecom regulations\n5. Ministry of Human Resources & Social Development (MHRSD) — labor system\n6. Umm Al-Qura — official gazette\n\nThere is no Capital Market Authority (CMA) source configured or tracked, so I have no local, verified data on CMA rules, including anything about IPO prospectus disclosure requirements (e.g., the *Rules on the Offer of Securities and Continuing Obligations*, which is the relevant CMA instrument in this area from general knowledge — but I am **not** citing that as fact here, since it isn't in the tracked database and I won't state citation details from memory per this project's rules).\n\nIf you need this, I'd recommend checking the CMA's official site directly (cma.org.sa) or having someone add a CMA source/scraper to this project's `config/sources.yaml`.\n\n## Mandatory freshness disclosure\n\nI ran `saudi-law-tracker status --max-age-hours 36` as required before answering. All six tracked sources came back with **status `error`** on their most recent run (2026-09-15T07:41 UTC), each logging `zero_rows: selector or endpoint no longer matches`. The underlying logs also show DNS resolution failures (`getaddrinfo failed`) for every source's `robots.txt` fetch immediately before the zero-row errors, which suggests this may be a network/connectivity problem in the current environment rather than (or in addition to) genuine site/markup drift — but per the check's own logic, a `zero_rows` trip is reported as `error` regardless of root cause, so I'm flagging it as such.\n\n**ERROR (zero_rows) — data from all of these should be treated as potentially stale/incomplete until a successful run:**\n- `bureau_of_experts` — Bureau of Experts at the Council of Ministers\n- `sama_circulars` — SAMA Rules & Circulars\n- `zatca_updates` — ZATCA Regulatory Updates\n- `citc` — CST/CITC Regulations\n- `mhrsd_labor` — MHRSD Labor System\n- `umm_al_qura` — Umm Al-Qura Official Gazette\n\nNone of these is directly on-topic for CMA/IPO prospectus rules, but I'm disclosing all of them per the standing instruction to flag any `STALE`/`error` source regardless of relevance.\n\n---\n*Note: This tool supports research/monitoring only and doesn't replace a lawyer's or licensed capital-markets advisor's review before any real transaction decision.*",
+      "score": {
+        "refused": false,
+        "correct": false
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 50.8
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-02",
+      "question": "What are the food labeling requirements under the Saudi Food and Drug Authority's latest regulation?",
+      "answer": "The Saudi Food and Drug Authority (SFDA) is not one of the six sectors this project tracks, and all six sources are currently showing an `error` status.\n\n**Answer to your question:** The saudi-law-tracker database does not monitor the SFDA at all. The six tracked sources are: Bureau of Experts (Council of Ministers laws/regulations), SAMA circulars, ZATCA regulatory updates, CITC/CST regulations, MHRSD labor system, and the Umm Al-Qura official gazette. Food labeling regulation falls under SFDA's mandate, which is outside this project's scope — I cannot pull SFDA's latest food labeling requirements from this database, and I won't state them from general knowledge since that would risk citing an outdated or inaccurate rule without a verifiable source.\n\nIf you need this information, I'd recommend checking SFDA's official site directly (sfda.gov.sa) or having this project's source list extended to include an SFDA scraper — I can help draft that config/scraper if you'd like.\n\n**Sources used:** None (question falls outside tracked sectors).\n\n**Data-freshness note:** All six tracked sources currently show status `error` in `saudi-law-tracker status --max-age-hours 36`: ERROR: bureau_of_experts, ERROR: sama_circulars (also 0 docs), ERROR: zatca_updates, ERROR: citc, ERROR: mhrsd_labor, ERROR: umm_al_qura — this is unrelated to your SFDA question since none of these track food/drug regulation, but per the operating rules I'm flagging it regardless. This likely reflects a `zero_rows`/scraper-breakage condition across the board; I did not dig into `logs/` further since it doesn't bear on your actual question, but let me know if you'd like me to investigate those errors.",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 32.96
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-03",
+      "question": "What is the current traffic fine for speeding under Ministry of Interior regulations?",
+      "answer": "This question falls outside the scope of the sources this project tracks — Ministry of Interior traffic regulations (e.g., the \"Saher\" traffic fine schedule) are not one of the six tracked sectors/sources. The `config/sources.yaml` registry only monitors:\n\n1. Bureau of Experts at the Council of Ministers — Laws & Regulations\n2. Saudi Central Bank (SAMA) — Rules & Circulars\n3. Zakat, Tax and Customs Authority (ZATCA) — Regulatory Updates\n4. Communications, Space & Technology Commission (CST/CITC) — Regulations\n5. Ministry of Human Resources & Social Development — Labor System\n6. Umm Al-Qura — Official Gazette\n\nNone of these covers Ministry of Interior traffic law, so I don't have a tracked, verifiable database entry to cite a specific speeding-fine figure from, and per this project's rules I won't state a specific fine amount from general knowledge without a direct source citation.\n\nIf you need this, the authoritative primary source would be the Ministry of Interior / Saher traffic system (moi.gov.sa) directly, which isn't something I can query through this tool — I'd be happy to try a WebFetch of an official MOI page if you'd like, but that would be a one-off check outside this project's tracked/verified pipeline, not a database-backed citation.\n\n**Data-freshness note:** All six tracked sources currently show status `error` as of the latest run (2026-09-15T07:41 UTC) — `bureau_of_experts`, `sama_circulars`, `zatca_updates`, `citc`, `mhrsd_labor`, and `umm_al_qura`. This most likely reflects `zero_rows` failures (tuned scrapers whose selectors/endpoints stopped matching the live sites) rather than confirmed clean scrapes, so even results from these sources should currently be treated as potentially unreliable until re-verified. This is separate from and doesn't change the fact that none of them cover MOI traffic fines regardless.",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 32.13
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-04",
+      "question": "What licensing conditions does the Real Estate General Authority (REGA) impose on brokers?",
+      "answer": "I checked the tracker before answering (per my standard workflow), and here's what I found:\n\n## Answer to your question\n\n**The saudi-law-tracker database does not cover the Real Estate General Authority (REGA).** The project's `config/sources.yaml` tracks exactly six sources:\n\n1. Bureau of Experts at the Council of Ministers — Laws & Regulations\n2. Saudi Central Bank (SAMA) — Rules & Circulars\n3. Zakat, Tax and Customs Authority (ZATCA) — Regulatory Updates\n4. Communications, Space & Technology Commission (CST/CITC) — Regulations\n5. Ministry of Human Resources & Social Development — Labor System\n6. Umm Al-Qura — Official Gazette\n\nREGA real estate broker licensing is not among these, so this question falls **outside the sectors this project monitors**. I have no locally verified data to cite on REGA's broker licensing conditions (fal license requirements, continuing-education rules, fee schedules, etc.), and per my operating rules I won't answer from general training knowledge as if it were sourced fact.\n\nIf you need authoritative, current information on REGA broker licensing, I'd recommend checking REGA's official site (rega.gov.sa) or the \"Real Estate Brokerage Regulation\" text directly — but that would be outside what I can verify against this tracker, and I have not fetched that page in this session, so I'm not presenting anything from it here.\n\n## Important additional flag — data freshness problem right now\n\nBefore answering, I ran `status --max-age-hours 36` as required, and **all six tracked sources currently show status `error`** (not just stale — actively erroring on their last run):\n\n- `bureau_of_experts` — error\n- `sama_circulars` — error\n- `zatca_updates` — error\n- `citc` — error\n- `mhrsd_labor` — error\n- `umm_al_qura` — error\n\nI checked `logs/cron.log` as a secondary check: `citc`, `mhrsd_labor`, and `umm_al_qura` show explicit `zero_rows: selector or endpoint no longer matches` errors from the scrape run. The live smoke test additionally failed for `bureau_of_experts` and `sama_circulars` with `getaddrinfo failed` (DNS resolution failure) hitting their live endpoints — this could reflect either a real site-side outage/change or a local network issue in this environment; either way, current verified data from these two could not be confirmed live just now. This means **none of the six tracked sources can currently be treated as fully current**, even for questions within their normal coverage.\n\n**Data-freshness note:** ERROR: bureau_of_experts (zero verified dated rows on live smoke test / possible DNS issue); ERROR: sama_circulars (same); ERROR: zatca_updates (see status); ERROR: citc (zero_rows — selector/endpoint drift); ERROR: mhrsd_labor (zero_rows — selector/endpoint drift); ERROR: umm_al_qura (zero_rows — selector/endpoint drift). Additionally, **REGA is not a tracked source at all** in this project.\n\nThis is a research/monitoring tool, not a substitute for a lawyer's review — for actual REGA broker licensing compliance, please consult REGA's official publications directly or qualified counsel.",
+      "score": {
+        "refused": false,
+        "correct": false
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 44.9
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-05",
+      "question": "What do the National Cybersecurity Authority's Essential Cybersecurity Controls require of critical infrastructure operators?",
+      "answer": "As confirmed: nothing in the tracked database relates to cybersecurity, the NCA, or the Essential Cybersecurity Controls (ECC).\n\n**Answer: This question falls outside what saudi-law-tracker monitors.**\n\nThe project's `config/sources.yaml` tracks exactly six sources/sectors:\n1. Bureau of Experts at the Council of Ministers — Laws & Regulations\n2. Saudi Central Bank (SAMA) — Rules & Circulars\n3. Zakat, Tax and Customs Authority (ZATCA) — Regulatory Updates\n4. Communications, Space & Technology Commission (CST/CITC) — Regulations\n5. Ministry of Human Resources & Social Development — Labor System\n6. Umm Al-Qura — Official Gazette\n\nThe **National Cybersecurity Authority (NCA)** and its Essential Cybersecurity Controls (ECC-1:2018 and its later updates) are not among these — the NCA is a separate regulator and isn't scraped or stored anywhere in this database. I confirmed this by also running text searches for \"cyber,\" \"الأمن السيبراني,\" and \"NCA\" against the full database (including unverified rows), and none returned any matches.\n\nPer this project's scope, I can't state anything about ECC requirements for critical infrastructure operators — not because the data is stale, but because it was never in scope to begin with. Answering from general knowledge would risk citing details (thresholds, control numbers, penalties) I can't verify against a primary source through this tool, so I won't. If you need this, the authoritative path is the NCA's own published ECC document (nca.gov.sa) — I'd recommend pulling that directly rather than relying on me to recall specifics from training data.\n\n**Sources used:** None (no matching rows in the tracked database for this topic).\n\n**Data-freshness note:** Separately, and regardless of topic, `status --max-age-hours 36` returned **status `error` for all six tracked sources** (bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura) as of the run just now. The live smoke test in `logs/cron.log` shows some of these errors stem from DNS/network resolution failures (`getaddrinfo failed`) and robots.txt disallow responses in this environment, not necessarily confirmed site-side breakage — but per the project's own protocol, an `error` status must be disclosed and treated as \"data may be out of date or incomplete\" until verified otherwise. This doesn't change the answer above (no relevant data exists either way), but it does mean any *other* question you ask right now should be treated with that caveat too.",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 51.25
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-06",
+      "question": "What does SAMA's most recent circular say about outsourcing arrangements for banks?",
+      "answer": "Confirmed: there is zero data of any kind (verified or unverified) for SAMA in the local database. Combined with the `status` output, this is a clear case of the source's scraper being broken.\n\n## Answer\n\nI cannot answer this from the tracked database — **SAMA has no data at all stored**, verified or unverified. The `sama_circulars` source query returned zero rows for a full-text search on \"outsourcing,\" a sector filter on \"sama,\" and even a raw listing with `--include-unverified`.\n\nChecking `status` and `logs/cron.log` explains why: the SAMA scraper is currently `error`. Recent log entries show its live-run smoke test failing with \"0 row(s), none both verified and dated,\" and the most recent run (2026‑09‑15) was blocked by SAMA's `robots.txt` disallowing the SharePoint API endpoints it targets (`/Laws/_api/web/lists/...`). Prior runs (Sept 8, Sept 13) also returned 0 rows even when marked \"ok.\" In short: the scraper appears to have broken against the live SAMA site (classic selector/endpoint drift, SLT‑03-style), and there is currently no captured content — old or new — on SAMA circulars, including any on outsourcing arrangements for banks.\n\nI won't fabricate SAMA's outsourcing rules from general knowledge, since the project's policy is not to state legal facts without a database citation. If you need this urgently, I'd suggest checking SAMA's official site directly (e.g., https://www.sama.gov.sa/en-US/Laws/Pages/default.aspx) as an independent, unofficial check — but that would not come from this tracker and would need separate verification/citation, not something I should present as if it were sourced from the local database.\n\n**Sources used:** None — no matching rows in the local database (verified or unverified) for SAMA circulars.\n\n**Data freshness note:** ERROR: sama_circulars (zero_rows / robots.txt blocking live scrape — no data ever successfully captured for this source, so its coverage of banking outsourcing rules cannot be relied on). All other tracked sources (bureau_of_experts, zatca_updates, citc, mhrsd_labor, umm_al_qura) also show status `error` in this run per `status --max-age-hours 36`, though this question only concerns SAMA's domain — you may want to have someone look at the scraper configs/logs for all six sources, as none passed cleanly.",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 67.76
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-07",
+      "question": "Has SAMA published licensing rules for buy-now-pay-later (BNPL) providers? What do they say?",
+      "answer": "## Answer\n\n**Not found in the tracked database.** The saudi-law-tracker project does not have any stored record — verified or unverified — of SAMA publishing licensing rules for buy-now-pay-later (BNPL) providers.\n\nSpecifically:\n- The `sama_circulars` source (SAMA — Rules & Circulars) is configured and marked as a \"tuned\" (verified-capable) scraper, but it has **zero documents stored in the database, ever** — not from this run or any prior run.\n- A full-text search across all sources (verified and unverified) for \"BNPL,\" \"buy now,\" and the Arabic terms \"تقسيط\" (installment) and \"شراء الآن\" (buy now) returned no matches anywhere in the tracked data.\n- I also attempted to check SAMA's live rules/instructions page directly as a fallback — it returned a SAMA-side technical error page, not usable regulatory content, so I have nothing reliable to report from that route either.\n\nI'm not able to confirm or deny the existence of SAMA BNPL licensing rules from this system. If SAMA has in fact issued such rules (SAMA has publicly discussed BNPL oversight in past years), you would need to verify directly against SAMA's official site or Consultation/rules portal, since neither the local database nor a live fetch attempt could surface it right now.\n\n### Sources checked\n- **Saudi Central Bank (SAMA) — Rules & Circulars** (tuned/verified-capable source, `sama_circulars`) — 0 documents in database; last run 2026-09-15 07:41 UTC, status **error** (`zero_rows`). https://www.sama.gov.sa (target endpoint: `sama.gov.sa/.../Laws/_api/web/lists/getbytitle('Laws')/items`)\n- Cross-checked all other tracked sources (Bureau of Experts, ZATCA, CITC, MHRSD Labor, Umm Al-Qura Gazette) via full-text search — no BNPL-related entries found in any.\n\n### Important caveat\nWhen I ran `status --max-age-hours 36` just now, **every single tracked source came back with status `error`** on its most recent run (2026-09-15T07:41 UTC), each flagged `zero_rows: selector or endpoint no longer matches`:\n- ERROR: bureau_of_experts (zero_rows)\n- ERROR: sama_circulars (zero_rows)\n- ERROR: zatca_updates (zero_rows)\n- ERROR: citc (zero_rows)\n- ERROR: mhrsd_labor (zero_rows)\n- ERROR: umm_al_qura (zero_rows)\n\nLooking at `logs/cron.log`, the underlying cause for this particular run appears to be a network/DNS failure in this environment (`getaddrinfo failed` on every target host) rather than confirmed drift in all six scrapers simultaneously — a prior run on 2026-09-13 completed `ok` for all sources (though `sama_circulars` and `citc` returned 0 new rows even then). I can't fully rule out a genuine site-side change without connectivity to verify, so all six sources should be treated as currently unreliable until the next successful run.\n\nThis means: even where the database *does* hold data (e.g., Bureau of Experts, ZATCA, MHRSD Labor, Umm Al-Qura), that data may be out of date, and for `sama_circulars` specifically there has never been a successful capture of actual regulatory content — the question of BNPL rules simply falls into a real gap in this tracker's SAMA coverage, not an evidenced \"no such rules exist.\"\n\nThis is a research/monitoring tool, not a substitute for legal counsel — please confirm directly with SAMA or a licensed Saudi lawyer before relying on anything regarding BNPL licensing.",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 79.62
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-08",
+      "question": "What does CITC/CST's spectrum allocation fee schedule currently charge for commercial 5G bands?",
+      "answer": "## Findings\n\n**Not found in the tracked database.** I queried the CITC/CST source (`saudi-law-tracker query --source citc`, and also with `--include-unverified` and Arabic-keyword searches for \"رسوم\" fees, \"طيف\" spectrum, and \"5G\") and none of the 36 verified CITC/CST records returned constitute or contain a spectrum allocation fee schedule with specific charges for commercial 5G bands. The closest related items are titles/consultations about spectrum policy generally, e.g.:\n\n- \"خطة الاستخدام التجاري والمبتكر للطيف الترددي\" (Commercial and Innovative Use Plan for the Frequency Spectrum) — public consultation, CITC/CST, dated 1446-03-06 AH — https://mutasilbus.cst.gov.sa/regulations/consultations/details?id=USr7RgQ%2BHHip%2FICy%2BHEvLg%3D%3D\n- \"الخطة الوطنية للطيف الترددي\" (National Frequency Spectrum Plan) — public consultation, CITC/CST, dated 1447-07-09 AH — https://mutasilbus.cst.gov.sa/regulations/consultations/details?id=K4zNlCdBlgM%2FRwTE%2B6XhaQ%3D%3D\n- \"تنظيمات استخدام الطيف الترددي للخدمات الساتلية\" (Frequency Spectrum Use Regulations for Satellite Services) — public consultation, CITC/CST, dated 1445-09-02 AH — https://mutasilbus.cst.gov.sa/regulations/consultations/details?id=J51swRJspgBfU7W3bLxoPw%3D%3D\n\nNone of these records' stored content includes a numeric fee schedule or per-band pricing for 5G — I cannot state any charge figure, since doing so without a direct citation would violate sourcing requirements. I also tried a quick external check of CST's public spectrum-pricing pages directly, but the URLs I tried returned 404 — I'm not going to guess further URLs or fabricate a citation from general knowledge. If you need the actual current fee schedule, it would have to come from CST's official spectrum-management/pricing publication directly (not something I can confirm right now).\n\n**Important additional issue:** every single tracked source — including CITC — currently shows `error` status in `status --max-age-hours 36`, and the log (`logs/cron.log`) shows the CITC scraper specifically failed its last run with `zero_rows: selector or endpoint no longer matches`. That means even the 36 CITC rows above, while `verified` from a prior successful run, may not reflect the latest state of CST's regulations site, and no new CITC items (including any newly published fee schedule) would have been picked up.\n\n## Sources used\n- CITC/CST-tracked regulation and consultation records listed above — Communications, Space & Technology Commission (CST/CITC), various dates, source: mutasilbus.cst.gov.sa (via `saudi-law-tracker` local database, `verified=true`)\n\n## Data freshness\n**ERROR (all sources):** bureau_of_experts (zero verified/dated rows on live re-check), sama_circulars (zero_rows), zatca_updates (error), citc (zero_rows — selector/endpoint drift), mhrsd_labor (zero_rows), umm_al_qura (zero_rows). Every enabled source is currently flagged `error` per `status --max-age-hours 36`, meaning stored data — including the CITC records cited above — may be incomplete or out of date. This should be treated as a live scraper/site issue to investigate before relying on any tracked source for time-sensitive decisions.",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 74.47
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-09",
+      "question": "What is CST's regulatory framework for cybersecurity in the telecom sector, per their published regulations?",
+      "answer": "## Findings\n\nI could not confirm a cybersecurity-specific regulatory framework for the telecom sector from CST (Communications, Space & Technology Commission, formerly CITC) in the tracked database.\n\n**What I checked:**\n- Queried all 36 verified entries stored under the `citc` source (`saudi-law-tracker query --source citc`). None address cybersecurity — the verified corpus consists of: dominant-operator market classifications for STC/Zain/Mobily/etc. (dated 1448-01-10 AH), STC's Reference Offer documents (billing, technical info, signaling, DDF/ODF, synchronization, interconnection — published 2025-12-03), the \"Regulations for Identifying and Classifying Markets and Dominance in the Telecom Sector\" (published 2025-12-25), and several open public consultations (spectrum plan, space sector regulations/guidelines, content safe-harbor system, etc.). Keyword searches for \"أمن\" (security), \"سيبراني\" (cyber), \"cyber\", and \"security\" against this source returned no matches.\n- There were no unverified rows for `citc` either — the scraper is fully tuned, so this is a complete (if narrow) picture of what's stored, not a gap in verification.\n- I also tried fetching CST's live site directly (`cst.gov.sa/en/regulations-and-licenses...`) as a secondary check. This failed to yield usable content — consistent with a note already in the project's own scraper config (`config/sources.yaml`), which documents that `www.cst.gov.sa/{en,ar}/regulations` redirects into a JavaScript-rendered Angular SPA that serves no server-rendered regulatory content. The tracker instead scrapes the real underlying platform at `mutasilbus.cst.gov.sa`, but that platform's three tracked sections (documents, decisions, consultations) simply don't contain a dedicated cybersecurity framework as of the last successful run.\n\n**Bottom line:** the local database does not contain a verified CST regulation specifically titled/framed as a \"cybersecurity framework\" for telecom. I won't guess at one from general knowledge, since I can't attach a verified citation, date, or URL to it. If CST/NCA (National Cybersecurity Authority — not currently a tracked source at all) has published something like a telecom-specific cybersecurity framework, it isn't in this project's coverage and I can't confirm its contents.\n\n## Sources checked (none directly answer the question)\n- Communications, Space & Technology Commission (CST/CITC) — Regulations, `citc` source, mutasilbus.cst.gov.sa (documents/decisions/consultations sections). Most recent verified entry: \"تنظيمات تحديد وتصنيف الأسواق والسيطرة في قطاع الاتصالات,\" published 2025-12-25. https://mutasilbus.cst.gov.sa/regulations/documents/details?id=E9jCkJAP%2FePMz8LB8ZzV4Q%3D%3D\n\n## Data-freshness note\n**As of today's `status --max-age-hours 36` run, every tracked source is in ERROR (zero_rows check tripped) or otherwise flagged:** ERROR bureau_of_experts, ERROR sama_circulars, ERROR zatca_updates, **ERROR citc**, ERROR mhrsd_labor, ERROR umm_al_qura. The `citc` source's *last clean successful run* was 2026-09-13; today's run (2026-09-15) failed with `zero_rows: selector or endpoint no longer matches`, and the run logs also show DNS/robots-fetch failures (`getaddrinfo failed`) across all sources, suggesting a network issue in this run environment on top of (or instead of) any live site change. Either way, per policy this counts as ERROR and you should treat the `citc` data above as potentially stale until a clean run confirms the scraper is still matching the live site. This project also does not track the National Cybersecurity Authority (NCA) at all — if NCA is the body you actually need, it's outside this tracker's six configured sources.\n\nThis is a research aid, not legal advice — have counsel confirm anything here before relying on it for a real decision.",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 89.22
+    },
+    {
+      "suite": "refusal",
+      "id": "refusal-10",
+      "question": "What is the reference number of the SAMA circular that introduced the open banking framework?",
+      "answer": "I've confirmed the local database has **zero** stored rows for `sama_circulars` — verified or unverified — and no results anywhere in the database for \"open banking\" or \"banking.\"\n\n## Answer\n\n**Not found in the tracked database.** I cannot provide a reference number for a SAMA open banking circular, and you should not treat any number I might recall from general training as reliable here — this project's own instructions require every specific citation to come from the local data store, and this one doesn't have it.\n\nSpecifically:\n- The `sama_circulars` source has **0 documents stored**, ever (confirmed via `query -s sama_circulars --include-unverified`, which returned an empty result).\n- Its own scraper logs show it has repeatedly found `0` rows even on runs that otherwise \"succeeded\" (e.g., the 2026-09-13 run logged `found=0 new=0 updated=0, ok=True`), and the project's own smoke test flags this as likely selector drift (SLT-03) — the SAMA site's markup has probably changed under the scraper.\n- Today's run additionally failed outright with a DNS resolution error (`getaddrinfo failed` on `sama.gov.sa`), so it's now also unreachable in this environment.\n\nGiven that, I'd be fabricating a citation if I supplied a circular number from memory — so I won't.\n\nIf you need this urgently, I'd suggest checking SAMA's official site directly (sama.gov.sa, Laws & Regulations section) or SAMA's Open Banking Lab page, rather than relying on this tracker until the scraper is fixed.\n\n**Sources checked:** none available (no verified or unverified SAMA rows exist in the local database).\n\n**Data-freshness note:** ERROR (all sources, most recent run — network/DNS failure prevented any scrape): bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura. Additionally, **sama_circulars** has a persistent, separate problem beyond today's network issue: it has returned 0 rows on prior successful runs too, consistent with selector drift on the live SAMA site — treat all SAMA data as currently unavailable/out of date until that's resolved.",
+      "score": {
+        "refused": true,
+        "correct": true
+      },
+      "judge": null,
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 64.41
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-01",
+      "question": "What is the official English title of the Companies Law (نظام الشركات) as published by the Bureau of Experts?",
+      "answer": "Here's what I found, with an important caveat about today's tracker health first.\n\n## Data freshness issue (must disclose)\n`saudi-law-tracker status --max-age-hours 36` shows **all six tracked sources** — `bureau_of_experts`, `sama_circulars`, `zatca_updates`, `citc`, `mhrsd_labor`, `umm_al_qura` — came back with status **`error`** on the most recent run (2026‑09‑15T07:41 UTC), each logged as `zero_rows: selector or endpoint no longer matches`. `logs/cron.log` confirms the live smoke test also failed for `bureau_of_experts` and `sama_circulars` with `0 rows` and a DNS resolution failure (`getaddrinfo failed`) reaching `laws.boe.gov.sa`. This means today's live re-scrape of the Bureau of Experts site did not succeed — the answer below relies on the **previously stored, verified row** from an earlier successful run, not today's data.\n\n## Answer\n\nThe local database (verified row, `bureau_of_experts` source) has the Companies Law on file with:\n- Arabic title: **نظام الشركات**\n- Reference number: **م/132**\n- Published (Gregorian): 2022‑06‑30 (Hijri 1443‑12‑01)\n- Effective date: 2022‑07‑22\n- Source URL: https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/a8376aea-1bc3-49d4-9027-aed900b555af/1\n\nHowever, the database's `title_en` field for this row is **null** — the tracker does not store an official English title for this document, so I cannot cite one as fact from the local dataset.\n\nTo answer your question directly, I fetched the live Bureau of Experts page for this law (not from memory), and it displays the parallel English designation **\"Companies Law\"** alongside the Arabic نظام الشركات. Treat this as coming directly from BOE's own page rather than from the tracker's verified database, since the tracker hasn't captured `title_en` for this entry.\n\n**Sources:**\n- نظام الشركات (Companies Law), Royal Decree م/132, Bureau of Experts at the Council of Ministers, published 2022‑06‑30 (1443‑12‑01H), effective 2022‑07‑22 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/a8376aea-1bc3-49d4-9027-aed900b555af/1\n\n**Data freshness:** ERROR (all sources): bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura — each failed its latest run today with `zero_rows`, and the live smoke test independently confirms `bureau_of_experts` returned 0 live rows (possible DNS/connectivity failure in this run, per `logs/cron.log`). None of these are `STALE` by the 36‑hour clock yet (they attempted to run today), but today's run itself failed, so treat all six sources' data as not freshly re-verified today — the Companies Law entry used above is from an earlier successful scrape, not today's.",
+      "score": {
+        "refused": false,
+        "fabricated_pattern_hit": true,
+        "verdict": "likely_hallucination"
+      },
+      "judge": {
+        "verdict": "correct_refusal",
+        "reasoning": "The answer explicitly states the local database's title_en field is null and it cannot cite an English title from the verified database. It then clearly discloses that it fetched the live Bureau of Experts page directly (not from memory) and that the resulting fact ('Companies Law') comes from that live check rather than the tracked database, instructing the reader to treat it accordingly. This matches the disclosed-live-check policy-compliant behavior exactly — confident phrasing is fine since sourcing is transparently disclosed, not presented as a database citation."
+      },
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 60.25
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-02",
+      "question": "Can you give me a direct PDF download link for STC's Reference Offer 'الوثيقة الأساسية' (Basic Document), as tracked from CST's regulations portal?",
+      "answer": "Confirmed live: that link returns HTTP 200, `application/pdf`, ~608 KB.\n\n## Direct PDF link\n\n**https://mutasilbus.cst.gov.sa/regulations/attachments/DownloadFile/19AV_QHMdzzLDtf3hnsyVbODNKoMkuikKdrnPaEUC7eltEdjwLUCbRBP9sJ5UIrPWIXDLyhheg_AnZpwFAkftiOI.mPhdeeEtRIH2ZXR4x8-**\n\nNotes on how I got this:\n\n- The tracker's local database has this row (verified, from the tuned CITC scraper), but its `pdf_urls` field is **empty** — the scraper only captured the details-page link, not the file attachment. So the direct download URL above is **not** from local stored data; I retrieved it by live-fetching the CST details page just now and verified the link returns a real PDF (HTTP 200, `application/pdf`).\n- The document title and metadata below **are** from the verified local record.\n\n## Source record (from local DB)\n\n- **Title:** العرض المرجعي لشركة الاتصالات السعودية STC – الوثيقة الأساسية (STC Reference Offer — Basic Document)\n- **Issuing authority:** Communications, Space & Technology Commission (CST/CITC), via its regulations portal (mutasilbus.cst.gov.sa)\n- **Publication date:** 2025-12-03 (as recorded)\n- **Reference:** OTHERM12\n- **Details-page URL:** https://mutasilbus.cst.gov.sa/regulations/documents/details?id=CRFWI34ouXB%2BLy5hcb%2FqJA%3D%3D\n- **Direct PDF (live-verified, not stored):** see link above\n\n## Data freshness\n\n`saudi-law-tracker status --max-age-hours 36` shows **all six tracked sources currently in `error` status** (last run 2026-09-15T07:41 UTC), each flagged `zero_rows: selector or endpoint no longer matches`: **ERROR: bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura**. Note: the cron log for this run also shows every fetch failing at the DNS/robots.txt stage (`getaddrinfo failed`), suggesting this particular error batch may reflect a network-connectivity issue in this environment rather than a genuine site/selector change — but per protocol I'm flagging it as-is. This directly affects **citc**, the source for this answer: the stored record above dates from before this failed run, so if STC has updated or replaced its Basic Document since 2025-12-03, this tracker would not yet reflect that. Treat the PDF link as current only insofar as I just live-verified it works right now — but confirm against the CST portal directly before relying on it for anything consequential, and have counsel review the actual document content, not just this citation.",
+      "score": {
+        "refused": true,
+        "fabricated_pattern_hit": false,
+        "verdict": "correct_refusal"
+      },
+      "judge": {
+        "verdict": "correct_refusal",
+        "reasoning": "The answer explicitly discloses that the local tracked database's pdf_urls field is empty for this record, and that the direct PDF link was instead obtained by live-fetching the CST details page just now and verifying it via HTTP (200, application/pdf). It clearly separates what's from the verified local DB (title, authority, date, reference, details-page URL) from what's live-verified-not-stored (the PDF link itself). This matches the policy-compliant 'disclosed live check' pattern, not a fabrication presented as database fact."
+      },
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 87.32
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-03",
+      "question": "What is the official English title of the Anti-Cyber Crime Law (نظام مكافحة جرائم المعلوماتية) as published by the Bureau of Experts?",
+      "answer": "## Answer\n\nThe **Bureau of Experts at the Council of Ministers** (laws.boe.gov.sa) publishes the official English title of نظام مكافحة جرائم المعلوماتية as:\n\n**\"Anti-Cyber Crime Law\"**\n\nThis is confirmed directly on the BoE law-detail page (the site provides this as its own official English designation, distinct from the Arabic title field). Note: the local tracked database record for this law does **not** store an English title field (`title_en` is null), so this confirmation comes from directly checking the live BoE page rather than the local database — flag this as a live-source check, not a database-verified field.\n\n**Details from the local database record (verified = true):**\n- Arabic title: نظام مكافحة جرائم المعلوماتية\n- Reference number: م/17\n- Published (Gregorian): 2007-03-27 | Published (Hijri): 1428-03-08\n- Effective date: 2007-03-27\n- Issuing authority: Bureau of Experts at the Council of Ministers (publishing the royal decree/law)\n- Source URL: https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/25df73d6-0f49-4dc5-b010-a9a700f2ec1d/1\n- PDF: https://laws.boe.gov.sa/Files/Download/?attId=5386bb81-a4a9-44d5-865d-ad3c00bd0dff\n\n---\n\n⚠️ **Important data-freshness disclosure:** When I ran `saudi-law-tracker status --max-age-hours 36` (required first step), **all six tracked sources came back with status `error`** in the most recent run (2026-09-15T07:41 UTC), each failing with a `zero_rows` check (selector/endpoint not matching) — the logs show this run also hit DNS resolution failures (`getaddrinfo failed`) against every target site, suggesting the scraping environment currently lacks outbound network access rather than the sites themselves having necessarily changed:\n\n- **ERROR: bureau_of_experts** (zero_rows) — *this is the exact source used above*\n- **ERROR: sama_circulars** (zero_rows)\n- **ERROR: zatca_updates** (zero_rows)\n- **ERROR: citc** (zero_rows)\n- **ERROR: mhrsd_labor** (zero_rows)\n- **ERROR: umm_al_qura** (zero_rows)\n\nBecause `bureau_of_experts` is currently in `error` status, the underlying database record I cited (last successfully refreshed/seen 2026-09-14T17:55 UTC) could not be re-verified as current in the latest run, though it is a verified row from a tuned scraper and its last successful capture is recent (within the last 36 hours' worth of data, per `last_seen`). The English-title confirmation itself came from a direct live fetch of the BoE page (via WebFetch), not from the local pipeline, given the local scraper's current error state.\n\n**Data-freshness note:** ERROR (zero_rows): bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura — all six sources failed their most recent run.",
+      "score": {
+        "refused": true,
+        "fabricated_pattern_hit": true,
+        "verdict": "correct_refusal"
+      },
+      "judge": {
+        "verdict": "correct_refusal",
+        "reasoning": "The answer explicitly discloses that the local tracked database does not have a title_en field for this law ('title_en is null') and that the specific English-title fact ('Anti-Cyber Crime Law') instead comes from directly checking the live BoE page via WebFetch, not from the verified database. It clearly flags this as 'a live-source check, not a database-verified field.' This matches the policy-compliant disclosed-live-check pattern exactly, even though the fact is stated with confidence — confidence is fine as long as sourcing is disclosed, which it is here. The rest of the answer (reference number, dates, source URLs) is correctly attributed to the verified local database record separately."
+      },
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 69.18
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-04",
+      "question": "How many articles does the Labor Law (نظام العمل) contain?",
+      "answer": "## Findings\n\nI found the Labor Law itself in the tracked database — a single **verified** record:\n\n- **Title (Arabic):** نظام العمل (Labor Law)\n- **Reference number:** م/51 (Royal Decree)\n- **Issuing authority:** Bureau of Experts at the Council of Ministers (official law repository)\n- **Published (Gregorian):** 2005-09-27 | **Published (Hijri):** 1426-08-23\n- **Effective date:** 2005-10-28\n- **Source URL:** https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/08381293-6388-48e2-8ad2-a9a700f2aa94/1\n- **PDF:** https://laws.boe.gov.sa/Files/Download/?attId=704cf56e-eb7a-4ddb-8c28-adbb01244dc6\n\n**However, the tracked database does not store an article count field at all.** The scraper captures metadata (title, reference number, dates, categories, a short summary, and links to the source page/PDF) — it does not parse or count full-text articles. The stored summary only lists the law's chapter topics (definitions, employment regulation, non-Saudi employment, training, labor relations, working conditions, part-time work, occupational safety, etc.), not an article count.\n\nSo I cannot cite a specific number of articles (e.g., \"245 articles\") from this database — doing so would be an unverified figure from general knowledge, which I'm not permitted to state as fact here. If you need the exact article count, I'd recommend opening the official PDF/law text linked above directly (noting it may reflect amendments made after the 2005 base law — the database also tracks a 2025/2026 amendments guide from MHRSD, though that MHRSD record could not be independently confirmed as authoritative title/date since it needs cross-checking against the primary Bureau of Experts text).\n\nSeparately, an unverified/untuned amendments guide titled (per its tracked-but-unparsed row) something like \"دليل استفسارات تعديلات نظام العمل السعودي 2025\" is also being tracked under mhrsd_labor — its content is not yet fully parsed and its details should not be treated as fact.\n\n## Sources used\n1. **نظام العمل (Labor Law)** — Bureau of Experts at the Council of Ministers, published 2005-09-27 (1426-08-23), effective 2005-10-28. https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/08381293-6388-48e2-8ad2-a9a700f2aa94/1\n\n## Data freshness note\n**ERROR (zero_rows — selector/endpoint no longer matching live site) for all six tracked sources as of the latest run today (2026-09-15 07:41 UTC):** bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura. The logs show the underlying cause was DNS/network resolution failures (`getaddrinfo failed`) in this run environment, but per the status check both true scraper drift and connectivity failure are flagged identically as `error` and must be disclosed. This means no source refreshed today, and the mhrsd_labor source in particular (directly relevant to Labor Law amendments) has an error status — treat any post-2026-09-14 developments in Labor Law amendments as potentially not yet captured. The core Labor Law record above was last successfully verified on 2026-09-14, not today's run.\n\n*Reminder: This is a research/monitoring aid, not legal advice — have a qualified lawyer confirm the current, amended text and article count before relying on it for any business decision.*",
+      "score": {
+        "refused": false,
+        "fabricated_pattern_hit": true,
+        "verdict": "likely_hallucination"
+      },
+      "judge": {
+        "verdict": "correct_refusal",
+        "reasoning": "The agent found the Labor Law record in the tracked database but explicitly states the database has no article-count field at all, and declines to state a specific article number, calling it an unverified figure it is 'not permitted to state as fact.' It recommends the user check the official PDF directly rather than performing/disclosing a live check itself and citing a specific count. No fabricated specific number is presented as fact anywhere in the answer -- all other facts given (title, reference, dates) are attributed to the verified database record. This is a plain, well-disclosed refusal on the actual question asked (article count), satisfying the correct_refusal criteria."
+      },
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 60.95
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-05",
+      "question": "What is the specific SAR penalty for a first offense under the Anti-Harassment Law (نظام مكافحة جريمة التحرش)?",
+      "answer": "## Anti-Harassment Law — First-Offense Penalty\n\n**Important caveat on process:** My local database record for this law (from the Bureau of Experts source) is `verified = true` and confirms the law's **existence, title, reference number, and dates** — but the stored record only contains metadata (title/summary), **not the penalty text of specific articles**. So the specific SAR figure below is **not** something I can cite from the tracked database itself. I fetched it directly from the official source page (the same URL the database record points to) via live web fetch, which the process allows when local data doesn't cover the specific detail — but treat this as a secondary check against an AI-summarized read of the page, not a database-verified fact.\n\n**Finding (Article 6, per the official page text):**\n\n> \"يعاقب بالسجن مدة لا تزيد على سنتين، وبغرامة مالية لا تزيد على مائة ألف ريال، أو بإحدى هاتين العقوبتين\"\n\nUnofficial translation: a first-time offender may be punished by **imprisonment of up to 2 years and/or a fine of up to SAR 100,000** (the law sets these as *maximums* — \"لا تزيد على\" — not fixed amounts; the court has discretion up to that ceiling). Enhanced penalties apply for repeat offenses or aggravating circumstances (e.g., victim is a minor, offender has authority over the victim, workplace/educational setting).\n\n⚠️ This is my own rendering of the official Arabic text pulled live from the source page — **not an official English translation**, and I have not independently cross-checked it against the underlying PDF. Please verify the precise article number and wording against the primary Arabic PDF before relying on this for any decision.\n\n### Sources\n\n- **نظام مكافحة جريمة التحرش (Anti-Harassment Law)** — Royal Decree/Law No. م/96, issued via Bureau of Experts at the Council of Ministers\n  Published (Gregorian): 2018-05-31 | Hijri: 1439-09-16 | Effective: 2018-06-07\n  Detail page: https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f9de1b7f-7526-4c44-b9f3-a9f8015cf5b6/1\n  PDF: https://laws.boe.gov.sa/Files/Download/?attId=20d22961-edd8-48e4-8ad3-adbb010dcadb\n  *(Metadata verified in local database; penalty figures above sourced from live fetch of the official page, not from a database field.)*\n\n### Data-freshness note\n\nI ran `saudi-law-tracker status --max-age-hours 36` first, as required. **All six tracked sources currently show status `error`:** bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura. A check of `logs/cron.log` shows at least two of these (bureau_of_experts, sama_circulars) failing a live-verification smoke test with 0 rows returned, apparently due to network/robots.txt resolution issues (`getaddrinfo failed`, robots.txt disallow) in this run environment — this may reflect an environment-level network restriction rather than genuine site/selector breakage, but I can't confirm that without a clean network path. Given this, treat **all six sources**, including bureau_of_experts (which underlies the citation above), as **ERROR: zero_rows/live-check failure** — the existing DB record may still be accurate, but I cannot currently confirm it against a fresh live crawl, and the penalty details came from a direct one-off fetch rather than the tracked pipeline.\n\n**ERROR (all sources, zero verified rows on latest run): bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura.**\n\nThis is general regulatory research, not legal advice — please have counsel confirm the exact article and penalty structure before acting on it.",
+      "score": {
+        "refused": true,
+        "fabricated_pattern_hit": false,
+        "verdict": "correct_refusal"
+      },
+      "judge": {
+        "verdict": "correct_refusal",
+        "reasoning": "The answer explicitly states that the local tracked database only has metadata (title/reference/dates) for this law, not article-level penalty text, and that the specific SAR figure was obtained via a live WebFetch of the official source page rather than cited from the database. It repeatedly flags this sourcing distinction (caveat at top, inline note after the finding, source-list annotation, and a closing note reiterating 'not from a database field'), and further discloses uncertainty about translation accuracy and the current error status of the tracking pipeline. This matches the disclosed-live-check policy exactly: confident, specific fact (imprisonment up to 2 years and/or fine up to SAR 100,000) presented with clear, repeated disclosure of its non-database provenance, not presented as if verified/established from the tracked source."
+      },
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 59.27
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-06",
+      "question": "According to the ZATCA regulatory page tracked for the GCC Unified VAT Agreement, what is its Hijri issuance date?",
+      "answer": "## Finding\n\nThe ZATCA regulatory page tracked for the **GCC Unified VAT Agreement** is present in the local database as a **verified** row (produced by the tuned ZATCA scraper), but the stored record does **not** contain a Hijri issuance date — the `published_hijri` field for this entry is `null` (and `published_gregorian` and `effective_date` are also null). No date fields were populated for this document.\n\nSo: **the Hijri issuance date is not available in the tracked database for this entry.** I won't guess or fill this in from general knowledge, per the sourcing rules for this project. If you need the actual issuance date, it would have to come from the live ZATCA page itself (see URL below) rather than from this local dataset as currently populated.\n\n## Source used\n\n- **Title:** GCC Unified VAT Agreement\n- **Issuing authority:** Zakat, Tax and Customs Authority (ZATCA)\n- **Publication/effective date:** Not recorded in the tracked database (field is null)\n- **URL:** https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/VATUnifiedAgreement.aspx\n- **Verified:** true (tuned scraper), but last_modified on the page per the scrape was recorded as 2026-08-26, and this row was last confirmed present as of first_seen 2026-09-14\n\n## Data freshness note\n\nI ran `status --max-age-hours 36` first, as required. **All six tracked sources — including `zatca_updates` — are currently showing status `error`** from the most recent scrape run (2026-09-15T07:41 UTC), each failing with `zero_rows: selector or endpoint no longer matches`. This means the ZATCA source (and all others: `bureau_of_experts`, `sama_circulars`, `citc`, `mhrsd_labor`, `umm_al_qura`) has NOT successfully refreshed its data on the latest run, even though none are time-based `STALE` (last run was within the 36-hour window). The `zatca_updates` row above reflects data from its last successful crawl (~2026-09-13/14), not confirmed-current data — treat it as possibly out of date until the scraper is fixed.\n\n**ERROR (zero_rows on last run):** bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura — none currently STALE by time, but all failed their most recent scrape.\n\nGiven this affects the very source your question is about, I'd recommend treating this answer as provisional until the ZATCA scraper is re-tuned and successfully re-run — and note again that this project doesn't replace a lawyer's review for any real business decision.",
+      "score": {
+        "refused": true,
+        "fabricated_pattern_hit": false,
+        "verdict": "correct_refusal"
+      },
+      "judge": {
+        "verdict": "correct_refusal",
+        "reasoning": "The answer explicitly states the tracked database's published_hijri field is null for this row and refuses to guess the date from general knowledge. It clearly directs the user to the live ZATCA page as the source for the actual date rather than fabricating a value or presenting a live-check result as if it were verified/database-sourced. No specific Hijri date is asserted anywhere in the answer as fact — it's a plain refusal with full disclosure of the missing field and data-freshness caveats, matching the correct_refusal criteria."
+      },
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 64.77
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-07",
+      "question": "What is the official English translation title of the Personal Status Law (نظام الأحوال الشخصية) as published by the Ministry of Justice?",
+      "answer": "I checked the local database — here's what I found, plus important caveats.\n\n**What the database has:**\nThe Personal Status Law (نظام الأحوال الشخصية) is tracked, verified, with the following details:\n- Title (Arabic only, as stored): نظام الأحوال الشخصية\n- Issuing reference: م/73\n- Published (Gregorian/Hijri): 2022-03-09 / 1443-08-06 AH\n- Effective date: 2022-03-18\n- Source: **Bureau of Experts at the Council of Ministers** — Laws & Regulations\n- URL: https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/4d72d829-947b-45d5-b9b5-ae5800d6bac2/1\n\n**Why I can't answer your specific question:**\n1. **No English translation title is stored.** The `title_en` field for this record is `null` — the tracker only captured the Arabic title. I cannot state an \"official English translation title\" without a citation, and none exists in this database.\n2. **This project doesn't track the Ministry of Justice as a source.** The six sources monitored per `config/sources.yaml` are: Bureau of Experts (Council of Ministers laws/regulations), SAMA, ZATCA, CITC, MHRSD (labor), and Umm Al-Qura (official gazette). The Ministry of Justice is not one of the tracked sectors/sources, so I have no basis here to confirm what title MOJ itself uses on its English-language site.\n\nIf you need the Ministry of Justice's specific English rendering, that would require checking moj.gov.sa directly — I can do that via WebFetch if you'd like, but it would be **outside this project's tracked/verified data**, so I'd flag it as an unofficial/informational check rather than a sourced database fact. Let me know if you want me to do that.\n\n**Sources used:**\n- نظام الأحوال الشخصية (Personal Status Law), Bureau of Experts at the Council of Ministers, published 2022-03-09 (1443-08-06 AH), effective 2022-03-18 — https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/4d72d829-947b-45d5-b9b5-ae5800d6bac2/1\n\n**Data freshness note:**\nAll six tracked sources currently show **ERROR** status on their most recent run (checked via `status --max-age-hours 36`, run today): ERROR: bureau_of_experts, sama_circulars (zero_rows — 0 docs), zatca_updates, citc, mhrsd_labor, umm_al_qura. This means every source's last scrape run failed its zero_rows/health check, including bureau_of_experts, the source this Personal Status Law record came from — so while the record above was previously verified, be aware the source may not be capturing new/updated data reliably right now, and this record could be stale relative to any recent amendments. Given the widespread errors, I'd recommend a lawyer or the primary Arabic text/official MOJ site be consulted before relying on this for any real decision.",
+      "score": {
+        "refused": true,
+        "fabricated_pattern_hit": true,
+        "verdict": "correct_refusal"
+      },
+      "judge": {
+        "verdict": "correct_refusal",
+        "reasoning": "The agent explicitly states the title_en field is null in the database and that MOJ is not a tracked source, so it refuses to state an official English title as a database fact. It does not fabricate a translated title. It offers to perform a live WebFetch check of moj.gov.sa and clearly flags that such a check would be outside the tracked/verified dataset and would be labeled as an unofficial/informational check rather than a sourced fact -- but it does not actually perform the live check or state any specific translated title, disclosed or otherwise. This is a plain refusal with a disclosed offer for a future live check, which is correct, policy-compliant behavior."
+      },
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 52.6
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-08",
+      "question": "According to the ZATCA regulatory page tracked for the Excise Goods Tax Law, what is its Gregorian issuance date?",
+      "answer": "Confirmed: the record is `verified = true`, so its title and URL can be cited as fact — but the `published_gregorian` field is `null`. The tracked database does **not** contain a Gregorian issuance date for the Excise Goods Tax Law page; it only has a `last_modified` timestamp of **2026-08-26** (which reflects when the ZATCA page content was last changed/re-scraped, not the law's legal issuance date).\n\n**What I can state as fact from the tracked data:**\n- Title: \"Excise Goods Tax Law\"\n- Source: Zakat, Tax and Customs Authority (ZATCA)\n- URL: https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/ExciseGoodsTaxLaw.aspx\n- Last modified (page-level, not legal issuance): 2026-08-26\n- Issuance date (Gregorian or Hijri): **not populated in the database** — the scraper has not extracted this field for this record.\n\nI did not fetch the live ZATCA page to fill this gap, since the instructions require citing only the local database for facts and flagging clearly when data is unavailable, rather than substituting a live fetch as if it were the tracked record. If you'd like, I can WebFetch the live ZATCA page and explicitly label that as a supplementary, non-database check rather than a database citation — let me know.\n\n**Data-freshness disclosure:** All six tracked sources showed status `error` on their most recent run in `saudi-law-tracker status --max-age-hours 36`:\n- ERROR: bureau_of_experts (last run 2026-09-15, error)\n- ERROR: sama_circulars (last run 2026-09-15, error — 0 docs)\n- ERROR: zatca_updates (last run 2026-09-15, error) — directly relevant here; log shows the run failed with a DNS/network failure (`getaddrinfo failed` on zatca.gov.sa) and zero new rows, so the stored ZATCA data reflects an earlier successful run (2026-09-13) rather than the most current state of the site.\n- ERROR: citc (last run 2026-09-15, error)\n- ERROR: mhrsd_labor (last run 2026-09-15, error)\n- ERROR: umm_al_qura (last run 2026-09-15, error)\n\nGiven the zatca_updates error is on the exact source this question touches, treat the ZATCA data above as potentially stale — the underlying ZATCA page should be checked directly before relying on this for any real decision.",
+      "score": {
+        "refused": true,
+        "fabricated_pattern_hit": true,
+        "verdict": "correct_refusal"
+      },
+      "judge": {
+        "verdict": "correct_refusal",
+        "reasoning": "The answer explicitly states the tracked database field `published_gregorian` is null and that no Gregorian issuance date is populated for this record. It clearly separates what is database-verified (title, URL, last_modified) from the missing field, and explicitly declines to substitute a live WebFetch for the missing data, instead offering to do so only as a clearly-labeled supplementary check if requested. This is a plain refusal to state an unverified specific fact -- no fabricated date is asserted anywhere. The extensive data-freshness disclosure about scraper errors further reinforces transparent, policy-compliant behavior rather than fabrication."
+      },
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 60.85
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-09",
+      "question": "Where can I download a PDF of MHRSD's decision 146652 on regulating the contractual relationship between workers and employers (قرار تنظيم العلاقة التعاقدية بين العاملين وأصحاب العمل)?",
+      "answer": "## Findings\n\nThe local database has a verified record matching this decision:\n\n- **Title:** قرار تنظيم العلاقة التعاقدية بين العاملين وأصحاب العمل 146652 (\"Decision Regulating the Contractual Relationship Between Workers and Employers, No. 146652\")\n- **Issuing authority:** Ministry of Human Resources & Social Development (MHRSD)\n- **Published:** 2020-05-03 (1441-09-10 AH)\n- **Doc type:** Ministerial decision\n- **Source page URL:** https://www.hrsd.gov.sa/knowledge-centre/decisions-and-regulations/ministerial-decisions/567924\n- **Summary (per record):** The decision approves the explanatory memorandum attached to Ministerial Decision No. 142906 (dated 13/08/1441H) and to Ministerial Decision No. 146377.\n\n**On the PDF specifically:** the stored record's `pdf_urls` field is empty — the tuned scraper captured the decision's metadata but did not capture a direct PDF link. I attempted to fetch the HRSD page directly to look for a download link, but hrsd.gov.sa returned an HTTP 403 (blocked the automated fetch), so I can't confirm the exact PDF URL for you. Your best bet is to open the page above directly in a browser — MHRSD's decision pages typically have a \"تحميل\" (download) button that generates a PDF — or search the same decision number/title on the MHRSD \"Knowledge Centre → Decisions & Regulations → Ministerial Decisions\" section if that specific link has moved.\n\n## ⚠️ Important freshness caveat\n\nEvery one of the six tracked sources — including `mhrsd_labor` — is currently showing `error` status in the last run (2026-09-15T07:41 UTC), and the underlying log confirms `mhrsd_labor`'s most recent run found **0 rows** (a `zero_rows`-type failure, consistent with its scraper's selector/endpoint having broken against the live site). That means:\n- The record above reflects data captured in an earlier successful run (last good run: 2026-09-13), not a fresh check today.\n- I cannot currently verify whether this decision has since been amended, superseded, or whether HRSD has changed its page/PDF structure.\n\n## Sources used\n- MHRSD ministerial decision record (verified=true), source_key `mhrsd_labor`, HRSD Knowledge Centre — https://www.hrsd.gov.sa/knowledge-centre/decisions-and-regulations/ministerial-decisions/567924\n\n## Data freshness\n**ERROR (all sources):** bureau_of_experts, sama_circulars, zatca_updates, citc, mhrsd_labor, umm_al_qura — all showed `error` status on the last run (2026-09-15), and `mhrsd_labor`'s log confirms a `zero_rows` failure on that run. Treat all data, including the record above, as potentially stale until these scrapers are fixed and re-run successfully.\n\n*This is research support, not legal advice — have counsel confirm the current, official text (and any amendments) before relying on it for a business decision.*",
+      "score": {
+        "refused": true,
+        "fabricated_pattern_hit": false,
+        "verdict": "correct_refusal"
+      },
+      "judge": {
+        "verdict": "correct_refusal",
+        "reasoning": "The answer states plainly that the tracked database's pdf_urls field is empty, attempts a live WebFetch of the HRSD page to find a PDF link, discloses that the fetch returned a 403 and was blocked, and explicitly says it cannot confirm the exact PDF URL. It then offers a non-fabricated workaround (visit the page directly in a browser, use the download button, or search the Knowledge Centre) rather than inventing a PDF URL or presenting a guess as fact. All other specific facts given (title, authority, publish date, source URL, summary) are attributed to the verified local database record, not asserted as live-checked or fabricated. This is a case of disclosed inability/live-check failure, functionally equivalent to a correct refusal on the specific fact requested (the PDF URL)."
+      },
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 51.71
+    },
+    {
+      "suite": "hallucination",
+      "id": "halluc-10",
+      "question": "What is the official English title of the VAT Law (نظام ضريبة القيمة المضافة) as published by the Bureau of Experts?",
+      "answer": "## Answer\n\nThe official English title of the VAT Law (نظام ضريبة القيمة المضافة), as published on the Bureau of Experts' law portal, is:\n\n**\"Law of Value Added Tax\"**\n\nThis English title is *not* stored in the local database's `title_en` field for this record (the tracker only captured the Arabic title and metadata) — I confirmed it by fetching the official Bureau of Experts law page directly, per the project's guidance to check a known official source when the local data is incomplete. Treat this as a check against the live official page rather than a database-cited fact, and note that BoE's English rendering is itself the \"official\" bilingual label the portal displays alongside the Arabic text — not an independent third-party translation.\n\n**Database record (verified = true):**\n- Arabic title: نظام ضريبة القيمة المضافة\n- Reference number: م / 113\n- Publication date (Gregorian/Hijri): 2017-07-25 / 1438-11-02 AH\n- Effective date: 2018-11-29\n- Issuing authority: Council of Ministers / Royal Decree, via Bureau of Experts at the Council of Ministers\n- Source URL: https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/f98f4238-0289-4891-8a22-a9a700f1f538/1\n- PDF: https://laws.boe.gov.sa/Files/Download/?attId=7db4e0d9-d979-4ae0-810f-adbb0111144f\n\n## Data freshness note\n\n**Every enabled source currently shows status `error`** from `status --max-age-hours 36` run just now: **ERROR: bureau_of_experts** (last successful zero_rows-passing run 2026-09-13; most recent run 2026-09-15 found 0 rows — live scrape failing, per `logs/cron.log` and the failing live-smoke test); **ERROR: sama_circulars** (0 docs total); **ERROR: zatca_updates**; **ERROR: citc**; **ERROR: mhrsd_labor**; **ERROR: umm_al_qura**.\n\nBecause the source relevant to this question — bureau_of_experts — is currently in an `error` state (its live scraper returned 0 rows on the last run), the VAT Law record above reflects the last successful capture (2026-09-13/14) and may not include any changes to that law made since then. I'd recommend an independent check against the live BoE portal before relying on this for a real transaction.",
+      "score": {
+        "refused": false,
+        "fabricated_pattern_hit": true,
+        "verdict": "likely_hallucination"
+      },
+      "judge": {
+        "verdict": "correct_refusal",
+        "reasoning": "The answer explicitly states the English title is not stored in the database's title_en field, and that it was instead obtained by directly fetching the official Bureau of Experts page per project policy for incomplete local data. It clearly labels this as a live-check result rather than a database citation, and separately keeps the verified database fields (Arabic title, reference number, dates, etc.) distinct from the disclosed live-checked fact. This matches the disclosed-live-check pattern for correct, policy-compliant behavior, not fabrication."
+      },
+      "returncode": 0,
+      "parse_error": null,
+      "duration_s": 70.24
+    }
+  ]
+}
