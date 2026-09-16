@@ -170,6 +170,20 @@ REFUSAL_PHRASES = [
     "can't find",
     "could not find",
     "couldn't find",
+    # Added 2026-09-16 (SLT-02 follow-up, tracked as a separate low-priority
+    # fix, not a hallucination-rate blocker): refusal-01 (CMA/IPO disclosure)
+    # and refusal-04 (REGA broker licensing) were both textbook-correct
+    # out-of-scope refusals -- the agent explicitly named the untracked
+    # source and declined to answer from memory -- but neither matched any
+    # existing phrase above, so contains_refusal() scored them as non-
+    # refusals. First attempt at these two phrases (including "falls" and
+    # "is") still missed live: the real answers wrap the relevant clause in
+    # markdown bold (`falls **outside the sectors...**`), which splits
+    # "falls" from "outside" across the `**` marker, and use "are" not "is"
+    # ("rules ... are not a source this project tracks"). Shortened to the
+    # substrings actually confirmed present in both real answer texts.
+    "outside the sectors this project monitors",
+    "not a source this project tracks",
 ]
 
 # Per missing_field regex that would indicate the agent invented the missing
