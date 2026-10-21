@@ -137,9 +137,7 @@ class ZatcaScraper(BaseScraper):
 
         leaf_url = self.abs_url(_leaf_path(category, link_filename))
         resp = await self.http.get(leaf_url)
-        self.store.write_raw(
-            self.source.key, f"leaf_{category.lower()}_{link_filename}", resp.text
-        )
+        self.store.write_raw(self.source.key, f"leaf_{category.lower()}_{link_filename}", resp.text)
 
         last_modified = _parse_last_modified(resp.text)
         if last_modified is None:

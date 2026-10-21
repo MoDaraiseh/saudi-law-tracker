@@ -131,7 +131,9 @@ def test_build_doc_end_to_end():
     assert doc is not None
     assert doc.title == "The Implementing Regulation for Zakat Collection"
     assert doc.doc_type == DocumentType.TAX_RULING
-    assert str(doc.url) == "https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/ZakatRegulations.aspx"
+    assert (
+        str(doc.url) == "https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/ZakatRegulations.aspx"
+    )
     assert doc.last_modified == date(2026, 8, 26)
     assert doc.published_gregorian is None  # a page-edit timestamp is not an issuance date
     assert doc.published_hijri is None

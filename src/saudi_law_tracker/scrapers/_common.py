@@ -20,7 +20,14 @@ from ..utils.text import clean
 from .base import BaseScraper
 
 _DOC_HINTS = (
-    ".pdf", "/law", "/regulation", "/circular", "/rule", "/decision", "/detail", "/article",
+    ".pdf",
+    "/law",
+    "/regulation",
+    "/circular",
+    "/rule",
+    "/decision",
+    "/detail",
+    "/article",
 )
 
 

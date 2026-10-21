@@ -12,7 +12,7 @@ import typer
 
 from .config import get_settings, load_sources
 from .logging import configure_logging
-from .models import ScrapeResult
+from .models import RegulatoryDocument, ScrapeResult
 from .pipeline import run_all
 from .scrapers import get_scraper, load_all_scrapers, registered_keys
 from .storage import DocumentStore, RunState
@@ -56,12 +56,10 @@ def list_sources() -> None:
 def _new_entry_lines(results: list[ScrapeResult]) -> list[str]:
     """One block per newly stored document, newest publication first."""
 
-    new = [
-        (r.source_key, doc)
-        for r in results
-        for doc in r.documents
-        if doc.uid in set(r.new_uids)
-    ]
+    new: list[tuple[str, RegulatoryDocument]] = []
+    for r in results:
+        new_uids = set(r.new_uids)
+        new.extend((r.source_key, doc) for doc in r.documents if doc.uid in new_uids)
     new.sort(key=lambda pair: pair[1].publication_key(), reverse=True)
 
     if not new:
@@ -141,9 +139,15 @@ def status(
         info = runs.get(s.key)
         count = store.count(s.key)
         last_run = info.get("last_run", "never")
-        line = f"{s.key:20s} docs={count:5d} last_run={last_run:32s} {info.get('status', '-')}"
+        # Staleness is judged on the last *successful* run, as documented: a
+        # source that runs daily but fails every time must still be flagged.
+        last_ok = RunState.describe_last_success(info)
+        line = (
+            f"{s.key:20s} docs={count:5d} last_run={last_run:32s} {info.get('status', '-'):5s}"
+            f" last_ok={last_ok}"
+        )
 
-        if max_age_hours is not None and s.enabled and _is_stale(last_run, max_age_hours, now=now):
+        if max_age_hours is not None and s.enabled and _is_stale(last_ok, max_age_hours, now=now):
             any_stale = True
             line += "  STALE"
 
@@ -156,7 +160,7 @@ def status(
 @app.command("export")
 def export(
     source: str = typer.Argument(..., help="Source key to export."),
-    limit: int = typer.Option(20, "--limit", "-n"),
+    limit: int = typer.Option(20, "--limit", "-n", min=1),
 ) -> None:
     """Print the most recently published stored documents as JSON."""
 
@@ -191,7 +195,7 @@ def query(
         help="Also include rows from untuned scrapers (verified=false). "
         "By default only verified rows are returned.",
     ),
-    limit: int = typer.Option(50, "--limit", "-n", help="Max rows."),
+    limit: int = typer.Option(50, "--limit", "-n", min=1, help="Max rows."),
     as_json: bool = typer.Option(False, "--json", help="Emit JSON instead of a table."),
 ) -> None:
     """Search stored regulations across all sources (no raw SQL needed).

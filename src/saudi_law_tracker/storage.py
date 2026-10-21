@@ -89,9 +89,7 @@ class DocumentStore:
 
         existing = {row["name"] for row in conn.execute("PRAGMA table_info(regulations)")}
         if "verified" not in existing:
-            conn.execute(
-                "ALTER TABLE regulations ADD COLUMN verified INTEGER NOT NULL DEFAULT 0"
-            )
+            conn.execute("ALTER TABLE regulations ADD COLUMN verified INTEGER NOT NULL DEFAULT 0")
         if "last_modified" not in existing:
             conn.execute("ALTER TABLE regulations ADD COLUMN last_modified TEXT")
 
@@ -211,9 +209,7 @@ class DocumentStore:
 
         insert_cols = ", ".join(_COLUMNS)
         insert_ph = ", ".join(f":{c}" for c in _COLUMNS)
-        update_set = ", ".join(
-            f"{c} = :{c}" for c in _COLUMNS if c not in ("uid", "first_seen")
-        )
+        update_set = ", ".join(f"{c} = :{c}" for c in _COLUMNS if c not in ("uid", "first_seen"))
 
         with self._connect() as conn:
             known: dict[str, str | None] = {
@@ -231,12 +227,16 @@ class DocumentStore:
                         f"INSERT INTO regulations ({insert_cols}) VALUES ({insert_ph})", row
                     )
                     new_uids.append(doc.uid)
+                    # A second copy of the same uid later in this batch must be
+                    # treated as already stored, not INSERTed again (which would
+                    # raise IntegrityError and roll back the whole batch).
+                    known[doc.uid] = doc.content_hash
                 elif known[doc.uid] != doc.content_hash:
                     row["last_seen"] = now  # first_seen is preserved by the SET list
-                    conn.execute(
-                        f"UPDATE regulations SET {update_set} WHERE uid = :uid", row
-                    )
-                    updated_uids.append(doc.uid)
+                    conn.execute(f"UPDATE regulations SET {update_set} WHERE uid = :uid", row)
+                    if doc.uid not in new_uids and doc.uid not in updated_uids:
+                        updated_uids.append(doc.uid)
+                    known[doc.uid] = doc.content_hash
                 else:
                     conn.execute(
                         "UPDATE regulations SET last_seen = ? WHERE uid = ?", (now, doc.uid)
@@ -269,7 +269,13 @@ class DocumentStore:
 
 
 class RunState:
-    """Small JSON file per source tracking the last successful run."""
+    """Small JSON file tracking each source's last run and last successful run.
+
+    Per source: ``last_run`` (any outcome), ``status`` (``ok``/``error``) and
+    ``detail`` describe the most recent run; ``last_success`` is the most
+    recent run that ended ``ok`` and is carried over unchanged by failed runs,
+    so a source that keeps failing doesn't look freshly checked.
+    """
 
     def __init__(self, settings: Settings) -> None:
         self.path = settings.state_dir / "runs.json"
@@ -284,11 +290,51 @@ class RunState:
     def get(self, source_key: str) -> dict[str, str]:
         return self._read().get(source_key, {})
 
+    @staticmethod
+    def last_success(info: dict[str, str]) -> str | None:
+        """When this source last finished ``ok``, or None if never or unknown.
+
+        State files written before ``last_success`` existed only know the most
+        recent run, which counts as a success only if it ended ``ok``.
+        """
+
+        if "last_success" in info:
+            value = info["last_success"]
+            return None if value == "never" else value
+        if info.get("status") == "ok":
+            return info.get("last_run")
+        return None
+
+    @classmethod
+    def describe_last_success(cls, info: dict[str, str]) -> str:
+        """``last_success`` for display: a timestamp, ``never``, or ``unknown``
+        (an older state entry whose latest run failed doesn't record whether
+        any earlier run succeeded)."""
+
+        value = cls.last_success(info)
+        if value is not None:
+            return value
+        if not info or "last_success" in info:
+            return "never"
+        return "unknown"
+
     def mark(self, source_key: str, *, ok: bool, detail: str = "") -> None:
         data = self._read()
-        data[source_key] = {
-            "last_run": datetime.now(UTC).isoformat(),
-            "status": "ok" if ok else "error",
-            "detail": detail,
-        }
-        self.path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        now = datetime.now(UTC).isoformat()
+        previous = data.get(source_key, {})
+        previous_success = self.last_success(previous)
+        entry = {"last_run": now, "status": "ok" if ok else "error", "detail": detail}
+        if ok:
+            entry["last_success"] = now
+        elif previous_success is not None:
+            entry["last_success"] = previous_success
+        elif not previous or "last_success" in previous:
+            entry["last_success"] = "never"
+        # else: an older entry that never recorded it -- leave it unknown
+        # rather than claim the source never succeeded.
+        data[source_key] = entry
+        # Write-then-rename so a crash mid-write can't leave a truncated file
+        # that breaks every later `status` / scrape.
+        tmp = self.path.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        tmp.replace(self.path)

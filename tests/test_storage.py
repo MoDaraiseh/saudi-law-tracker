@@ -244,3 +244,17 @@ def test_query_filters_by_verified(settings):
     assert [d.title for d in store.query(verified=True)] == ["Verified doc"]
     assert [d.title for d in store.query(verified=False)] == ["Unverified doc"]
     assert len(store.query()) == 2
+
+
+def test_upsert_many_handles_duplicate_uid_in_one_batch(settings):
+    store = DocumentStore(settings)
+    a = _doc("https://example.gov.sa/a", "A", "h1")
+    a_again = _doc("https://example.gov.sa/a", "A (edited)", "h2")
+
+    new, updated = store.upsert_many("demo", [a, a_again])
+
+    assert new == [a.uid]
+    assert updated == []
+    stored = store.load("demo")
+    assert len(stored) == 1
+    assert stored[a.uid].title == "A (edited)"

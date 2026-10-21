@@ -49,7 +49,7 @@ src/saudi_law_tracker/
 data/
   raw/<source>/                timestamped HTML snapshots
   regulations.db               SQLite: one `regulations` table, all sources
-  state/runs.json              last-run status per source
+  state/runs.json              last run + last successful run per source
 tests/
 ```
 
@@ -61,7 +61,8 @@ Requires Python 3.11+.
 python -m venv .venv
 .venv\Scripts\activate          # Windows;  source .venv/bin/activate on POSIX
 pip install -e ".[dev]"
-cp .env.example .env             # then edit
+cp .env.example .env             # Windows cmd: copy .env.example .env -- then edit,
+                                 # at least the contact address in SLT_HTTP_USER_AGENT
 ```
 
 ## Usage
@@ -83,6 +84,9 @@ saudi-law-tracker query -q "القيمة المضافة" --json  # machine-reada
 `--sector` (substring of source key or category), `--text` (title/summary),
 `--since` / `--until` (Gregorian publication date), `--limit`, `--json`.
 
+`status` prints each source's last run, its status (`ok`/`error`) and `last_ok`,
+the last run that ended `ok` (`never` if none has; `unknown` for a source whose
+only record predates `last_ok` tracking and whose latest run failed).
 `status --max-age-hours N` additionally flags (prints `STALE` next to, and
 exits non-zero if any exist) an *enabled* source whose last successful run
 is older than `N` hours, or that has never run at all — meant for a
@@ -175,6 +179,10 @@ class MySourceScraper(BaseScraper):
   *changed*; the same URL re-published under a new date is a *new* entry.
 - `utils/text.py` normalizes Arabic (alef/ya/ta-marbuta, diacritics, tatweel)
   for dedupe — display text is kept as-is.
+- `.env` is read from the project root wherever the command runs from (a `.env` in the
+  current directory, if any, overrides it), and a relative `SLT_DATA_DIR` such as
+  `./data` is resolved against the project root too, so a scheduled task or a
+  run from another folder always uses the same database.
 - Be a good citizen: `SLT_REQUEST_DELAY` throttles per host, the client sends a
   descriptive User-Agent, and `HttpClient` fetches and caches each host's
   `robots.txt` (once per run) and skips any disallowed path, logging a

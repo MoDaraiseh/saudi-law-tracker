@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -17,8 +17,15 @@ DEFAULT_CONFIG_PATH = PROJECT_ROOT / "config" / "sources.yaml"
 class Settings(BaseSettings):
     """Process-wide configuration, overridable via environment or .env."""
 
+    # The project's own .env is read wherever the command is run from (a
+    # scheduled task or an installed `saudi-law-tracker` in another directory
+    # would otherwise silently ignore it); a .env in the current directory,
+    # if any, is loaded after it and wins.
     model_config = SettingsConfigDict(
-        env_prefix="SLT_", env_file=".env", env_file_encoding="utf-8", extra="ignore"
+        env_prefix="SLT_",
+        env_file=(PROJECT_ROOT / ".env", ".env"),
+        env_file_encoding="utf-8",
+        extra="ignore",
     )
 
     data_dir: Path = PROJECT_ROOT / "data"
@@ -29,6 +36,15 @@ class Settings(BaseSettings):
     max_concurrency: int = 4
     log_level: str = "INFO"
     notify_webhook_url: str | None = None
+
+    @field_validator("data_dir")
+    @classmethod
+    def _anchor_relative_data_dir(cls, value: Path) -> Path:
+        """Resolve a relative SLT_DATA_DIR (e.g. ``./data`` from .env.example)
+        against the project root, not the current directory, so the same
+        database is used no matter where the command is run from."""
+
+        return value if value.is_absolute() else PROJECT_ROOT / value
 
     @property
     def raw_dir(self) -> Path:

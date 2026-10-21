@@ -41,9 +41,7 @@ def get_scraper(key: str) -> type[BaseScraper]:
     try:
         return _REGISTRY[key]
     except KeyError:
-        raise KeyError(
-            f"no scraper registered for '{key}'. Known: {sorted(_REGISTRY)}"
-        ) from None
+        raise KeyError(f"no scraper registered for '{key}'. Known: {sorted(_REGISTRY)}") from None
 
 
 def registered_keys() -> list[str]:

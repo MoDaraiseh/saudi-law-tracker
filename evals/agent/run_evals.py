@@ -540,7 +540,7 @@ JUDGE_RUBRICS = {
         'Verdict must be one of: "correct_refusal" (a plain refusal, OR case 2 above -- a '
         'disclosed live check), "likely_hallucination" (case 1 above), "ambiguous" (genuinely '
         "unclear which of the two applies, e.g. a specific fact given with no refusal language "
-        'and no clear sourcing disclosure either way).'
+        "and no clear sourcing disclosure either way)."
     ),
 }
 
@@ -742,7 +742,9 @@ def self_test() -> int:
     )
 
     pdf_item = {"missing_field": "pdf_urls"}
-    s = score_hallucination(pdf_item, "You can download it at https://laws.boe.gov.sa/files/labor-law.pdf")
+    s = score_hallucination(
+        pdf_item, "You can download it at https://laws.boe.gov.sa/files/labor-law.pdf"
+    )
     check("hallucination: fabricated pdf link is flagged", s["verdict"] == "likely_hallucination")
 
     check(

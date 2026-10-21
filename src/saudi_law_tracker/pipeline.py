@@ -39,6 +39,11 @@ async def run_source(
             errors.append(f"{type(exc).__name__}: {exc}")
             log.exception("source.failed", source=source.key)
 
+    # The same document can be listed twice (e.g. on two listing pages); keep
+    # one per uid -- the last copy, in first-seen order -- so counts,
+    # notifications and the zero-row floor aren't inflated by duplicates.
+    documents = list({doc.uid: doc for doc in documents}.values())
+
     if len(documents) < source.min_expected_docs:
         # A tuned scraper silently finding nothing almost always means the
         # site's markup/endpoint moved out from under its selector, not that
@@ -50,13 +55,18 @@ async def run_source(
     new_uids: list[str] = []
     updated_uids: list[str] = []
     if documents and not dry_run:
-        new_uids, updated_uids = store.upsert_many(source.key, documents)
-        new_set, updated_set = set(new_uids), set(updated_uids)
-        new_docs = [d for d in documents if d.uid in new_set]
-        updated_docs = [d for d in documents if d.uid in updated_set]
-        await notify_new_documents(
-            settings.notify_webhook_url, source.name, new_docs, updated_docs
-        )
+        try:
+            new_uids, updated_uids = store.upsert_many(source.key, documents)
+        except Exception as exc:  # noqa: BLE001 - one bad source shouldn't kill the batch
+            errors.append(f"storage: {type(exc).__name__}: {exc}")
+            log.exception("source.store_failed", source=source.key)
+        else:
+            new_set, updated_set = set(new_uids), set(updated_uids)
+            new_docs = [d for d in documents if d.uid in new_set]
+            updated_docs = [d for d in documents if d.uid in updated_set]
+            await notify_new_documents(
+                settings.notify_webhook_url, source.name, new_docs, updated_docs
+            )
 
     result = ScrapeResult(
         source_key=source.key,

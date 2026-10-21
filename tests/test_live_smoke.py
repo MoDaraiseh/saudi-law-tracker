@@ -73,7 +73,7 @@ async def _live_docs(source: SourceConfig) -> list[RegulatoryDocument]:
 
 
 def _is_verified_and_dated(doc: RegulatoryDocument) -> bool:
-    """"Dated" here means *any* real timestamp the scraper actually read off
+    """ "Dated" here means *any* real timestamp the scraper actually read off
     the live page -- a true publication date when the source has one, or
     `last_modified` for a source like zatca that (per SLT-09) only ever has
     a page-edit timestamp available. Either is proof the scraper is still

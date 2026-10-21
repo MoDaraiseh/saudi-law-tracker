@@ -371,9 +371,12 @@ def test_parse_row_without_title_link_is_skipped():
     link = row.css_first(".field--name-node-title a")
     assert link is not None
     link.decompose()
-    assert _scraper(
-        ["/knowledge-centre/decisions-and-regulations/ministerial-decisions"]
-    )._parse_row(row, "ministerial-decisions") is None
+    assert (
+        _scraper(["/knowledge-centre/decisions-and-regulations/ministerial-decisions"])._parse_row(
+            row, "ministerial-decisions"
+        )
+        is None
+    )
 
 
 class _FakeResponse:
