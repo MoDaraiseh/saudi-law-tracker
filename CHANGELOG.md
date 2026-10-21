@@ -37,9 +37,11 @@ Three status categories, and it matters which one a finding is in:
 
 ## 2026-10-21 review
 
-New findings from a full code review and test run on 2026-10-21. Each fix
-below has a regression test that fails against the previous code and passes
-now (112 tests, plus ruff, `ruff format` and strict mypy all clean).
+New findings from a full code review and test run on 2026-10-21. The three
+"Closed, verified" fixes below are covered by 10 new tests, 9 of which fail
+against the previous code (the 10th guards that healthy sources stay
+un-flagged); the "Minor" items are not separately tested. The full suite is
+112 tests, with ruff, `ruff format` and strict mypy all clean.
 
 | Finding | Status | What actually verifies it |
 |---|---|---|
