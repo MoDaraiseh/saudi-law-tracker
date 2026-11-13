@@ -51,6 +51,13 @@ un-flagged); the "Minor" items are not separately tested. The full suite is
 | **`.env` / `SLT_DATA_DIR` depended on the current directory** | **Closed, verified** | `.env` was only read from the current directory, and a relative `SLT_DATA_DIR=./data` (the `.env.example` default) resolved against it. Both are now anchored to the project root; `status` run from `C:\` shows the real database. |
 | **Minor** | **Closed** | `runs.json` written atomically; `query`/`export --limit` must be at least 1; 9 files brought in line with `ruff format`; README setup notes the Windows `copy` command and the `you@example.com` placeholder in `SLT_HTTP_USER_AGENT`, which the local `.env` still contains. |
 
+## 2026-11-13 review
+
+| Finding | Status | What actually verifies it |
+|---|---|---|
+| **Fresh installs broken by selectolax 1.0** | **Closed, verified** | `selectolax>=0.3.21` had no upper bound, and selectolax 1.0 makes `selectolax.parser` (the old Modest backend) raise `ImportError` on import, so a fresh `pip install -e ".[dev]"` broke 6 test modules at import. All scrapers now use the lexbor backend (`selectolax.lexbor`), which selectolax recommends. The full suite (112 tests), ruff and strict mypy pass on both selectolax 0.4.11 and 1.0.2. |
+| **No CI** | **Closed** | Added `.github/workflows/ci.yml`: ruff, mypy and the offline test suite on Ubuntu and Windows, Python 3.11 and 3.13. |
+
 ## Note on scope
 
 Findings not listed above (anything from the original technical-reassessment

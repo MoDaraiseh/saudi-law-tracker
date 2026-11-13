@@ -5,7 +5,8 @@ import re
 from datetime import date
 from typing import Any
 
-from selectolax.parser import HTMLParser, Node
+from selectolax.lexbor import LexborHTMLParser as HTMLParser
+from selectolax.lexbor import LexborNode as Node
 
 from saudi_law_tracker.config import SourceConfig
 from saudi_law_tracker.models import DocumentType, RegulatoryDocument

@@ -36,7 +36,8 @@ from collections.abc import AsyncIterator
 from datetime import date
 from urllib.parse import parse_qs, urlparse
 
-from selectolax.parser import HTMLParser, Node
+from selectolax.lexbor import LexborHTMLParser as HTMLParser
+from selectolax.lexbor import LexborNode as Node
 
 from ..models import DocumentType, RegulatoryDocument
 from ..utils.text import clean

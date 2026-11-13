@@ -56,7 +56,7 @@ from collections.abc import AsyncIterator
 from datetime import date, datetime
 from typing import Any
 
-from selectolax.parser import HTMLParser
+from selectolax.lexbor import LexborHTMLParser as HTMLParser
 
 from ..models import DocumentType, RegulatoryDocument
 from ..utils.text import clean

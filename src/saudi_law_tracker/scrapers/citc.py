@@ -35,7 +35,8 @@ from __future__ import annotations
 from collections.abc import AsyncIterator
 from datetime import date
 
-from selectolax.parser import HTMLParser, Node
+from selectolax.lexbor import LexborHTMLParser as HTMLParser
+from selectolax.lexbor import LexborNode as Node
 
 from ..models import DocumentType, RegulatoryDocument
 from ..utils.dates import parse_hijri_date

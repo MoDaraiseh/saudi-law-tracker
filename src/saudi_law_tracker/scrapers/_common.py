@@ -12,7 +12,7 @@ from collections.abc import AsyncIterator, Iterator
 from dataclasses import dataclass, field
 from urllib.parse import urljoin
 
-from selectolax.parser import HTMLParser
+from selectolax.lexbor import LexborHTMLParser as HTMLParser
 
 from ..models import DocumentType, RegulatoryDocument
 from ..utils.dates import parse_hijri_date
