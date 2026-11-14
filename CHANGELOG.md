@@ -58,6 +58,12 @@ un-flagged); the "Minor" items are not separately tested. The full suite is
 | **Fresh installs broken by selectolax 1.0** | **Closed, verified** | `selectolax>=0.3.21` had no upper bound, and selectolax 1.0 makes `selectolax.parser` (the old Modest backend) raise `ImportError` on import, so a fresh `pip install -e ".[dev]"` broke 6 test modules at import. All scrapers now use the lexbor backend (`selectolax.lexbor`), which selectolax recommends. The full suite (112 tests), ruff and strict mypy pass on both selectolax 0.4.11 and 1.0.2. |
 | **No CI** | **Closed** | Added `.github/workflows/ci.yml`: ruff, mypy and the offline test suite on Ubuntu and Windows, Python 3.11 and 3.13. |
 
+## 2026-11-14 review
+
+| Finding | Status | What actually verifies it |
+|---|---|---|
+| **CI actions pinned to mutable major tags** (`actions/checkout@v7`, `actions/setup-python@v7`) | **Closed** | Both versions exist and CI was green, but a major tag can be moved to different code at any time, which matters for a public repo. Pinned to full commit SHAs: checkout v7.0.1 (`3d3c42e5…`) and setup-python v7.1.0 (`6d4fd22b…`), resolved with `gh api repos/<action>/commits/<tag>`. Checkout no longer persists the token (`persist-credentials: false`). Added `.github/dependabot.yml` so the pins get monthly update PRs instead of going stale. |
+
 ## Note on scope
 
 Findings not listed above (anything from the original technical-reassessment
