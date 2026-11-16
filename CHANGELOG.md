@@ -13,6 +13,8 @@ verified, are in [docs/ASSESSMENT_LOG.md](docs/ASSESSMENT_LOG.md).
   `evals/agent/latest_report.json`; earlier runs remain in git history.
 - README: scheduling steps moved to `docs/SCHEDULING.md`; real `status` and
   `query --json` output added.
+- `ruff` in the dev extras is bounded to `>=0.17,<0.18`, so a new ruff release
+  can't break CI unannounced. Adds a CI badge and a `.mailmap`.
 
 ## 2026-11-14
 

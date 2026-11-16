@@ -1,5 +1,7 @@
 # saudi-law-tracker
 
+[![ci](https://github.com/MoDaraiseh/saudi-law-tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/MoDaraiseh/saudi-law-tracker/actions/workflows/ci.yml)
+
 Scrapes and tracks regulatory publications from Saudi government sources, diffing
 each run so you only get told about what is genuinely new.
 
