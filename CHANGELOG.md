@@ -11,6 +11,8 @@ verified, are in [docs/ASSESSMENT_LOG.md](docs/ASSESSMENT_LOG.md).
   this file is now a conventional changelog.
 - Agent evals: only the latest report is kept, as
   `evals/agent/latest_report.json`; earlier runs remain in git history.
+- README: scheduling steps moved to `docs/SCHEDULING.md`; real `status` and
+  `query --json` output added.
 
 ## 2026-11-14
 

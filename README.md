@@ -111,58 +111,57 @@ unnoticed:
 saudi-law-tracker status --max-age-hours 36   # exit 0 if every enabled source ran in the last 36h
 ```
 
+## Example output
+
+Real output from 16 Nov 2026. `saudi-law-tracker status`:
+
+```
+bureau_of_experts    docs=  538 last_run=2026-11-16T12:42:49.569964+00:00 error last_ok=2026-11-07T12:33:38.803647+00:00
+sama_circulars       docs=    0 last_run=2026-11-16T12:42:34.104033+00:00 error last_ok=unknown
+zatca_updates        docs=   70 last_run=2026-11-16T12:44:32.832261+00:00 ok    last_ok=2026-11-16T12:44:32.832261+00:00
+citc                 docs=   40 last_run=2026-11-16T12:42:49.561049+00:00 error last_ok=2026-11-07T12:33:40.181791+00:00
+mhrsd_labor          docs=   82 last_run=2026-11-16T12:42:38.853311+00:00 ok    last_ok=2026-11-16T12:42:38.853311+00:00
+umm_al_qura          docs=   50 last_run=2026-11-16T12:42:45.173999+00:00 ok    last_ok=2026-11-16T12:42:45.173999+00:00
+```
+
+`docs=` counts every row stored so far, which is why it is higher than one
+scrape's `found=` count. `saudi-law-tracker query --source umm_al_qura --limit 1 --json`:
+
+```json
+[
+  {
+    "uid": "760a7f8e9859c7f8",
+    "source_key": "umm_al_qura",
+    "title": "جريدة أم القرى - العدد 5195",
+    "title_en": null,
+    "doc_type": "gazette_issue",
+    "url": "https://www.uqn.gov.sa/digital?date=2026-11-13",
+    "pdf_urls": [
+      "https://www.uqn.gov.sa/cdn/?url=uploads/pdf/2026/11/13/ummalqura_pdf-20261113-1.pdf&ts=042659"
+    ],
+    "reference_number": "5195",
+    "summary": null,
+    "published_gregorian": "2026-11-13",
+    "published_hijri": null,
+    "effective_date": null,
+    "last_modified": null,
+    "categories": [
+      "gazette_issue"
+    ],
+    "raw_html_path": null,
+    "content_hash": "e0d9b3326e4f90746e19cb6f047f23c5fcdfe4b68a9d738749b0f462a219dc27",
+    "first_seen": "2026-11-14T11:52:30.108101Z",
+    "last_seen": "2026-11-16T12:42:44.841576Z",
+    "verified": true
+  }
+]
+```
+
 ## Scheduling
 
-The daily job is: run `scrape`, run `status --max-age-hours 36` so a source
-that's stopped scraping successfully gets flagged rather than just silently
-going quiet, then run the live smoke test (`pytest -m live
-tests/test_live_smoke.py`) as a second, independent check that every enabled
-source still returns at least one verified, dated row against the *live*
-site — not just a fixture. `scrape.cmd` at the repo root already does all
-three, in order, appending output to `logs\cron.log` and exiting non-zero if
-any of them failed (so Task Scheduler's "Last Run Result" reflects any of
-the three).
-
-### Windows Task Scheduler
-
-1. Confirm `scrape.cmd` runs cleanly by hand first: `.\scrape.cmd` from the
-   repo root, then check `logs\cron.log` for `STALE` / errors.
-2. Open Task Scheduler → **Create Task…** (not *Basic Task*, so you get the
-   full options below).
-3. **General** tab: name it (e.g. `saudi-law-tracker daily scrape`); select
-   **Run whether user is logged on or not**; check **Run with highest
-   privileges** only if your `.venv`/network setup actually needs it (it
-   usually doesn't).
-4. **Triggers** tab → **New…** → Daily, pick a time (e.g. 06:00), **Enabled**.
-5. **Actions** tab → **New…** → Action: *Start a program*; **Program/script**:
-   the full path to `scrape.cmd` (e.g.
-   `C:\Users\<you>\saudi-law-tracker\scrape.cmd`); **Start in**: the repo root
-   (e.g. `C:\Users\<you>\saudi-law-tracker`) — `scrape.cmd` also `cd /d`s
-   there itself, but setting it here too avoids surprises if the task is ever
-   invoked with a different working directory.
-6. **Conditions**/**Settings** tabs: on a laptop, uncheck "Start the task only
-   if the computer is on AC power" unless that's genuinely what you want.
-7. Save. To verify: right-click the task → **Run**, then check
-   `logs\cron.log` and the task's **Last Run Result** column (`0x0` =
-   success; anything else = the scrape failed or a source is stale).
-
-Equivalent one-liner via `schtasks` (run as the user who should own the
-task, from an elevated prompt only if you also chose "highest privileges"
-above):
-
-```powershell
-schtasks /Create /TN "saudi-law-tracker daily scrape" /TR "C:\Users\<you>\saudi-law-tracker\scrape.cmd" /SC DAILY /ST 06:00 /RL LIMITED
-```
-
-### cron (Linux/macOS)
-
-`status` and the smoke test should run even if `scrape` itself failed, and
-the redirect needs to wrap the whole compound command (not just the last
-part) to capture all three:
-
-```
-0 6 * * *  { cd /path/to/saudi-law-tracker && .venv/bin/saudi-law-tracker scrape ; .venv/bin/saudi-law-tracker status --max-age-hours 36 ; .venv/bin/pytest -m live tests/test_live_smoke.py ; } >> logs/cron.log 2>&1
-```
+Run it daily with `scrape.cmd` (Windows) or one cron line (Linux/macOS): scrape,
+then `status --max-age-hours 36` and the live smoke test, so a source that stops
+working is flagged. Setup steps for both: [docs/SCHEDULING.md](docs/SCHEDULING.md).
 
 ## Adding a scraper
 
