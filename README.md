@@ -3,6 +3,20 @@
 Scrapes and tracks regulatory publications from Saudi government sources, diffing
 each run so you only get told about what is genuinely new.
 
+## Current status (16 Nov 2026)
+
+Scrapers exist for all six sources below; three return data today. Re-checked
+live from my network on 16 Nov 2026 with `saudi-law-tracker scrape --dry-run`:
+
+| Source | Status | Detail |
+| --- | --- | --- |
+| `zatca_updates` | working | 59 documents found |
+| `mhrsd_labor` | working | 34 documents found |
+| `umm_al_qura` | working | 24 documents found |
+| `bureau_of_experts` | unreachable from my network | Connections fail; last successful scrape 7 Nov 2026. It has worked only on some days since mid-September. Not yet known whether this is a network block or the site being down. |
+| `citc` | unreachable from my network | Same pattern; last successful scrape 7 Nov 2026. |
+| `sama_circulars` | site down | The site returns an error page instead of data, as it has since 14 Sep 2026 (see below). |
+
 ## Sources tracked
 
 Configured in [`config/sources.yaml`](config/sources.yaml). Defaults:
@@ -19,11 +33,11 @@ Configured in [`config/sources.yaml`](config/sources.yaml). Defaults:
 Add, disable, or remove sources by editing the YAML — set `enabled: false` to
 pause one without losing its config.
 
-**Known limitation:** `sama_circulars` has returned a fake shell page instead
-of real API/JSON responses since at least 2026-09-14 (last re-confirmed live
-2026-09-16), across every inner path on sama.gov.sa, in both languages —
-confirmed via infrastructure-header analysis distinguishing it from genuine
-SharePoint responses, not just content inspection. This looks like a
+**Known limitation:** `sama_circulars` has returned an error page instead
+of real API/JSON responses since at least 2026-09-14 (last re-checked live
+2026-11-16, in both languages). The September investigation found the same
+page on every inner path on sama.gov.sa, and confirmed via
+infrastructure-header analysis that it is not a genuine SharePoint response. This looks like a
 site-side outage or in-progress migration, not a selector bug here — see the
 full investigation in [`scrapers/sama.py`](src/saudi_law_tracker/scrapers/sama.py)'s
 module docstring. Re-check periodically rather than assuming a scraper fix

@@ -1,7 +1,10 @@
 """Saudi Central Bank (SAMA) — www.sama.gov.sa
 
-STATUS (as of 2026-09-16, last re-checked live -- see the full investigation
-below): this source is down, not broken. Since at least 2026-09-14, every
+STATUS (last re-checked live 2026-11-16 -- see the full investigation
+below): this source is down, not broken. On 2026-11-16 the Laws REST API
+still returned the error page instead of JSON, in both languages (logged as
+`sama.error_page_instead_of_json`); the header analysis below, from
+2026-09-16, was not repeated. Since at least 2026-09-14, every
 inner path on sama.gov.sa (the Laws REST API included) has returned a fake
 shell page instead of real content -- confirmed by infrastructure-header
 analysis (a genuine SharePoint response carries X-SharePointHealthScore/
