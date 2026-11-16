@@ -61,6 +61,14 @@ un-flagged); the "Minor" items are not separately tested. The full suite is
 |---|---|---|
 | **CI actions pinned to mutable major tags** (`actions/checkout@v7`, `actions/setup-python@v7`) | **Closed** | Both versions exist and CI was green, but a major tag can be moved to different code at any time, which matters for a public repo. Pinned to full commit SHAs: checkout v7.0.1 (`3d3c42e5…`) and setup-python v7.1.0 (`6d4fd22b…`), resolved with `gh api repos/<action>/commits/<tag>`. Checkout no longer persists the token (`persist-credentials: false`). Added `.github/dependabot.yml` so the pins get monthly update PRs instead of going stale. |
 
+## 2026-11-16 review
+
+| Finding | Status | What actually verifies it |
+|---|---|---|
+| **SLT-03: `bureau_of_experts` and `citc` failing** | **Open, external (network); intermittent, not continuous** | `logs/cron.log` shows both are not down without a break since mid-September, as the 2026-10-21 entry implied: `bureau_of_experts` scraped `ok` on 23, 25 and 26 Oct and 4, 6 and 7 Nov; `citc` on 4, 6 and 7 Nov. Both have failed on every run since 8 Nov. A live dry-run scrape on 2026-11-16 failed for both (`robots.fetch_failed: All connection attempts failed`), and `curl` to both hosts timed out connecting rather than being refused. Whether this is a network block or the sites being down is still not distinguished. |
+| **SLT-03: `sama_circulars`** | **Confirmed live limitation (unchanged)** | Live dry-run scrape 2026-11-16: the Laws REST API returned the error page instead of JSON in both languages (`sama.error_page_instead_of_json`). The September header analysis was not repeated. |
+| **SLT-03: working sources** | **Closed, verified** | Live dry-run scrape 2026-11-16: `zatca_updates` 59, `mhrsd_labor` 34, `umm_al_qura` 24 documents found. |
+
 ## Note on scope
 
 Findings not listed above (anything from the original technical-reassessment
