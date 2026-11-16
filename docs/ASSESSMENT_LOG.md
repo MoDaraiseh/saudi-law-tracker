@@ -75,4 +75,5 @@ Findings not listed above (anything from the original technical-reassessment
 documents not named SLT-01 through SLT-11, or not surfaced in a later
 targeted investigation) were not independently re-verified as part of this
 pass — their last-known status stands as recorded in git history and prior
-eval reports (`evals/agent/real_report_v*.json`), not re-asserted here.
+eval reports (`evals/agent/latest_report.json`; earlier runs in git history,
+for example `git show ae52057:evals/agent/real_report_v4_judged.json`), not re-asserted here.

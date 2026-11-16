@@ -1,5 +1,24 @@
 # saudi-law-agent evals
 
+## Results
+
+From the latest full run, 2026-09-16, saved as
+[`latest_report.json`](latest_report.json):
+
+| Metric | Result |
+| --- | --- |
+| Citation validity (`cited_qa`) | **20/20** |
+| Hallucination rate, LLM-judged (`hallucination`, `--judge`) | **0.0%** (0/10), on two independent full runs (2026-09-15 and 2026-09-16) |
+| Hallucination, raw heuristic flags | 3/10 flagged; the judge cleared all 3, and each was checked by hand against the answer text |
+| Refusal correctness, heuristic scorer (`refusal`) | 8/10; the 2 misses were correct refusals worded in a way the keyword scorer did not yet recognise (since added) |
+
+Read the [scoring caveats](#scoring-caveats) before relying on these numbers.
+Earlier reports, including the 2026-09-15 judged run, are in git history:
+`git show ae52057:evals/agent/real_report_v4_judged.json` (and `real_report.json`,
+`real_report_v2.json`, `real_report_v3.json`).
+
+## What it tests
+
 40 questions across three YAML fixtures, scored by `run_evals.py`:
 
 | file                   | n  | tests                                                              |
@@ -23,13 +42,6 @@ for r in conn.execute(\"SELECT title, url, verified FROM regulations WHERE sourc
     print(r)
 "
 ```
-
-Also note: this repo's database predates the `verified` column, so on a
-fresh checkout every `bureau_of_experts` row still reads `verified=0` until
-either (a) the scraper re-runs and re-inserts them, or (b) you backfill
-directly (`UPDATE regulations SET verified = 1 WHERE source_key =
-'bureau_of_experts'` — safe, since that scraper is the tuned one and its
-rows are exactly what `verified=true` is supposed to mean).
 
 ## Running
 

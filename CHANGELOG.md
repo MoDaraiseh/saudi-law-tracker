@@ -9,6 +9,8 @@ verified, are in [docs/ASSESSMENT_LOG.md](docs/ASSESSMENT_LOG.md).
 - README: a dated current-status table for the six sources.
 - The assessment record moved from this file to `docs/ASSESSMENT_LOG.md`;
   this file is now a conventional changelog.
+- Agent evals: only the latest report is kept, as
+  `evals/agent/latest_report.json`; earlier runs remain in git history.
 
 ## 2026-11-14
 
