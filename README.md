@@ -165,6 +165,12 @@ Run it daily with `scrape.cmd` (Windows) or one cron line (Linux/macOS): scrape,
 then `status --max-age-hours 36` and the live smoke test, so a source that stops
 working is flagged. Setup steps for both: [docs/SCHEDULING.md](docs/SCHEDULING.md).
 
+GitHub Actions also runs the live smoke test weekly
+([live.yml](.github/workflows/live.yml), Tuesdays 06:00 UTC). It is
+informational and never runs on pushes or pull requests. Sources already
+failing (`SLT_LIVE_KNOWN_DOWN` in that file) are reported as expected
+failures, so the run turns red only when a source that was working fails.
+
 ## Adding a scraper
 
 Each source's scraper starts from `GenericListingScraper`, which fetches every

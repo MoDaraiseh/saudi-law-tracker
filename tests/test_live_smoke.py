@@ -31,6 +31,7 @@ confirmed live and left that way deliberately rather than silenced).
 from __future__ import annotations
 
 import asyncio
+import os
 from collections.abc import AsyncIterator
 
 import pytest
@@ -89,11 +90,34 @@ def _is_verified_and_dated(doc: RegulatoryDocument) -> bool:
     return doc.verified and has_a_real_date
 
 
-def _enabled_sources() -> list[SourceConfig]:
-    return [s for s in load_sources() if s.enabled]
+#: Sources already known to be failing live, as a comma-separated list of
+#: source keys. Their failures are reported as expected (xfail), and one that
+#: starts working again shows as XPASS, so only a source that was working can
+#: turn the run red. The scheduled live workflow (.github/workflows/live.yml)
+#: sets this; locally it is empty unless you set it.
+KNOWN_DOWN_ENV = "SLT_LIVE_KNOWN_DOWN"
 
 
-@pytest.mark.parametrize("source", _enabled_sources(), ids=lambda s: s.key)
+def _known_down() -> set[str]:
+    return {k.strip() for k in os.environ.get(KNOWN_DOWN_ENV, "").split(",") if k.strip()}
+
+
+def _enabled_sources() -> list[object]:
+    known_down = _known_down()
+    params: list[object] = []
+    for source in load_sources():
+        if not source.enabled:
+            continue
+        marks = (
+            [pytest.mark.xfail(reason=f"listed in {KNOWN_DOWN_ENV}", strict=False)]
+            if source.key in known_down
+            else []
+        )
+        params.append(pytest.param(source, id=source.key, marks=marks))
+    return params
+
+
+@pytest.mark.parametrize("source", _enabled_sources())
 def test_enabled_source_returns_at_least_one_verified_dated_row(
     source: SourceConfig,
 ) -> None:

@@ -16,6 +16,21 @@ def test_source_keys_are_unique():
     assert len(keys) == len(set(keys))
 
 
+def test_live_workflow_known_down_keys_are_real_sources():
+    """A misspelt key in live.yml would silently stop being an expected
+    failure, so its source could turn the informational run red."""
+
+    import re
+    from pathlib import Path
+
+    workflow = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "live.yml"
+    match = re.search(r"SLT_LIVE_KNOWN_DOWN:\s*(\S+)", workflow.read_text(encoding="utf-8"))
+    assert match, "SLT_LIVE_KNOWN_DOWN not set in live.yml"
+    listed = set(match.group(1).split(","))
+    enabled = {s.key for s in load_sources() if s.enabled}
+    assert listed <= enabled, f"not an enabled source key: {sorted(listed - enabled)}"
+
+
 def test_tuned_scrapers_actually_emit_verified_true():
     """`BaseScraper.tuned` is a plain class attribute nothing enforces against
     the scraper's actual `discover()` body (see base.py's docstring) -- this

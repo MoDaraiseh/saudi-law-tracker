@@ -15,6 +15,9 @@ verified, are in [docs/ASSESSMENT_LOG.md](docs/ASSESSMENT_LOG.md).
   `query --json` output added.
 - `ruff` in the dev extras is bounded to `>=0.17,<0.18`, so a new ruff release
   can't break CI unannounced. Adds a CI badge and a `.mailmap`.
+- A weekly, informational live smoke test on GitHub Actions
+  (`.github/workflows/live.yml`). Sources listed in `SLT_LIVE_KNOWN_DOWN` are
+  expected failures; only a working source that fails turns it red.
 
 ## 2026-11-14
 
